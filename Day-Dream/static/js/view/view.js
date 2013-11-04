@@ -85,7 +85,7 @@ var ViewType = {
         hidestyle: ViewHide.FADEOUT,
         //common init function
         init: function (view) {
-            Resize.SectionContainer(view);
+            Resize.section_container(view);
         }
     }
 }

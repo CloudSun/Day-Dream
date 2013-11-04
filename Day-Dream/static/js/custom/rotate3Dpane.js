@@ -24,13 +24,13 @@ var Rotate3DCube = {
             return;
         }
         _this.container.target.html("");
-        var sizeScale = Resize.MapCubeContainer(_this.container.target);
+        var sizeScale = Resize.mapcube_container(_this.container.target);
         //两个翻转size //TODO
         _this.row = sizeScale.scaleHeight;
         _this.col = sizeScale.scaleWidth;
         _this.cube.size.w = _this.cube.size.h = _this.cube.size.u;
         if (!target.currentPosition) {
-            target = Resize.ImageActualCenter(target);
+            target = Resize.image_center_actual(target);
             //show target
             target.css({
                 "display":"block",
@@ -191,7 +191,7 @@ var Rotate3DCube = {
                     
                     //add back content
                     if (!next.currentPosition) {
-                        next = Resize.ImageActualCenter(next);
+                        next = Resize.image_center_actual(next);
                     }
 
                     var backContent = next.clone();

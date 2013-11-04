@@ -5,6 +5,10 @@ var Section2ViewParam = {
     load: "once",//refresh evertime load
     loaded: false,
 };
+var Section2View_Status = {
+    Inited: false,
+};
+
 (function () { 
     Section2View = function () {
         var _this = this;
@@ -44,28 +48,36 @@ var Section2ViewParam = {
             title:"",
             src:"content/img/image4.jpg",
         }]
+
+        var dataTarget;
+
         for (var i = 0 ; i < imgList.length;i++) {
             var img = $('<img src="' + imgList[i].src + '" alt=' + imgList[i].title + '>');
-            //img.addClass("hidden");
+            img.addClass("hidden");
             img.resize(function () {
                 console.log("img resize");
             })
             imageBoard.append(img);
+            if(i==0){
+                dataTarget = img;
+            }
         }
 
         var SectionContainer = view.target.find(".section-container");
         SectionContainer.html(imageBoard);
 
         var _arguments = arguments
-        var dataTarget = imageBoard;
 
-        dataTarget.ready(function () {
-            view.Inited = true;
-            view.show();
-            CallbackL(_arguments)
+        dataTarget.load(function () {
+            Loaded();
         });
         
-        //CallbackL(arguments)
+        //after inited
+        function Loaded() {
+            Section2View_Status.Inited = true;
+            view.addEvents();
+            CallbackL(_arguments);
+        }
     };
 
     Section2View.prototype.addEvents = function (view) {
@@ -95,13 +107,14 @@ var Section2ViewParam = {
             $("#pane").addClass("pane-y-transition");
         })*/
 
+        view.show();
         CallbackL(arguments);
     };
 
     Section2View.prototype.show = function (view) {
         //SuperClass show
         !view && (view = this);
-        if (!view.Inited) {
+        if (!Section2View_Status.Inited) {
             return;
         }
 
@@ -110,12 +123,12 @@ var Section2ViewParam = {
         console.log(view.name + "View show");
         //
         //临时方法
-        Resize.ImageActualCenter($($("#imageBoard").children("img")[0]));
+        Resize.image_center_actual($($("#imageBoard").children("img")[0]));
         //resize and get the currentPosition
         
         //3D Cube初始化方法
         //在主内容显示之后初始化
-        var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
+        var sizeScale = Resize.mapcube_container($("#imageBoard"));
         var imagesContainer = $("#Section2 .section-container");
         var imagesTarget = $($("#imageBoard").children("img")[0]);
         Rotate3DCube.Init(imagesContainer, imagesTarget);

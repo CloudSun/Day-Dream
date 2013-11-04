@@ -6,7 +6,7 @@ var GoldenScale = 0.618;//黄金比例
 //var cubeWidth = cubeHeight = 70;
 var Resize = {
     square:70,
-    SectionContainer: function (view) {
+    section_container: function (view) {
         //resize the section-container
         //width depend on FirstMenu
         !view && (view = Controler.currentView);
@@ -21,9 +21,9 @@ var Resize = {
             "left": "50%",
             "margin-left": -width / 2 + "px",
         })
-        //console.log("SectionContainer Resize Done");
+        //console.log("section_container Resize Done");
     },
-    MapCubeContainer: function (container){
+    mapcube_container: function (container){
         var _this = this;
         var parent = container.parent();
         var parent_width = parent.width();
@@ -50,7 +50,7 @@ var Resize = {
         }
     },
     //图片resize Type:显示实际尺寸，容器居中
-    ImageActualCenter: function (img) {
+    image_center_actual: function (img) {
         var _this = this;
         //loaded
         //img.load(function () {
@@ -83,8 +83,19 @@ var Resize = {
             left: left,
             top: top,
         }
-
         return img;
-
     }
 }
+//bind window resize event
+var resizetime
+$(window).resize(function () {
+    //
+    if(!resizetime){
+        resizetime = setTimeout(function () {
+            console.log("=> fire windows resize");
+            clearTimeout(resizetime);
+            resizetime = null;
+        },1000)
+    }
+    
+});
