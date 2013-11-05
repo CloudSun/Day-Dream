@@ -35,6 +35,11 @@ View.prototype.show = function (view) {
     //TODO
     console.log("View show");
 
+    //background color change
+    $("#SectionContainer").css({
+        "background-color":view.param.bgcolor,
+    })
+
     //callback
     CallbackL(arguments);
 }

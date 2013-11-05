@@ -3,6 +3,7 @@ var Section2ViewParam = {
     name: "Section2",
     type: ViewType.SECTION,
     load: "once",//refresh evertime load
+    bgcolor:"cornflowerblue",
     loaded: false,
 };
 var Section2View_Status = {

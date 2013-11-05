@@ -3,6 +3,7 @@ var Section3ViewParam = {
     name: "Section3",
     type: ViewType.SECTION,
     load: "refresh",//refresh evertime load
+    bgcolor:"darkorange",
     loaded: "false",
 };
 (function () { 

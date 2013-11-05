@@ -268,7 +268,11 @@ var SectionMenu = {
         firstMenuShow();
 
         //Add Events
+        if (!viewname) {
+            viewname = Controler.currentView.param.name;
+        }
         this.AddFMEvents(viewname);
+        
 
         function firstMenuShow(i) {
             //FirstClassMenu初始化效果
@@ -288,6 +292,100 @@ var SectionMenu = {
                 firstMenuShow(i);
             }
         }
+    },
+    onresize:function(){
+        var _this = this;
+        if (!_this.inited) {
+            _this.FirstMenu_Init();
+            return;
+        }
+        _this.inited = true;
+
+        $("#BaselineCircle").css("width", "100%");
+        //Init Size
+        var firstMenuUl = $('#FirstMenuUL');
+        var firstMenuUl_width = _this.baseWidth;
+        var firstMenuUl_height = 70;
+        var firstMenuLength = this.FIRSTMENU.length;
+        firstMenuUl.css({ "width": firstMenuUl_width, "height": firstMenuUl_height, "margin": "0 auto" });
+        //Init First Menu node
+        this.FM_size.width = firstMenuUl_width / firstMenuLength;
+        this.FM_size.height = firstMenuUl_height * GoldenScale;
+        //
+        $("#BaselineMainContainer").css({ "width": firstMenuUl_width + "px" });
+
+        for (var i = 0; i < firstMenuLength; i++) {
+            var f = this.FIRSTMENU[i];
+            var firstli = $('<li></li>');// class="first-class-li" menu="1" type="honeycomb"
+            firstli.addClass("first-class-li");
+            firstli.css({
+                "width": this.FM_size.width + "px",
+                "height": this.FM_size.height + "px",
+                "line-height": this.FM_size.height + "px",
+            })
+            firstli.attr("menu", i);
+            firstli.attr("type", f.type);
+            firstli.html(f.title);
+            firstMenuUl.append(firstli);
+        }
+        // #FMViewZoom
+        var firstViewZoom = $('<div id="FMViewZoom"></div>');
+        firstViewZoom.css({
+            "width": this.FM_size.width + "px",
+            "height": this.FM_size.height + "px",
+            "top": -this.FM_size.height + "px",
+        });
+        var fmHoverContainer = $('<ul class="fm-container-hover"></ul>');
+        fmHoverContainer.css({
+            "width": firstMenuUl_width + "px",
+            "height": this.FM_size.height + "px",
+        });
+
+        for (var i = 0; i < firstMenuLength; i++) {
+            var f = this.FIRSTMENU[i];
+            var firsthoverli = $('<li></li>');// class="first-class-li" menu="1" type="honeycomb"
+            firsthoverli.addClass("first-class-li-hover");
+            firsthoverli.css({
+                "width": this.FM_size.width + "px",
+                "height": this.FM_size.height + "px",
+                "line-height": this.FM_size.height + "px",
+            })
+            firsthoverli.attr("menu", i);
+            firsthoverli.attr("type", f.type);
+            firsthoverli.html(f.title);
+            fmHoverContainer.append(firsthoverli);
+        }
+        firstViewZoom.append(fmHoverContainer);
+        firstMenuUl.append(firstViewZoom);
+
+        //Init First Menu Hover node
+
+        /*
+        //TODO CSS3
+        firstMenuShow();
+
+        //Add Events
+        this.AddFMEvents(viewname);
+
+        function firstMenuShow(i) {
+            //FirstClassMenu初始化效果
+            i != 0 && !i ? i = 0 : i++;
+            var left = i * 150;
+            i != 0 ? left += 15 : false;
+            //$($(".first-class-li")[i]).css({ "left": left + "px" });
+            setTimeout(function () {
+                $($(".first-class-li")[i]).animate({
+                    'margin-top': "0px",
+                }, 400);
+                if ($($(".first-class-li")[i]).attr("class").toString().match('menuSelected')) {
+                    SectionMenu.FirstArrowEffect();
+                }
+            }, (0.2 + 0.15 * i) * 1000);
+            if ((i + 1) < $(".first-class-li").length) {
+                firstMenuShow(i);
+            }
+        }
+        */
     },
     FirstArrowEffect: function () {
         $("#FMArrowContainer").removeClass("hidden");

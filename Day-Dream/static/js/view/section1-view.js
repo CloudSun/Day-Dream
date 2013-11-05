@@ -3,6 +3,7 @@ var Section1ViewParam = {
     name: "Section1",
     type: ViewType.SECTION,
     load: "once",//once 只加载一次
+    bgcolor:"yellowgreen",
     loaded: false,
 };
 (function () { 
