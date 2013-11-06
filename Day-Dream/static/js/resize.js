@@ -24,6 +24,8 @@ var Resize = {
                 "margin-left": -width / 2 + "px",
                 "-webkit-transition-duration": smooth + "s",
             });
+            //resize element
+            target.attr("resize-width", width).attr("resize-height", height);
 
             //add to list
             if (!this.list.containsDom(target)) {
@@ -37,8 +39,19 @@ var Resize = {
     MapCube: {
         onresize: function(target, smooth) {
             var parent = target.parent();
-            var parentWidth = parent.width();
-            var parentHeight = parent.height();
+            var parentWidth;
+            var resizeWidth = parent.attr("resize-width");
+            if(resizeWidth){
+                parentWidth = resizeWidth;
+            }else{
+                parentWidth = parent.width();
+            }
+            var resizeHeight = parent.attr("reisze-height");
+            if (resizeHeight) {
+                parentHeight = resizeHeight;
+            } else {
+                parentHeight = parent.height();
+            }
             var scaleWidth = Math.floor(parentWidth / Resize.square);
             var scaleHeight = Math.floor(parentHeight / Resize.square);
             var targetWidth = scaleWidth * Resize.square;
@@ -56,6 +69,7 @@ var Resize = {
                 "-webkit-transition-duration": smooth + "s",
             });
 
+            target.attr("resize-width", targetWidth).attr("resize-height", targetHeight);
 
             if (!this.list.containsDom(target)) {
                 this.list.push(target);
@@ -76,11 +90,19 @@ var Resize = {
             //loaded
             //img.load(function () {
             //after img loaded
-            var parent = img.parent();
             var width = img.width();
             var height = img.height();
-            var parentHeight = parent.height();
+            var parent = img.parent();
+            var resizeWidth = parent.attr("resize-width");
             var parentWidth = parent.width();
+            if (resizeWidth) {
+                parentWidth = resizeWidth;
+            }
+            var resizeHeight = parent.attr("resize-height")
+            var parentHeight = parent.height();
+            if (resizeHeight) {
+                parentHeight = resizeHeight;
+            }
             (!smooth && smooth != 0) && (smooth = 0);
             img.css({
                 "position": "absolute",
@@ -90,7 +112,7 @@ var Resize = {
                 "margin-left": width / 2 * -1 + "px",
                 "-webkit-transition-duration": smooth + "s",
             });
-
+            img.attr("resize-width", width).attr("resize-height", height);
             //return actural absolute: left & top
             var left = parentWidth / 2 - width / 2;
             var top = parentHeight / 2 - height / 2;
@@ -109,6 +131,16 @@ var Resize = {
     },
     onResize: function() {
         var _this = this;
+        var screenHeight = $(document).height();
+        var screenWidth = $(document).width();
+
+        //resize SectionContainer background
+        var sectionContainer = $("#SectionContainer");
+        sectionContainer.css({
+            "background-image":"-webkit-gradient(radial, 10% -50%,"+screenWidth/2+", 0% 0%, "+screenWidth+", from(#fff),to(transparent))"+
+                ",-webkit-gradient(radial, 100% 100%,"+screenHeight/2+", 100% 100%, "+screenHeight+", from(#fff), to(transparent))",
+        });
+
         Resize.Section.list.each(function(target, i) {
             Resize.Section.onresize(target, 0.5);
         });

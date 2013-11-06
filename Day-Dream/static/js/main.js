@@ -11,6 +11,8 @@
 
 $().ready(function () {
 
+    Resize.onResize();
+
     //First View - LoginView
     //Controler.transfer(new LoginView());//跳过登陆界面
     Controler.transfer(new Section2View());
