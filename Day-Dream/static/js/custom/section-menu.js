@@ -1,4 +1,4 @@
-    var Flag_FMdownStatus = 0;
+﻿    var Flag_FMdownStatus = 0;
     var FirstMenuULNum = 0;
     var BaselineCircleNum = 0;
 
@@ -526,7 +526,18 @@ var SectionMenu = {
             }
         }).unbind("mouseout").mouseout(function () {
             event.stopPropagation();
+        }).unbind('webkitTransitionEnd').bind('webkitTransitionEnd', function () {
+            if ($(this).attr("class").indexOf("menuSelected") != -1) {
+                var FMArrow = $("#FMArrowContainer");
+                var arrowleft = $(this).position().left + $(this).width() / 2 - FMArrow.width() / 2;
+                FMArrow.css({
+                    "left": arrowleft + "px",
+                    "-webkit-transition-duration": "0.2s",
+                });
+                FMArrow.removeClass("hidden");
+            }
         });
+
 
 
         $("#Baseline").unbind("mouseover").mouseover(function () {
@@ -540,9 +551,8 @@ var SectionMenu = {
         }).unbind("mouseover").mouseover(function () {
             event.stopPropagation();
         });
-
-
-
+        // moztransitionend transitionend oTransitionEnd
+        
 
         //FirstMenu 点击效果:not([class~="menuSelected"])
         $('.first-class-li-hover').unbind("click").click(function () {
@@ -562,7 +572,6 @@ var SectionMenu = {
                 //var menu = $(this).attr("menu")
                 var TargetView = _this.FIRSTMENU[index].view;
                 TargetView && Controler.transfer(new TargetView());
-
                 _this.FirstMenuSelected_Click();
             });
             
@@ -591,7 +600,7 @@ var SectionMenu = {
             otherFM.css({
                 "height": _this.FM_size.height + "px",
                 "line-height": _this.FM_size.height + "px",
-                "-webkit-transition-duration": "0.5s",
+                "-webkit-transition-duration": "0.3s",
             });
             
 
@@ -605,7 +614,7 @@ var SectionMenu = {
             changeFM.css({
                 "height": 70 + "px",
                 "line-height": 70 + "px",
-                "-webkit-transition-duration": "0.5s",
+                "-webkit-transition-duration": "0.3s",
             });
 
             //FirstArrow
@@ -624,27 +633,17 @@ var SectionMenu = {
                 FMArrow.children().removeClass().addClass("FirstMenuArrowDown");
                 FMArrow.css({ "top": 0 + "px" });
             }
-            // moztransitionend transitionend oTransitionEnd
-            changeFM.unbind('webkitTransitionEnd').bind('webkitTransitionEnd', function () {
-                if ($(this).attr("class").indexOf("menuSelected")!=-1){
-                var arrowleft = $(this).position().left + $(this).width() / 2 - FMArrow.width() / 2;
-                FMArrow.css({
-                    "left": arrowleft + "px",
-                    "-webkit-transition-duration": "0.2s",
-                });
-                FMArrow.removeClass("hidden");
-                }
-            });
+            
             
            //if (!_this.inited) {
-                setTimeout(function () {
+                //setTimeout(function () {
                     var arrowleft = changeFM.position().left + changeFM.width() / 2 - FMArrow.width() / 2
                     FMArrow.css({
                         "left": arrowleft + "px",
                         "-webkit-transition-duration": "0.2s",
                     });
                     FMArrow.removeClass("hidden");
-                }, 500);
+                //}, 500);
                 
             //}
             
@@ -656,7 +655,9 @@ var SectionMenu = {
             firstViewZoom.css({
                 "width": _this.FM_size.width + "px",
             });
-            var fmHoverContainer = $('.fm-container-hover');
+            var fmHoverContainer = $('.fm-
+            
+            -hover');
             for (var i = 0; i < _this.FIRSTMENU.length; i++) {
                 var f = _this.FIRSTMENU[i];
                 var firsthoverli = $($('.first-class-li-hover')[i]);// class="first-class-li" menu="1" type="honeycomb"

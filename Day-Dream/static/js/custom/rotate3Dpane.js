@@ -17,15 +17,14 @@ var Rotate3DCube = {
         console.log("Init 3D pane");
         //clear #Rotate3DCubeContainer
         var _this = this;
-        if (!container) {
-            container = _this.container;
+        
+        if (!container || !target) {
+            console.log("rotate3DPane no param");
+            return;
         }
-        if (!target) {
-            target = _this.currentTarget;
-        }
-        if (container.children(".Rotate3DCubeContainer").length == 0) {
+        if (_this.container.target.children(".Rotate3DCubeContainer").length == 0) {
             var rotateContainer = $("<div class='Rotate3DCubeContainer'></div>");
-            container.append(rotateContainer);
+            _this.container.target.append(rotateContainer);
             _this.container.target = container;
         } else {
             return;
@@ -50,6 +49,8 @@ var Rotate3DCube = {
                 "display":"block",
             });
         }
+        //clear container 
+        _this.container.target.find(".Rotate3DCubeContainer").html("");
         _this.currentTarget = target;
         var targets = target.parent().children();
         //if (_this.container.target.children().length==0){
@@ -71,7 +72,7 @@ var Rotate3DCube = {
                     cube.append(back);
 
                     cube.attr("id", "cube-pane-" + r + "-" + d);
-                    this.container.target.find(".Rotate3DCubeContainer").append(cube);
+                    _this.container.target.find(".Rotate3DCubeContainer").append(cube);
                 }
             }
             //_this.container.target.click();
@@ -108,9 +109,109 @@ var Rotate3DCube = {
             _this.initFront(target);
 
             //add list
-            if (!_this.list.containsDom(container)) {
-                _this.list.push(container);
+            if (!_this.list.containsDom(_this.container.target)) {
+                _this.list.push(_this.container.target);
             }
+
+        return _this;
+    },
+    onResize:function(container,target){
+        var _this = this;
+        if (container) {
+            _this.container.target = container;
+        }
+        if (target) {
+            _this.currentTarget = target;
+        }
+
+        if (_this.container.target.children(".Rotate3DCubeContainer").length == 0) {
+            var rotateContainer = $("<div class='Rotate3DCubeContainer'></div>");
+            _this.container.target.append(rotateContainer);
+            _this.container.target = container;
+        } else {
+            return;
+        }
+        _this.container.target.find(".Rotate3DCubeContainer").html("");
+        var sizeScale = Resize.MapCube.onresize(_this.container.target.find(".Rotate3DCubeContainer"));
+        //是否已有翻转块
+        if (_this.container.target.find(".Rotate3DCubeContainer").length != 0) {
+            //判断是否已初始化或者高宽比有没有变化
+            if ((_this.row && _this.row == sizeScale.scaleHeight) && (_this.col && _this.col == sizeScale.scaleWidth)) {
+                return;
+            }
+        }
+        //两个翻转size //TODO
+        _this.row = sizeScale.scaleHeight;
+        _this.col = sizeScale.scaleWidth;
+        _this.cube.size.w = _this.cube.size.h = _this.cube.size.u;
+        if (!target.currentPosition) {
+            target = Resize.ImageRealCenter.onresize(target);
+            //show target
+            target.css({
+                "display": "block",
+            });
+        }
+        _this.currentTarget = target;
+        var targets = target.parent().children();
+        //if (_this.container.target.children().length==0){
+        for (var r = 0; r < _this.row; r++) {
+            for (var d = 0; d < _this.col; d++) {
+                var cube = $('<div class="cubepane"></div>')
+                cube.css({
+                    "width": _this.cube.size.w + "px",
+                    "height": _this.cube.size.h + "px",
+                });
+                //init front pane
+                var front = $('<div class="pane-front"></div>');
+                //init back pane
+                var back = $('<div class="pane-end"></div>')
+
+                //add front pane
+                cube.append(front);
+                //add back pane
+                cube.append(back);
+
+                cube.attr("id", "cube-pane-" + r + "-" + d);
+                _this.container.target.find(".Rotate3DCubeContainer").append(cube);
+            }
+        }
+        //_this.container.target.click();
+        //bind event
+        //target.parent().unbind("click").click(function (e) {
+        target.parent().unbind("click").click(function (e) {
+            var currentImageSize = {
+                width: _this.currentTarget.width(),
+                height: _this.currentTarget.height(),
+            }
+            var imageContainer = _this.currentTarget.parent();
+            var containerSize = {
+                width: imageContainer.width(),
+                height: imageContainer.height(),
+            }
+
+            var mouseLeft = e.offsetX - (currentImageSize.width - containerSize.width) / 2;
+            var mouseTop = e.offsetY - (currentImageSize.height - containerSize.height) / 2;
+
+            var cubePosition = {
+                row: Math.floor(mouseTop / _this.cube.size.u),
+                col: Math.floor(mouseLeft / _this.cube.size.u),
+            }
+            console.log("left:" + mouseLeft + " top:" + mouseTop);
+            console.log("pane[" + cubePosition.row + "," + cubePosition.col + "]")
+
+            _this.currentPosition = cubePosition;
+            _this.initNext();
+        });
+
+        console.log("Rotate3Dpane Init");
+
+        //Goto Init Front
+        _this.initFront(target);
+
+        //add list
+        if (!_this.list.containsDom(_this.container.target)) {
+            _this.list.push(_this.container.target);
+        }
 
         return _this;
     },
@@ -165,7 +266,7 @@ var Rotate3DCube = {
             }
         }
         //show Roate3DContainer to top
-        _this.container.target.removeClass("bottom-pane").addClass("top-pane");
+        _this.container.target.find(".Rotate3DCubeContainer").removeClass("bottom-pane").addClass("top-pane");
 
 
         //clear #Rotate3DCubeContainer

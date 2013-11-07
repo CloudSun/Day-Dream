@@ -154,6 +154,8 @@ var Resize = {
         Resize.ImageRealCenter.list.each(function(target, i) {
             Resize.ImageRealCenter.onresize(target, 0.5);
         });
+
+        Rotate3DCube.Init();
     }    
 };
 
