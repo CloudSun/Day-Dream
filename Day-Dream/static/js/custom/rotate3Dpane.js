@@ -17,17 +17,23 @@ var Rotate3DCube = {
         console.log("Init 3D pane");
         //clear #Rotate3DCubeContainer
         var _this = this;
+        if (!container) {
+            container = _this.container;
+        }
+        if (!target) {
+            target = _this.currentTarget;
+        }
         if (container.children(".Rotate3DCubeContainer").length == 0) {
             var rotateContainer = $("<div class='Rotate3DCubeContainer'></div>");
             container.append(rotateContainer);
-            _this.container.target = rotateContainer;
+            _this.container.target = container;
         } else {
             return;
         }
-        _this.container.target.html("");
-        var sizeScale = Resize.MapCube.onresize(_this.container.target);
+        _this.container.target.find(".Rotate3DCubeContainer").html("");
+        var sizeScale = Resize.MapCube.onresize(_this.container.target.find(".Rotate3DCubeContainer"));
         //是否已有翻转块
-        if (_this.container.target.children().length != 0){
+        if (_this.container.target.find(".Rotate3DCubeContainer").length != 0) {
             //判断是否已初始化或者高宽比有没有变化
             if ((_this.row && _this.row == sizeScale.scaleHeight) && (_this.col && _this.col == sizeScale.scaleWidth)) {
                 return;
@@ -65,7 +71,7 @@ var Rotate3DCube = {
                     cube.append(back);
 
                     cube.attr("id", "cube-pane-" + r + "-" + d);
-                    this.container.target.append(cube);
+                    this.container.target.find(".Rotate3DCubeContainer").append(cube);
                 }
             }
             //_this.container.target.click();
@@ -113,7 +119,7 @@ var Rotate3DCube = {
         !frontTarget && (frontTarget = _this.currentTarget);
 
         //if (_this.container.target.children().length == 0) {
-        var cubes = _this.container.target.find(".cubepane");
+        var cubes = _this.container.target.find(".Rotate3DCubeContainer").find(".cubepane");
 
 
         for (var r = 0; r < _this.row; r++) {
@@ -168,7 +174,7 @@ var Rotate3DCube = {
         })
 
         //if (_this.container.target.children().length != 0) {
-        var cubes = _this.container.target.children(".cubepane");
+        var cubes = _this.container.target.find(".Rotate3DCubeContainer").children(".cubepane");
         if(cubes.length>0){
             for (var r = 0; r < _this.row; r++) {
                 for (var d = 0; d < _this.col; d++) {
@@ -313,7 +319,7 @@ var Rotate3DCube = {
         //add delay
         var delay = 0.1;
         var duration = 0.7;
-        var panes = $(_this.container.target.children());
+        var panes = $(_this.container.target.find(".Rotate3DCubeContainer").children());
         /*
         for (var i = 0; i < panes.length; i++) {
             var pane = $(panes[i]);
@@ -393,7 +399,7 @@ var Rotate3DCube = {
     },
     resetPane: function () {
         var _this = this;
-        var cubes = $(_this.container.target.find(".cubepane"));
+        var cubes = $(_this.container.target.find(".Rotate3DCubeContainer").find(".cubepane"));
         cubes.attr("class", "cubepane");
 
         //clear duration & delay
@@ -402,10 +408,10 @@ var Rotate3DCube = {
             "-webkit-transition-duration":"0s",
         })
 
-        var frontPanes = $(_this.container.target.find(".pane-front"));
+        var frontPanes = $(_this.container.target.find(".Rotate3DCubeContainer").find(".pane-front"));
         frontPanes.attr("class", "pane-front");
 
-        var endPanes = $(_this.container.target.find(".pane-end"));
+        var endPanes = $(_this.container.target.find(".Rotate3DCubeContainer").find(".pane-end"));
         endPanes.attr("class", "pane-end");
 
         return _this;
@@ -415,7 +421,7 @@ var Rotate3DCube = {
         _this.currentTarget.css({
             "display": "block",
         });
-        _this.container.target.removeClass("top-pane").addClass("bottom-pane");
+        _this.container.target.find(".Rotate3DCubeContainer").removeClass("top-pane").addClass("bottom-pane");
         //GOTO initCurrentFront
         _this.resetPane().initFront();
         //alert("Affter All");

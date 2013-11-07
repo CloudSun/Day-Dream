@@ -13,7 +13,11 @@ var Resize = {
             !target && (target = Controler.currentView.target.children(".section-container"));
             !target && function() { return false; };
             var width = SectionMenu.baseWidth();
-            var height = $(document).height() - parseInt($("#MainMenu").css("height"));
+            var mainMenuHeight = $("#MainMenu").attr("resize-height");
+            if (!mainMenuHeight) {
+                mainMenuHeight = $("#MainMenu").height();
+            }
+            var height = $(document).height() - parseInt(mainMenuHeight);
             (!smooth && smooth != 0) && (smooth = 0);
             //绝对 剧中
             target.css({
@@ -46,7 +50,7 @@ var Resize = {
             }else{
                 parentWidth = parent.width();
             }
-            var resizeHeight = parent.attr("reisze-height");
+            var resizeHeight = parent.attr("resize-height");
             if (resizeHeight) {
                 parentHeight = resizeHeight;
             } else {
