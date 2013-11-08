@@ -43,6 +43,7 @@ var LoginViewParam = {
         //TODO
         console.log(view.name + "View addEvent");
 
+        /*
         $("#LoginBtn").unbind("mouseover").mouseover(function () {
             $(this).css({ 'background-color': '#999', 'color': '#fff' });
         }).unbind("mousedown").mousedown(function () {
@@ -52,11 +53,19 @@ var LoginViewParam = {
         }).unbind("mouseout").mouseout(function () {
             $(this).css({ 'background-color': 'transparent', 'color': '#999' });
         })
-
+        */
         $(".CircleZoom").unbind("mouseover").mouseover(function () {
             $(".CircleOut").addClass("circleEffect");
         }).unbind("mouseout").mouseout(function () {
             $(".CircleOut").removeClass("circleEffect");
+        });
+
+        $("#LoginTitle").unbind("mousedown").mousedown(function () {
+            $(".CircleOut").removeClass("circleEffect").unbind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd')
+                .bind('webkitAnimationEnd webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
+                console.log("circleEffect");
+                Controler.transfer(new Section1View());
+            }).addClass("circleShine");
         });
 
         /*
@@ -66,14 +75,14 @@ var LoginViewParam = {
         alert(keychar);
         });
         */
-
+        /*
         $("#UserName").unbind("focusin").focusin(function () {
             $(this).css({ 'color': '#fff' });
             if ($(this).attr('value').toString().toLowerCase().match("input your name")) {
                 $(this).attr('value', '');
             }
         });
-
+        /*
         $("#LoginBtn").unbind("click").click(function () {
             $("#BaselineCircle").css("right", "0px");
             setTimeout(function () {
@@ -100,7 +109,7 @@ var LoginViewParam = {
                 }, 450);
             }, 300);
         });
-
+        */
         CallbackL(arguments);
     };
 

@@ -65,8 +65,6 @@
 }
 
 @-webkit-keyframes CircleEffect /* Safari and Chrome */ { 
-	
-
 	25% 
 	{
         -webkit-box-shadow: 0 0 100px 20px #fff,inset 0 0 50px 0px #fff;
@@ -121,3 +119,22 @@
 	}
 }
 
+.circleShine {
+    -webkit-animation-name: circleShineEffect;
+	-webkit-animation-duration: 1.0s;
+	-webkit-animation-timing-function: ease-in;
+	-webkit-animation-delay: 0s;
+	/*-webkit-animation-play-state:paused;*/
+    -webkit-animation-iteration-count: 1;
+}
+@-webkit-keyframes circleShineEffect /* Safari and Chrome */ { 
+    50% 
+	{
+	    -webkit-box-shadow: 0 0 100px 200px #fff,inset 0 0 100px 5px #fff;
+	}
+	100% 
+	{
+	    -webkit-box-shadow: 0 0 100px 2000px #fff,inset 0 0 200px 200px #fff;
+        border-color:#FFF;
+	}
+}
