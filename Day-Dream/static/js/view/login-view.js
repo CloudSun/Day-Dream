@@ -1,22 +1,48 @@
-﻿var LoginView = function () {
-    View.call(this, "Login",ViewType.FULL);
-    this.prototype = new View();
-    this.prototype.constructor = LoginView;
-    //call parents init and addEvent function
-    var parent = this.prototype;
-    parent.init.call(parent, parent.addEvents);
+﻿var LoginView;
+var LoginViewParam = {
+    name: "Login",
+    type: ViewType.FULL,
+    load: "once",//once 只加载一次
+    bgcolor: "rgba(0, 0, 0,1)",
+    loaded: false,
+};
+(function () {
+    LoginView = function () {
+        //以父类的构造函数初始化
+        LoginView.superClass.constructor.call(this, LoginViewParam);
+        //初始化
+        var _this = this;
+        var init = function () { LoginView.prototype.init(_this, _this) };
+        //Load View
+        LoadView(_this, init);
 
-    //DataInit
-    this.init = function () {
-        //TODO
-        console.log("LoginView init");
+    }
 
+    //Super Class
+    extendViewClass(LoginView, View, LoginViewParam);
+
+    LoginView.prototype.init = function (view) {
+        //SuperClass init
+        //在创建对象时进行初始化 需要传入初始化对象view
+        !view && (view = this);
+        LoginView.superClass.init.call(this, view);
+
+        //SectionMenu初始化及显示方法
+        console.log(view.name + "View init");
+
+
+        LoginView.prototype.addEvents.call(this, view);
         CallbackL(arguments);
     };
 
-    //AddEvent
-    this.addEvents = function () {
-        console.log("LoginView addEvent");
+    LoginView.prototype.addEvents = function (view) {
+        //SuperClass addEvents
+        //在创建对象时进行事件绑定 需要传入初始化对象view
+        !view && (view = this);
+        LoginView.superClass.addEvents.call(this, view);
+        //TODO
+        console.log(view.name + "View addEvent");
+
         $("#LoginBtn").unbind("mouseover").mouseover(function () {
             $(this).css({ 'background-color': '#999', 'color': '#fff' });
         }).unbind("mousedown").mousedown(function () {
@@ -78,21 +104,25 @@
         CallbackL(arguments);
     };
 
-    //Show
-    this.show = function () {
-        this.prototype.show.call(this);   //调用父类中的show()方法
+    LoginView.prototype.show = function (view) {
+        //SuperClass show
+        !view && (view = this);
+        LoginView.superClass.show.call(this, view);
         //TODO
-        console.log("LoginView show");
+        console.log(view.name + "View show");
+        //
+        CallbackL(arguments);
     };
 
-    //Hide
-    this.hide = function () {
-        this.prototype.hide.call(this);   //调用父类中的hide()方法
+    LoginView.prototype.hide = function (view) {
+        //SuperClass hide
+        !view && (view = this);
+        LoginView.superClass.hide.call(this, view);
         //TODO
-        console.log("LoginView hide");
-
+        console.log(view.name + "View hide");
+        //
+        CallbackL(arguments);
     };
 
-    //func run
-    this.init.call(this, this.addEvents);
-}
+
+})();

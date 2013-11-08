@@ -313,7 +313,9 @@ var SectionMenu = {
     onresize:function(){
         var _this = this;
         if (!_this.inited) {
-            _this.FirstMenu_Init();
+            if(_this.CurrentFM.target){
+                _this.FirstMenu_Init();
+            }
             return;
         }
         //Init Size

@@ -71,12 +71,19 @@ var ViewShow = {
                 "opacity": "1",
         });
         };
-    }
+    },
+    Section:{
+        FADEIN: function (target) {
+            $("#SectionContainer").removeClass("hidden");
+            ViewShow.FADEIN(target);
+        }
+    },
 };
 
 var ViewHide = {
     NORMAL: function(target) {
         target && target.addClass("hidden");
+
     },
     FADEOUT: function(target) {
         /*if(target){
@@ -94,6 +101,12 @@ var ViewHide = {
             }, 400);
         };
         */
+    },
+    Section: {
+        NORAML: function (target) {
+            ViewHide.NORMAL(target);
+            $("#SectionContainer").addClass("hidden");
+        }
     }
 };
 /*
@@ -110,8 +123,8 @@ var ViewType = {
     SECTION: {
         container: $("#SectionContainer"),
         classview: "section-view",
-        showstyle: ViewShow.FADEIN,
-        hidestyle: ViewHide.NORMAL,
+        showstyle: ViewShow.Section.FADEIN,
+        hidestyle: ViewHide.Section.NORMAL,
         //common init function
         init: function(view) {
             //section 栏的初始化方法，定义section
