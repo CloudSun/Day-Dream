@@ -51,8 +51,7 @@ li
     display: block;
     position: relative;
     float: left;
-    border-left: 2px solid #fff;
-    border-top: 2px solid #fff;
+    border-top: 1px solid #fff;
     border-right: 1px solid #fff;
 }
 #LoginTitle span:nth-of-type(2) {
@@ -61,9 +60,8 @@ li
     position: relative;
     float: left;
     border-left: 1px solid #fff;
-    border-bottom: 2px solid #fff;
-    border-right: 2px solid #fff;
-    border-top: 2px solid transparent;
+    border-bottom: 1px solid #fff;
+    border-top: 1px solid transparent;
 }
 
 #UserName 
