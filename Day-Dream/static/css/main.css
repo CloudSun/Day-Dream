@@ -1,0 +1,368 @@
+﻿body,div,ul,li
+{
+   margin:0px;
+   padding:0px; 
+	
+}
+li
+{
+    list-style:none;
+}
+.hidden
+{
+    display:none;   
+ }
+#MainContainer
+{
+    height:100%;
+    width:100%;
+}
+
+.CircleZoom
+{
+    width:400px;
+    height:400px;
+    left:50%;
+    top:50%;
+    margin-top:-200px;
+    margin-left:-200px;
+    position:absolute;
+    z-index:50;
+       
+}
+#UserName 
+{
+    position:relative;
+    margin-left:50px;  
+    margin-top:120px;
+    width:300px;
+    height:40px;
+    text-align: center;
+    font-size: 30px;
+    color:#bbb;
+    font-weight: bolder;
+    border: 0px;
+    border-bottom:4px solid #888;
+}
+#LoginBtn 
+{
+    font-family: Aharoni;
+	width:100px;
+	height:100px;
+	margin:auto;
+	margin-top:45px;
+	border:8px solid #999;
+	border-radius:20px;
+	cursor:pointer;
+    
+    vertical-align: middle;
+    line-height:100px;
+    text-align: center;
+    font-size: 28px;
+    color:#999;
+    font-weight: bold;
+}
+.CircleOut 
+{
+    height:400px;
+    width:400px;
+    margin:auto;
+    position:absolute;
+	
+	top:50%;
+	left:50%;
+	margin-top:-210px;
+	margin-left:-210px;
+    
+	border:10px solid #aaa;
+    border-radius:230px;
+}
+.CircleIn 
+{
+    height:400px;
+    width:400px;
+    margin:auto;
+    position:absolute;
+    
+	top:50%;
+	left:50%;
+	margin-top:-213px;
+	margin-left:-213px;
+	border:13px solid #aaa;
+    border-radius:230px;
+}
+#BaselineCircle
+{
+    position:fixed;
+    top:50%;
+    margin-top:210px;
+    height:6px;
+    background-color:#aaa;
+    z-index:200;
+    width:0px;
+}
+#BaselineMainContainer 
+{
+    width:1000px;
+    margin:auto;
+    position:relative;
+	height:15px;
+	
+}
+.FirstMenuArrowDown
+{
+    border:25px dashed transparent;
+    border-style:solid;
+    border-color:#fff #aaa #aaa #aaa;
+    border-bottom: 0px;
+}
+.FirstMenuArrowUp
+{
+    border:25px dashed transparent;
+    border-style:solid;
+    border-bottom-color:#AAA;
+    border-top: 0px;
+}
+#FMArrowContainer
+{
+    width:50px;
+	height:15px;
+	position:absolute;
+    top:-15px;
+    display:none;
+    overflow:hidden;
+    
+}
+#MainMenu
+{
+    width:100%;
+    position:fixed;
+    top:50%;
+    margin-top:216px;
+    height:100px;
+    z-index:150;
+}
+#FirstMenuUL
+{
+    width:1000px;
+    height:70px;
+    position:relative;
+    margin:auto;
+    overflow:hidden;
+}
+
+.first-class-li
+{
+    font-family: Aharoni;
+    width:150px;
+    height:55px;
+    font-size:20px;
+    line-height:55px;
+    text-align:center;
+    background-color:#fff;
+    position:absolute;
+    top:-100%;
+    color: #999;
+    border: 0px;
+	display:inline-block;
+	cursor: pointer;
+}
+.first-class-li-hover
+{
+    position:relative;
+    float:left;
+    left: 0px;
+    width:150px;
+    height:55px;
+    font-size:20px;
+    line-height:55px;
+    text-align:center;
+    background-color:#aaa;    
+    color:#fff;
+    cursor: pointer;
+	   
+}
+.menuSelected
+{   
+    width:165px;
+    height:70px;
+    line-height:70px;
+    font-size:26px;
+    color:#fff;
+    background-color:#aaa;
+    z-index:100;
+    border:2px solid #fff;
+    border-top:0px;
+}
+#FMViewZoom {
+	width:140px;
+	height:55px;
+	position:absolute;
+	top:-55px;
+	overflow: hidden;
+	margin:0px 5px;
+}
+.fm-container-hover
+{
+    font-family: Aharoni;
+    width: 1000px;
+    height: 55px;
+    position: absolute;
+    text-align: center;
+    line-height: 55px;
+}
+
+#SecondMenu
+{
+    font-family:  Agency FB;
+    font-weight: bolder;
+    width:100%;
+    position:fixed;
+    bottom:50%;
+    margin-bottom:-210px;
+    height:auto;
+}
+.second-menu-ul
+{
+    width:165px;
+    height:auto;
+    position:relative;
+    float:left;    
+    z-index:50;
+}
+#SecondMenuContainer
+{
+    width: 1000px;
+    position: relative;
+    margin: auto;
+    bottom: 0px;
+}
+.second-class-li
+{    
+    height: 0px;
+    line-height: 50px;
+    text-align: center;
+    color:#fff;
+    width: 165px;
+    left: 0px;
+    cursor: pointer;
+    background-color:#ddd;
+}
+.SecondClassLi_hover 
+{
+    color:#fff;
+    background-color:#aaa;  
+}
+#SM_LeftBar
+{
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: #AAA;
+    
+}
+
+.sm-arrow-container {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    margin-left: 165px;
+    margin-top: -50px;
+    display: none;
+}
+
+.sm-arrow-right {
+    border: 25px solid transparent;
+    border-left-color:#ddd;
+    border-right: 0px;
+}
+.SMArrowRight_hover {
+    border: 25px solid transparent;
+    border-left-color:#aaa;
+    border-right: 0px;
+}
+
+/* Third Menu*/
+#ThirdMenu
+{
+    position:absolute;
+    left:168px;
+    width:auto;
+    height:auto;  
+    z-index:45;
+}
+#ThirdMenuUl
+{
+    position:relative;
+    width:auto;
+    height:auto;
+    display:none;
+ }
+ .ThirdClassLi
+ {
+     color:#fff;
+     width:125px;
+     height:50px;
+     line-height:50px;
+     text-align:center; 
+     margin: 0px 25px 3px;
+     cursor:pointer;
+     background-color:#ddd;
+ }
+  .ThirdClassLi_hover
+ {
+     background-color:#aaa;
+     color:#FFF;
+ }
+.TMArrowContainerR
+{
+    width: 25px;
+    height: 50px;
+    overflow: hidden;
+    right: 0px;
+    position: absolute;  
+    margin-top: -50px;
+}
+.TMArrowContainerL
+{
+    width:25px;
+    height:50px;
+    overflow:hidden;
+    left:0px;
+    position:absolute; 
+    margin-top: -50px;
+}
+.TMArrowLeft{
+    border: 25px solid transparent;
+    border-color: #fff #ddd #fff #fff;
+    border-left: 0px;
+}
+.TMArrowRight{
+    border: 25px solid transparent;
+    border-left-color: #ddd;
+    border-right: 0px;
+}
+.TMArrowLeft_hover{
+    border-right-color:#aaa;
+}
+.TMArrowRight_hover{
+    border-left-color: #aaa;
+}
+
+#ForthMenu
+{
+    position:absolute;
+    left:321px;
+    width:175px;
+    height:auto;  
+}
+#ForthMenuUl
+{
+    position:relative;
+    width:auto;
+    height:auto;
+ }
+
+
