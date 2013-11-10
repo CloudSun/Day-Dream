@@ -15,7 +15,13 @@ $().ready(function () {
 
     //First View - LoginView
     //Controler.transfer(new LoginView());//跳过登陆界面
-    Controler.transfer(new LoginView());
-
+    if (!getCookie("username")) {
+        Controler.transfer(new LoginView());
+    } else {
+        Controler.transfer(new Section1View());
+        $("#SectionContainer").css({
+            "background-color": "rgba(0,0,0,0.9)",
+        });
+    }
 });
 

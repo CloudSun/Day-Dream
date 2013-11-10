@@ -30,6 +30,7 @@ var LoginViewParam = {
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
 
+        setCookie("username","Cloud",30)
 
         LoginView.prototype.addEvents.call(this, view);
         CallbackL(arguments);
@@ -65,6 +66,9 @@ var LoginViewParam = {
                 .bind('webkitAnimationEnd webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
                 console.log("circleEffect");
                 Controler.transfer(new Section1View());
+                $("#SectionContainer").css({
+                    "background-color": "rgba(0,0,0,0.9)",
+                });
             }).addClass("circleShine");
         });
 

@@ -171,8 +171,6 @@ var SectionMenu = {
             ]
         },
         { title: "Section4", type: "one" },
-        { title: "Section5", type: "one" },
-        { title: "Section6", type: "one" },
         
     ],
     FM_size: {

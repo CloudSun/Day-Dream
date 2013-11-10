@@ -131,6 +131,7 @@
     50% 
 	{
 	    -webkit-box-shadow: 0 0 100px 200px #fff,inset 0 0 100px 5px #fff;
+        border-color:#fff;
 	}
 	100% 
 	{
