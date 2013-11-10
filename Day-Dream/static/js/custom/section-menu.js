@@ -248,7 +248,7 @@
         },
         FirstArrowEffect: function () {
             $("#FMArrowContainer").removeClass("hidden");
-            $("#FMArrowContainer").css("display", "block");
+            //$("#FMArrowContainer").css("display", "block");
             var left = parseFloat($(".first-class-li.menuSelected").css("left")) + parseFloat($(".first-class-li.menuSelected").css("width")) / 2 - parseFloat($("#FMArrowContainer").css("width")) / 2;
             $("#FMArrowContainer").css("left", left + "px");
         },
@@ -256,6 +256,7 @@
             ShowEffect.MenuSelectedClick.prototype = {
                 SecondMenuShow: function (targetId) {
                     //show Arrow
+                    $("#SecondMenu").removeClass("hidden");
                     $(".sm-arrow-container").css("display", "block");
 
                     !targetId && targetId != 0 ? targetId = $(".second-class-li").length - 1 : false;
@@ -272,6 +273,7 @@
                 },
                 SecondMenuHidden: function (targetId) {
                     //hide Arrow
+                    $("#SecondMenu").addClass("hidden");
                     $(".sm-arrow-container").css("display", "none");
 
                     !targetId && targetId != 0 ? targetId = 0 : false;
