@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -76,6 +76,8 @@
     <Content Include="static\js\plugin\jquery-1.8.2.min.js" />
     <Content Include="static\js\resize.js" />
     <Content Include="static\js\tools.js" />
+    <Content Include="static\js\view\section3-view.js" />
+    <Content Include="static\js\view\section2-view.js" />
     <Content Include="static\js\view\login-view.js" />
     <Content Include="static\js\view\section1-view.js" />
     <Content Include="static\js\view\view.js" />
