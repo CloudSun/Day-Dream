@@ -213,8 +213,9 @@
     });
 
 
-var SectionMenu = {
-    THIRDMENU : [
+    var SectionMenu = {
+        FIRSTMENU:["Section1","Section2","Section3"],
+        THIRDMENU : [
         ["S1_Third1", "S1_Third2", "S1_Third3", "S1_Third4", "S1_Third5"],
         ["S2_Third1", "S2_Third2", "S2_Third3", "S2_Third4", "S2_Third5", "S2_Third6", "S2_Third7", "S2_Third8"],
         ["S3_Third1", "S3_Third2", "S3_Third3", "S3_Third4", "S3_Third5", "S3_Third6"],
@@ -354,12 +355,10 @@ var SectionMenu = {
 
     //主菜单 高亮menu的点击效果
     SectionMenu.MenuSelectedClick();
-    //主菜单FirstMenu menuSelected MouseOver效果
-//SectionMenu.FirstMenu_AddMouseEvent();
 
-
-    var MenuSection = {
-        "1": Section1View,
-        "2": Section2View,
-        "3": Section3View,
-    }
+/* MenuSection 匹配函数 */
+var MenuSection = {
+    "1": Section1View,
+    "2": Section2View,
+    "3": Section3View,
+}

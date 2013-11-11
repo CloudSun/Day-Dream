@@ -24,6 +24,9 @@
         console.log(name + "View init");
         SectionMenu.FirstMenu_Init();
 
+        //3D Cube初始化方法
+        Rotate3DCube.Init();
+
         CallbackL(arguments);
     };
 
@@ -35,43 +38,23 @@
         //TODO
         console.log(name + "View addEvent");
 
-        for (var i = 0; i < $(".cubebox").length; i++) {
-            var t = $($(".cubebox")[i]);
-            t.attr("index", i);
-            var clickTime = 0
-            t.unbind("click").click(function () {
-                var font = $($(this).find(".box-font"));
-                var back = $($(this).find(".box-end"));
-                switch (parseInt($(this).attr("index")) % 3) {
-                    case 0:
-                        $(this).addClass("box_x_transition");
-                        break;
-                    case 1:
-                        $(this).addClass("box_y_transition");
-                        break;
-                    case 2:
-                        $(this).addClass("box_z_transition");
-                        break;
-                }
-            });
-        }
         /*
-        $("#box").click(function () {
-            $("#box1_1").addClass("box_x_transition");
+        $("#pane").click(function () {
+            $("#pane1_1").addClass("pane-x-transition");
         });
-        $("#boxY").click(function () {
-            $("#boxY").addClass("box_y_transition");
+        $("#paneY").click(function () {
+            $("#paneY").addClass("pane-y-transition");
         });
-        $("#boxZ").click(function () {
-            $("#boxZ").addClass("box_z_transition");
+        $("#paneZ").click(function () {
+            $("#paneZ").addClass("pane-z-transition");
         });
         $("#back").click(function () {
 
         })
         */
-        /*$("#box").on("webkitTransitionEnd", function () {
-            $("#box").removeClass("box_x_transition");
-            $("#box").addClass("box_y_transition");
+        /*$("#pane").on("webkitTransitionEnd", function () {
+            $("#pane").removeClass("pane-x-transition");
+            $("#pane").addClass("pane-y-transition");
         })*/
 
         CallbackL(arguments);
