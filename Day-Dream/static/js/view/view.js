@@ -1,15 +1,16 @@
 ﻿//View
 /* Base View Class */
-var View = function (name ,type) {
-    this.name = name;
-    this.target = $("#" + name);
-    this.viewtype = type;
+var View = function (viewParam) {
+    this.name = viewParam.name;
+    this.target = $("#" + viewParam.name);
+    this.viewtype = viewParam.type;
 };
 
 //视图初始化方法
-View.prototype.init = function () {
+View.prototype.init = function (view) {
     //获得视图对象 id = name
     console.log("View init");
+    view.target.addClass(view.viewtype.classview);
     //callback
     CallbackL(arguments);
 }
@@ -22,10 +23,9 @@ View.prototype.addEvents = function () {
     CallbackL(arguments);
 }
 
-
 //视图显示方法
-View.prototype.show = function () {
-    this.viewtype.showstyle(this.target);
+View.prototype.show = function (view) {
+    view.viewtype.showstyle(view.target);
     //TODO
     console.log("View show");
 
@@ -33,8 +33,8 @@ View.prototype.show = function () {
     CallbackL(arguments);
 }
 
-View.prototype.hide = function () {
-    this.viewtype.hidestyle(this.target);
+View.prototype.hide = function (view) {
+    view.viewtype.hidestyle(view.target);
     //TODO
     console.log("View hide");
 
@@ -75,7 +75,7 @@ var ViewType = {
     SECTION:{
         container: $("#SectionContainer"),
         classview: "section-view",
-        showtyle: ViewShow.FADEIN,
+        showstyle: ViewShow.FADEIN,
         hidestyle: ViewHide.FADEOUT,
     }
 }

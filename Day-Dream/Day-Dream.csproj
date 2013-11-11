@@ -75,6 +75,7 @@
     <Content Include="static\js\main.js" />
     <Content Include="static\js\plugin\jquery-1.8.2.min.js" />
     <Content Include="static\js\resize.js" />
+    <Content Include="static\js\tools.js" />
     <Content Include="static\js\view\login-view.js" />
     <Content Include="static\js\view\section1-view.js" />
     <Content Include="static\js\view\view.js" />

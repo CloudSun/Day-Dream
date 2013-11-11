@@ -1,12 +1,6 @@
-﻿
-
-
-
-    var Flag_FMdownStatus = 0;
+﻿    var Flag_FMdownStatus = 0;
     var FirstMenuULNum = 0;
     var BaselineCircleNum = 0;
-
-
 
     function FirstMenu_MoveOut(){
         Flag_FMdownStatus = 0;
@@ -331,7 +325,7 @@ var SectionMenu = {
                 }
             });
 
-            $(".menuSelected[type='honeycomb']").unbind("mouseover").mouseover(function () {
+            $(".menuSelected[type='honeycomb']").mouseover(function () {
                 if ($(".second-class-li").css("height").toString() == "0px") {
                     $("#FMArrowContainer").addClass("FirstMenuArrowUp_Effect").css("height", "15px");
                     $("#BaselineMainContainer").css("overflow", "visible");
@@ -339,7 +333,7 @@ var SectionMenu = {
                     $("#FMArrowContainer").addClass("FirstMenuArrowDown_Effect").css("height", "25px");
                     $("#BaselineMainContainer").css("overflow", "hidden");
                 }
-            }).unbind("mouseout").mouseout(function () {
+            }).mouseout(function () {
                 $("#FMArrowContainer").removeClass("FirstMenuArrowUp_Effect");
                 $("#FMArrowContainer").removeClass("FirstMenuArrowDown_Effect");
                 if ($(".second-class-li").css("height").toString() == "0px") {
@@ -352,33 +346,8 @@ var SectionMenu = {
             });
 
         },
-    /*
-        FirstMenu_AddMouseEvent: function () {
-            $(".menuSelected[type='honeycomb']").unbind("mouseover").mouseover(function () {
-                if ($(".second-class-li").css("height").toString() == "0px") {
-                    $("#FMArrowContainer").addClass("FirstMenuArrowUp_Effect").css("height", "15px");
-                    $("#BaselineMainContainer").css("overflow", "visible");
-                } else {
-                    $("#FMArrowContainer").addClass("FirstMenuArrowDown_Effect").css("height", "25px");
-                    $("#BaselineMainContainer").css("overflow", "hidden");
-                }
-            }).unbind("mouseout").mouseout(function () {
-                $("#FMArrowContainer").removeClass("FirstMenuArrowUp_Effect");
-                $("#FMArrowContainer").removeClass("FirstMenuArrowDown_Effect");
-                if ($(".second-class-li").css("height").toString() == "0px") {
-                    $("#FMArrowContainer").css("height", "15px");
-                    $("#BaselineMainContainer").css("overflow", "visible");
-                } else {
-                    $("#FMArrowContainer").css("height", "25px");
-                    $("#BaselineMainContainer").css("overflow", "hidden");
-                }
-            });
-        }
-        */
+
     }
-
-    
-
 
     //主菜单 高亮menu的点击效果
     SectionMenu.MenuSelectedClick();
