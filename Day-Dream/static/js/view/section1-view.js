@@ -7,7 +7,8 @@
 
     this.init = function () {
         //TODO
-        
+        //SectionMenu初始化及显示方法
+        SectionMenu.FirstMenu_Init();
 
         CallbackL();
     };
@@ -30,8 +31,4 @@
 
     //func run
     this.init.call(this, this.addEvents.call(this));
-}
-
-var SectionMenu = {
-
 }

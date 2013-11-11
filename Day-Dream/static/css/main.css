@@ -101,6 +101,15 @@ li
     z-index:200;
     width:0px;
 }
+#Baseline {
+    position:fixed;
+    top:50%;
+    margin-top:210px;
+    height:6px;
+    background-color:#aaa;
+    z-index:200;
+    width:100%;
+}
 #BaselineMainContainer 
 {
     width:1000px;

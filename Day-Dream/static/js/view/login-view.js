@@ -68,7 +68,7 @@
                     setTimeout(function () {
                         $(".CircleZoom").hide();
                         $(".CircleOut").hide();
-                        ShowEffect.FirstClassMenuInit();
+                        Controler.transfer(new Section1View())
                     }, 1500);
 
                 }, 450);

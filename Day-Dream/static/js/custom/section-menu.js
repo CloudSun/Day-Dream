@@ -106,7 +106,7 @@
         //ThirdMenuInit
         var index = parseInt($(this).attr("smenu"));
         $("#ThirdMenuUl").html("");
-        for(var i = 0;i<THIRDMENU[(index-1)].length;i++){
+        for (var i = 0; i < SectionMenu.THIRDMENU[(index - 1)].length; i++) {
             var li = $("<li></li>");
             li.addClass("ThirdClassLi");
             li.attr("tmenu",(i+1));
@@ -116,11 +116,11 @@
                         "<div class='TMArrowContainerL'>"+
                             "<div class='TMArrowLeft'></div>"+
                         "</div>";
-            li.append(THIRDMENU[(index-1)][i].toString());
+            li.append(SectionMenu.THIRDMENU[(index-1)][i].toString());
             li.append(arrow);
             $("#ThirdMenuUl").append(li);
         }
-        //ThirdMenu 菜单mouseover效果
+        //SectionMenu.THIRDMENU 菜单mouseover效果
         $("#ThirdMenuUl > .ThirdClassLi").mouseover(function(){
             $("#ThirdMenuUl").children(".ThirdClassLi").removeClass("ThirdClassLi_hover");
             $("#ThirdMenuUl .TMArrowRight").removeClass("TMArrowRight_hover");
@@ -131,7 +131,7 @@
             //ForthMenuInit
             var indexT = parseInt($(this).attr("tmenu"));
             $("#ForthMenuUl").html("");
-            for(var i = 0;i<FORTHMENU[(indexT-1)].length;i++){
+            for(var i = 0;i<SectionMenu.FORTHMENU[(indexT-1)].length;i++){
                 var li = $("<li></li>");
                 li.addClass("ThirdClassLi");
                 li.attr("fmenu",(i+1));
@@ -141,11 +141,11 @@
                             "<div class='TMArrowContainerL'>"+
                                 "<div class='TMArrowLeft'></div>"+
                             "</div>";
-                li.append(FORTHMENU[(indexT-1)][i].toString());
+                li.append(SectionMenu.FORTHMENU[(indexT-1)][i].toString());
                 li.append(arrow);
                 $("#ForthMenuUl").append(li);
             }
-            var forthLength = FORTHMENU[(indexT-1)].length
+            var forthLength = SectionMenu.FORTHMENU[(indexT-1)].length
             var secondLength = $(".second-class-li").length;
             var top = 0//(index-1)*53+26;
             //indexT = indexT+;//important 计算相对偏移
@@ -177,7 +177,7 @@
 
         });
 
-        var thirdLength = THIRDMENU[(index-1)].length
+        var thirdLength = SectionMenu.THIRDMENU[(index-1)].length
         var secondLength = $(".second-class-li").length;
         var top = 0//(index-1)*53+26;
         if((index+thirdLength)>secondLength){
@@ -197,7 +197,7 @@
     //FirstMenu 点击效果:not([class~="menuSelected"])
     $('.first-class-li-hover').click(function(){
         //hidden secondMenu 
-        ShowEffect.MenuSelectedClick.prototype.SecondMenuHidden();
+        SectionMenu.MenuSelectedClick.prototype.SecondMenuHidden();
 
         var index = parseInt($(this).attr("menu"));
         $(".menuSelected").removeClass("menuSelected");
@@ -211,17 +211,35 @@
             }
             $($(".first-class-li")[i]).css({"left": left + "px"});
         }
-        //ShowEffect.MenuSelectedMouseover_out();
-        //移动箭头
-        //ShowEffect.FirstArrowEffect();
-        //
         $("#FMArrowContainer").addClass("hidden");
-        ShowEffect.MenuSelectedClick();
+        SectionMenu.MenuSelectedClick();
     });
 
 
-    var ShowEffect = {
-        FirstClassMenuInit: function (i) {
+var SectionMenu = {
+    THIRDMENU : [
+        ["S1_Third1", "S1_Third2", "S1_Third3", "S1_Third4", "S1_Third5"],
+        ["S2_Third1", "S2_Third2", "S2_Third3", "S2_Third4", "S2_Third5", "S2_Third6", "S2_Third7", "S2_Third8"],
+        ["S3_Third1", "S3_Third2", "S3_Third3", "S3_Third4", "S3_Third5", "S3_Third6"],
+        ["S4_Third1", "S4_Third2"],
+        ["S5_Third1", "S5_Third2", "S5_Third3"],
+        ["S6_Third1", "S6_Third2", "S6_Third3", "S6_Third4", "S6_Third5", "S6_Third6"],
+        ["S7_Third1", "S7_Third2"],
+        ["S8_Third1", "S8_Third2", "S8_Third3"]
+        ],
+    FORTHMENU : [
+        ["T1_Forth1", "T1_Forth2", "T1_Forth3", "T1_Forth4", "T1_Forth5"],
+        ["T2_Forth1", "T2_Forth2", "T2_Forth3", "T2_Forth4", "T2_Forth5", "T2_Forth6", "T2_Forth7", "T2_Forth8"],
+        ["T3_Forth1", "T3_Forth2"],
+        ["T4_Forth1", "T4_Forth2", "T4_Forth3", "T4_Forth4", "T4_Forth5", "T4_Forth6"],
+        ["T5_Forth1", "T5_Forth2", "T5_Forth3"],
+        ["T6_Forth1", "T6_Forth2", "T6_Forth3", "T6_Forth4", "T6_Forth5", "T6_Forth6"],
+        ["T7_Forth1", "T7_Forth2", "T7_Forth3", "T7_Forth4"],
+        ["T8_Forth1", "T8_Forth2", "T8_Forth3"]
+    ],
+    FirstMenu_Init: function (i) {
+        //上横线
+        $("#BaselineCircle").css("width", "100%");
             //FirstClassMenu初始化效果
             i != 0 && !i ? i = 0 : i++;
             var left = i * 150;
@@ -232,28 +250,27 @@
                     top: "0px",
                 }, 400);
                 if ($($(".first-class-li")[i]).attr("class").toString().match('menuSelected')) {
-                    ShowEffect.FirstArrowEffect();
+                    SectionMenu.FirstArrowEffect();
                 }
             }, (0.2 + 0.15 * i) * 1000);
             /* 
                 一次性没有循环效果的动态效果还是不考虑用css3的animation来做了
             */
             if ((i + 1) < $(".first-class-li").length) {
-                ShowEffect.FirstClassMenuInit(i);
+                SectionMenu.FirstMenu_Init(i);
             } else {
                 setTimeout(function () {
-                    ShowEffect.FirstArrowEffect();
+                    SectionMenu.FirstArrowEffect();
                 }, 1000);
             }
         },
         FirstArrowEffect: function () {
             $("#FMArrowContainer").removeClass("hidden");
-            //$("#FMArrowContainer").css("display", "block");
             var left = parseFloat($(".first-class-li.menuSelected").css("left")) + parseFloat($(".first-class-li.menuSelected").css("width")) / 2 - parseFloat($("#FMArrowContainer").css("width")) / 2;
             $("#FMArrowContainer").css("left", left + "px");
         },
         MenuSelectedClick: function () {
-            ShowEffect.MenuSelectedClick.prototype = {
+            SectionMenu.MenuSelectedClick.prototype = {
                 SecondMenuShow: function (targetId) {
                     //show Arrow
                     $("#SecondMenu").removeClass("hidden");
@@ -267,7 +284,7 @@
                     }, 280);
                     if (targetId-- >= 1) {
                         setTimeout(function () {
-                            ShowEffect.MenuSelectedClick.prototype.SecondMenuShow(targetId);
+                            SectionMenu.MenuSelectedClick.prototype.SecondMenuShow(targetId);
                         }, 20);
                     }
                 },
@@ -285,14 +302,14 @@
                     //$(target).addClass("hidden");
                     if (targetId++ < $(".second-class-li").length) {
                         setTimeout(function () {
-                            ShowEffect.MenuSelectedClick.prototype.SecondMenuHidden(targetId)
+                            SectionMenu.MenuSelectedClick.prototype.SecondMenuHidden(targetId)
                         }, 20);
                     }
                 }
             }
 
             //主菜单FirstMenu menuSelected点击效果
-            $(".menuSelected[menu='1']").toggle(function () {
+            $(".menuSelected[type='honeycomb']").toggle(function () {
                 $("#FMArrowContainer").children(".FirstMenuArrowUp").addClass("FirstMenuArrowDown").removeClass("FirstMenuArrowUp");
                 $("#FMArrowContainer").removeClass("FirstMenuArrowUp_Effect");
                 $("#FMArrowContainer").addClass("FirstMenuArrowDown_Effect").css("height", "25px");
@@ -300,7 +317,7 @@
                 //Clear ThirdMenuUL
                 $("#ThirdMenuUl").html("");
                 if ($(this).attr("type") == "honeycomb") {
-                    ShowEffect.MenuSelectedClick.prototype.SecondMenuShow();
+                    SectionMenu.MenuSelectedClick.prototype.SecondMenuShow();
                 }
             }, function () {
                 $("#FMArrowContainer").children(".FirstMenuArrowDown").addClass("FirstMenuArrowUp").removeClass("FirstMenuArrowDown");
@@ -310,12 +327,11 @@
                 //Clear ThirdMenuUL
                 $("#ThirdMenuUl").html("");
                 if ($(this).attr("type") == "honeycomb") {
-                    ShowEffect.MenuSelectedClick.prototype.SecondMenuHidden();
+                    SectionMenu.MenuSelectedClick.prototype.SecondMenuHidden();
                 }
             });
-        },
-        MenuSelectedMouseover_out: function () {
-            $(".menuSelected").mouseover(function () {
+
+            $(".menuSelected[type='honeycomb']").unbind("mouseover").mouseover(function () {
                 if ($(".second-class-li").css("height").toString() == "0px") {
                     $("#FMArrowContainer").addClass("FirstMenuArrowUp_Effect").css("height", "15px");
                     $("#BaselineMainContainer").css("overflow", "visible");
@@ -323,7 +339,7 @@
                     $("#FMArrowContainer").addClass("FirstMenuArrowDown_Effect").css("height", "25px");
                     $("#BaselineMainContainer").css("overflow", "hidden");
                 }
-            }).mouseout(function () {
+            }).unbind("mouseout").mouseout(function () {
                 $("#FMArrowContainer").removeClass("FirstMenuArrowUp_Effect");
                 $("#FMArrowContainer").removeClass("FirstMenuArrowDown_Effect");
                 if ($(".second-class-li").css("height").toString() == "0px") {
@@ -333,35 +349,38 @@
                     $("#FMArrowContainer").css("height", "25px");
                     $("#BaselineMainContainer").css("overflow", "hidden");
                 }
+            });
 
+        },
+    /*
+        FirstMenu_AddMouseEvent: function () {
+            $(".menuSelected[type='honeycomb']").unbind("mouseover").mouseover(function () {
+                if ($(".second-class-li").css("height").toString() == "0px") {
+                    $("#FMArrowContainer").addClass("FirstMenuArrowUp_Effect").css("height", "15px");
+                    $("#BaselineMainContainer").css("overflow", "visible");
+                } else {
+                    $("#FMArrowContainer").addClass("FirstMenuArrowDown_Effect").css("height", "25px");
+                    $("#BaselineMainContainer").css("overflow", "hidden");
+                }
+            }).unbind("mouseout").mouseout(function () {
+                $("#FMArrowContainer").removeClass("FirstMenuArrowUp_Effect");
+                $("#FMArrowContainer").removeClass("FirstMenuArrowDown_Effect");
+                if ($(".second-class-li").css("height").toString() == "0px") {
+                    $("#FMArrowContainer").css("height", "15px");
+                    $("#BaselineMainContainer").css("overflow", "visible");
+                } else {
+                    $("#FMArrowContainer").css("height", "25px");
+                    $("#BaselineMainContainer").css("overflow", "hidden");
+                }
             });
         }
+        */
     }
 
-    var THIRDMENU = [
-        ["S1_Third1", "S1_Third2", "S1_Third3", "S1_Third4", "S1_Third5"],
-        ["S2_Third1", "S2_Third2", "S2_Third3", "S2_Third4", "S2_Third5", "S2_Third6", "S2_Third7", "S2_Third8"],
-        ["S3_Third1", "S3_Third2", "S3_Third3", "S3_Third4", "S3_Third5", "S3_Third6"],
-        ["S4_Third1", "S4_Third2"],
-        ["S5_Third1", "S5_Third2", "S5_Third3"],
-        ["S6_Third1", "S6_Third2", "S6_Third3", "S6_Third4", "S6_Third5", "S6_Third6"],
-        ["S7_Third1", "S7_Third2"],
-        ["S8_Third1", "S8_Third2", "S8_Third3"]
-    ];
-
-    var FORTHMENU = [
-        ["T1_Forth1", "T1_Forth2", "T1_Forth3", "T1_Forth4", "T1_Forth5"],
-        ["T2_Forth1", "T2_Forth2", "T2_Forth3", "T2_Forth4", "T2_Forth5", "T2_Forth6", "T2_Forth7", "T2_Forth8"],
-        ["T3_Forth1", "T3_Forth2"],
-        ["T4_Forth1", "T4_Forth2", "T4_Forth3", "T4_Forth4", "T4_Forth5", "T4_Forth6"],
-        ["T5_Forth1", "T5_Forth2", "T5_Forth3"],
-        ["T6_Forth1", "T6_Forth2", "T6_Forth3", "T6_Forth4", "T6_Forth5", "T6_Forth6"],
-        ["T7_Forth1", "T7_Forth2", "T7_Forth3", "T7_Forth4"],
-        ["T8_Forth1", "T8_Forth2", "T8_Forth3"]
-    ];
+    
 
 
     //主菜单 高亮menu的点击效果
-    ShowEffect.MenuSelectedClick();
+    SectionMenu.MenuSelectedClick();
     //主菜单FirstMenu menuSelected MouseOver效果
-    ShowEffect.MenuSelectedMouseover_out();
+    //SectionMenu.FirstMenu_AddMouseEvent();
