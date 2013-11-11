@@ -207,6 +207,9 @@
         }
         $("#FMArrowContainer").addClass("hidden");
         SectionMenu.MenuSelectedClick();
+        //View Transfer
+        var menu = $(this).attr("menu")
+        MenuSection[menu] && Controler.transfer(new MenuSection[menu]());
     });
 
 
@@ -352,4 +355,11 @@ var SectionMenu = {
     //主菜单 高亮menu的点击效果
     SectionMenu.MenuSelectedClick();
     //主菜单FirstMenu menuSelected MouseOver效果
-    //SectionMenu.FirstMenu_AddMouseEvent();
+//SectionMenu.FirstMenu_AddMouseEvent();
+
+
+    var MenuSection = {
+        "1": Section1View,
+        "2": Section2View,
+        "3": Section3View,
+    }

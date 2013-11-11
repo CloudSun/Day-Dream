@@ -101,6 +101,7 @@ li
     z-index:200;
     width:0px;
 }
+/* Menu CSS Start*/
 #Baseline {
     position:fixed;
     top:50%;
@@ -118,6 +119,7 @@ li
 	height:15px;
 	
 }
+
 .FirstMenuArrowDown
 {
     border:25px dashed transparent;
@@ -199,7 +201,7 @@ li
     color:#fff;
     background-color:#aaa;
     z-index:100;
-    border:2px solid #fff;
+    border:2px solid transparent;
     border-top:0px;
 }
 #FMViewZoom {
@@ -344,7 +346,7 @@ li
 }
 .TMArrowLeft{
     border: 25px solid transparent;
-    border-color: #fff #ddd #fff #fff;
+    border-color: transparent #ddd transparent transparent;
     border-left: 0px;
 }
 .TMArrowRight{
@@ -373,4 +375,5 @@ li
     height:auto;
  }
 
+/* Menu CSS End*/
 
