@@ -69,7 +69,7 @@
     <Content Include="static\js\common.js" />
     <Content Include="static\js\control.js" />
     <Content Include="static\js\controler.js" />
-    <Content Include="static\js\custom\rotate3DCube.js" />
+    <Content Include="static\js\custom\rotate3Dpane.js" />
     <Content Include="static\js\custom\section-menu.js" />
     <Content Include="static\js\guiddefine-object.js" />
     <Content Include="static\js\local-storage.js" />

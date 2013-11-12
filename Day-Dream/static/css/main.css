@@ -116,8 +116,7 @@ li
     width:1000px;
     margin:auto;
     position:relative;
-	height:15px;
-	
+	height:6px;
 }
 
 .FirstMenuArrowDown
@@ -154,8 +153,6 @@ li
 }
 #FirstMenuUL
 {
-    width:1000px;
-    height:70px;
     position:relative;
     margin:auto;
     overflow:hidden;
