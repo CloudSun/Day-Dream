@@ -21,7 +21,7 @@
         Section1View.superClass.init.call(this, view);
 
         //SectionMenu初始化及显示方法
-        console.log(name + "View init");
+        console.log(view.name + "View init");
         SectionMenu.FirstMenu_Init();
 
         //3D Cube初始化方法
@@ -36,7 +36,7 @@
         !view && (view = this);
         Section2View.superClass.addEvents.call(this, view);
         //TODO
-        console.log(name + "View addEvent");
+        console.log(view.name + "View addEvent");
 
         /*
         $("#pane").click(function () {
@@ -65,7 +65,7 @@
         !view && (view = this);
         Section2View.superClass.show.call(this, view);
         //TODO
-        console.log(name + "View show");
+        console.log(view.name + "View show");
         //
         CallbackL(arguments);
     };
@@ -75,7 +75,7 @@
         !view && (view = this);
         Section1View.superClass.hide.call(this, view);
         //TODO
-        console.log(name + "View hide");
+        console.log(view.name + "View hide");
         //
         CallbackL(arguments);
     };

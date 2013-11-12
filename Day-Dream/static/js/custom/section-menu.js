@@ -11,6 +11,10 @@ var SectionMenu = {
         { title: "Section4", type: "one" },
         { title: "Section5", type: "one" }
     ],
+    FM_size: {
+        width:0,
+        height:0,
+    },
     THIRDMENU: [
         ["S1_Third1", "S1_Third2", "S1_Third3", "S1_Third4", "S1_Third5"],
         ["S2_Third1", "S2_Third2", "S2_Third3", "S2_Third4", "S2_Third5", "S2_Third6", "S2_Third7", "S2_Third8"],
@@ -36,24 +40,58 @@ var SectionMenu = {
         $("#BaselineCircle").css("width", "100%");
         //Init Size
         var firstMenuUl = $('#FirstMenuUL');
-        var firstMenuUl_width = BaseSizeNumber *5;
+        var firstMenuUl_width = BaseSizeNumber * 5;
         var firstMenuUl_height = 70;
-        var firstMenuLength = this.FIRSTMENU.length
+        var firstMenuLength = this.FIRSTMENU.length;
         firstMenuUl.css({ "width": firstMenuUl_width, "height": firstMenuUl_height });
+        //Init First Menu node
+        this.FM_size.width = firstMenuUl_width / firstMenuLength;
+        this.FM_size.height =  firstMenuUl_height * GoldenScale;
         for (var i = 0; i < firstMenuLength; i++) {
             var f = this.FIRSTMENU[i];
             var firstli = $('<li></li>');// class="first-class-li" menu="1" type="honeycomb"
             firstli.addClass("first-class-li");
             firstli.css({
-                "width": firstMenuUl_width / firstMenuLength,
-                "height": firstMenuUl_height * GoldenScale,
-                "line-height": firstMenuUl_height * GoldenScale
+                "width": this.FM_size.width  + "px",
+                "height": this.FM_size.height + "px",
+                "line-height": this.FM_size.height + "px",
             })
             firstli.attr("menu", i);
             firstli.attr("type", f.type);
             firstli.html(f.title);
             firstMenuUl.append(firstli);
         }
+        // #FMViewZoom
+        var firstViewZoom = $('<div id="FMViewZoom"></div>');
+        firstViewZoom.css({
+            "width": this.FM_size.width + "px",
+            "height": this.FM_size.height + "px",
+            "top": -this.FM_size.height + "px",
+        });
+        var fmHoverContainer = $('<ul class="fm-container-hover"></ul>');
+        fmHoverContainer.css({
+            "width": firstMenuUl_width + "px",
+            "height": this.FM_size.height+"px",
+        });
+        for (var i = 0; i < firstMenuLength; i++) {
+            var f = this.FIRSTMENU[i];
+            var firsthoverli = $('<li></li>');// class="first-class-li" menu="1" type="honeycomb"
+            firsthoverli.addClass("first-class-li-hover");
+            firsthoverli.css({
+                "width": this.FM_size.width + "px",
+                "height": this.FM_size.height + "px",
+                "line-height": this.FM_size.height + "px",
+            })
+            firsthoverli.attr("menu", i);
+            firsthoverli.attr("type", f.type);
+            firsthoverli.html(f.title);
+            fmHoverContainer.append(firsthoverli);
+        }
+        firstViewZoom.append(fmHoverContainer);
+        firstMenuUl.append(firstViewZoom);
+        
+        //Init First Menu Hover node
+
         //TODO CSS3
         firstMenuShow();
 
@@ -65,10 +103,10 @@ var SectionMenu = {
             i != 0 && !i ? i = 0 : i++;
             var left = i * 150;
             i != 0 ? left += 15 : false;
-            $($(".first-class-li")[i]).css({ "left": left + "px" });
+            //$($(".first-class-li")[i]).css({ "left": left + "px" });
             setTimeout(function () {
                 $($(".first-class-li")[i]).animate({
-                   top: "0px",
+                   'margin-top': "0px",
                 }, 400);
                 if ($($(".first-class-li")[i]).attr("class").toString().match('menuSelected')) {
                     SectionMenu.FirstArrowEffect();
@@ -85,18 +123,18 @@ var SectionMenu = {
         $("#FMArrowContainer").css("left", left + "px");
     },
     FirstMenu_MoveOut:function(){
-        Flag_FMdownStatus = 0;
+        Flag_FMdownStatus = false;
             $(".fm-container-hover").clearQueue();
             $("#FMViewZoom").clearQueue();
             $(".fm-container-hover").css({
                 top: '0px'
             });
             $("#FMViewZoom").animate({
-                top: "-55px"
+                top: - this.FM_size.height + "px",
             }, 400);
             //移动Hover
             $(".fm-container-hover").animate({
-                top: '55px'
+                top: this.FM_size.height + "px",
             }, 400);
         },
         MenuSelectedClick: function () {
@@ -187,10 +225,9 @@ var SectionMenu = {
             $("#FirstMenuUL").mouseout(function () {
                 _this.FirstMenu_MoveOut();
             });
-
             //主菜单FirstMenu 滑动背景 hover效果
             $('.first-class-li').mouseover(function () {
-                var _this = this;
+                var _thisli = this;
                 //adjust FMViewZoom position
                 event.stopPropagation();
                 $(".fm-container-hover").clearQueue();
@@ -198,32 +235,29 @@ var SectionMenu = {
 
                 if (Flag_FMdownStatus) {
                     //左右移入效果
-                    var menuId = $(_this).attr("menu");
-                    var zoomLeft = $(_this).css("left");
+                    var position = $(_thisli).position();
                     //移动Zoom
                     $("#FMViewZoom").animate({
-                        "left": zoomLeft
+                        "left": position.left+"px",
                     }, 300);
                     //移动Hover
-                    var hoverLeft = (parseInt(menuId) - 1) * 150 * -1;
+                    //var hoverLeft = (parseInt(menuId) - 1) * 150 * -1;
                     $(".fm-container-hover").animate({
-                        left: hoverLeft + 'px'
+                        left: -position.left + 'px'
                     }, 300);
-                    Flag_FMdownStatus = menuId;
+                    Flag_FMdownStatus = true;
                 } else {
                     //调整 ViewZoom的垂直位置
-                    var zoomLeft = $(_this).css("left");
+                    var position = $(_thisli).position();
                     $("#FMViewZoom").css({
-                        "top": "-55px",
-                        "left": zoomLeft
+                        "top": -_this.FM_size.height+"px",
+                        "left": position.left+"px",
                     });
                     //上移入效果
-                    var menuId = $(_this).attr("menu");
-                    var hoverLeft = (parseInt(menuId) - 1) * 150 * -1;
                     //调整hover块
                     $(".fm-container-hover").css({
-                        top: '55px',
-                        left: hoverLeft + 'px'
+                        top: _this.FM_size.height+"px",
+                        left: -position.left + 'px'
                     });
                     //Zoom下移
                     $("#FMViewZoom").animate({
@@ -233,7 +267,7 @@ var SectionMenu = {
                     $(".fm-container-hover").animate({
                         top: '0px'
                     }, 400);
-                    Flag_FMdownStatus = menuId;
+                    Flag_FMdownStatus = true;
                 }
             }).mouseout(function () {
                 event.stopPropagation();
@@ -241,7 +275,7 @@ var SectionMenu = {
 
 
             $("#Baseline").mouseover(function () {
-                Flag_FMdownStatus = 0;
+                Flag_FMdownStatus = false;
                 _this.FirstMenu_MoveOut();
                 //$("#showText").html("FirstMenuULNum="+FirstMenuULNum+"BaselineCircleNum"+BaselineCircleNum++);
             });

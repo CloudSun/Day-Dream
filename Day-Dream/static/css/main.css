@@ -103,13 +103,12 @@ li
 }
 /* Menu CSS Start*/
 #Baseline {
-    position:fixed;
-    top:50%;
-    margin-top:210px;
-    height:6px;
-    background-color:#aaa;
-    z-index:200;
-    width:100%;
+    position: fixed;
+    height: 6px;
+    background-color: #aaa;
+    z-index: 200;
+    width: 100%;
+    bottom: 100px;
 }
 #BaselineMainContainer 
 {
@@ -144,12 +143,11 @@ li
 }
 #MainMenu
 {
-    width:100%;
-    position:fixed;
-    top:50%;
-    margin-top:216px;
-    height:100px;
-    z-index:150;
+    width: 100%;
+    position: fixed;
+    bottom: 0px;
+    height: 100px;
+    z-index: 150;
 }
 #FirstMenuUL
 {
@@ -160,29 +158,20 @@ li
 
 .first-class-li
 {
+    position:relative;
+    float:left;
     font-family: Aharoni;
-    width:150px;
-    height:55px;
-    font-size:20px;
-    line-height:55px;
     text-align:center;
-    background-color:#fff;
-    position:absolute;
-    top:-100%;
+    background-color:transparent;
     color: #999;
     border: 0px;
-	display:inline-block;
 	cursor: pointer;
 }
 .first-class-li-hover
 {
     position:relative;
     float:left;
-    left: 0px;
-    width:150px;
-    height:55px;
     font-size:20px;
-    line-height:55px;
     text-align:center;
     background-color:#aaa;    
     color:#fff;
@@ -202,12 +191,8 @@ li
     border-top:0px;
 }
 #FMViewZoom {
-	width:140px;
-	height:55px;
 	position:absolute;
-	top:-55px;
 	overflow: hidden;
-	margin:0px 5px;
 }
 .fm-container-hover
 {

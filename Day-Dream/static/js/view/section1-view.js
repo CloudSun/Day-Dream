@@ -8,7 +8,7 @@
         //以父类的构造函数初始化
         Section1View.superClass.constructor.call(this, ViewParam);
         //初始化
-        Section1View.prototype.init(this,this,Section1View.prototype.addEvents);
+        Section1View.prototype.init(this,this);
     }
 
     //Super Class
@@ -19,11 +19,13 @@
         //在创建对象时进行初始化 需要传入初始化对象view
         !view && (view = this);
         Section1View.superClass.init.call(this, view);
-
+        
         //SectionMenu初始化及显示方法
-        console.log(name + "View init");
+        console.log(view.name + "View init");
         SectionMenu.FirstMenu_Init();
 
+
+        Section1View.prototype.addEvents.call(this, view);
         CallbackL(arguments);
     };
 
@@ -33,7 +35,7 @@
         !view && (view = this);
         Section1View.superClass.addEvents.call(this, view);
         //TODO
-        console.log(name + "View addEvent");
+        console.log(view.name + "View addEvent");
 
         CallbackL(arguments);
     };
@@ -43,7 +45,7 @@
         !view && (view = this);
         Section1View.superClass.show.call(this, view);
         //TODO
-        console.log(name + "View show");
+        console.log(view.name + "View show");
         //
         CallbackL(arguments);
     };
@@ -53,7 +55,7 @@
         !view && (view = this);
         Section1View.superClass.hide.call(this, view);
         //TODO
-        console.log(name + "View hide");
+        console.log(view.name + "View hide");
         //
         CallbackL(arguments);
     };
