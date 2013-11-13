@@ -112,7 +112,6 @@ li
 }
 #BaselineMainContainer 
 {
-    width:1000px;
     margin:auto;
     position:relative;
 	height:6px;
@@ -120,31 +119,30 @@ li
 
 .FirstMenuArrowDown
 {
-    border:25px dashed transparent;
+    border-width:15px;
     border-style:solid;
     border-color:#fff #aaa #aaa #aaa;
     border-bottom: 0px;
 }
 .FirstMenuArrowUp
 {
-    border:25px dashed transparent;
+    border-width:15px;
     border-style:solid;
-    border-bottom-color:#AAA;
+    border-color:#AAA #FFF;
     border-top: 0px;
 }
 #FMArrowContainer
 {
-    width:50px;
-	height:15px;
+    width:30px;
+    height:15px;
 	position:absolute;
-    top:-15px;
     overflow:hidden;
-    
 }
 #MainMenu
 {
+    font-family:Aharoni;
     width: 100%;
-    position: fixed;
+    position: absolute;
     bottom: 0px;
     height: 100px;
     z-index: 150;
@@ -160,11 +158,10 @@ li
 {
     position:relative;
     float:left;
-    font-family: Aharoni;
+    font-size:20px;
     text-align:center;
     background-color:transparent;
     color: #999;
-    border: 0px;
 	cursor: pointer;
 }
 .first-class-li-hover
@@ -191,22 +188,16 @@ li
 }
 .fm-container-hover
 {
-    font-family: Aharoni;
-    width: 1000px;
-    height: 55px;
     position: absolute;
     text-align: center;
-    line-height: 55px;
 }
 
 #SecondMenu
 {
     font-family:  Agency FB;
     font-weight: bolder;
-    width:100%;
-    position:fixed;
-    bottom:50%;
-    margin-bottom:-210px;
+    width:auto;
+    position:absolute;
     height:auto;
 }
 .second-menu-ul
