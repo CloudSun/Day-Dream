@@ -180,15 +180,10 @@ li
 }
 .menuSelected
 {   
-    width:165px;
-    height:70px;
-    line-height:70px;
     font-size:26px;
     color:#fff;
     background-color:#aaa;
     z-index:100;
-    border:2px solid transparent;
-    border-top:0px;
 }
 #FMViewZoom {
 	position:absolute;
