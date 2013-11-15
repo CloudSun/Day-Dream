@@ -364,12 +364,71 @@
                         var totalLength = b1.t - b1.f + b2.t - b2.f;
                         if ((maxT - minF) < totalLength) {
                             debugger;
-                            //有重合的baseline
+                            //获取重合段,
+                            //重合段数据
+                            var larp = {
+                                x: b1.x,
+                                y: b1.y,
+                                f: Math.max(b1f, b2f),
+                                t: Math.min(b1.t, b2.t),
+                            }
+                            overlarp.push(larp);
                         }
                     }
                 }
             }
+            return overlarp;
         }
+        //移除重合段baseline，拆分原baseline
+        function removeOverlapLine(overlarp, baseline) {
+            var newBaseline = new Array();
+            if (!overlarp || overlarp.length == 0) {
+                console.log("overlarp error");
+                debugger;
+                return null;
+            } else {
+                for (var i = 0; i < baseline.length;i++){
+                    for (var j = 0; j < overlarp.length; j++) {
+                        var b = baseline[i];
+                        var l = overlarp[j];
+                        if (b.x == l.x && b.y == l.y && l.f >= b.f && l.t <= b.t ) {
+                            //删除或者拆分被重合的baseline
+                            if (l.f > b.f) {
+                                //前段间隔
+                                b.f = b.f;
+                                b.t = l.f;
+                                if (b.y) {//y值不为null,y轴平行方向line
+                                    if (b.space == "y") { //space == "y" 方向为y轴正方向，为topborder
+                                        //topborder，修改b.to.x值
+                                        b.to.x = b.f;
+                                    } else { //y轴负方向，为bottomborder
+                                        //bottomborder,修改b.from.x值
+                                        b.from.x = b.f;
+                                    }
+                                } else { //x值不为bull,x轴平行方向line
+                                    if (b.space == "x") { //space == "x" x轴正方向, 为rightborder
+                                        //rightborder,修改b.
+                                        b.from.y = b.
+                                    } else {
+
+                                    }
+
+                                }
+                            } else if (l.t < b.t) {
+                                //后段间隔
+                            }
+                        } else {
+                            if (j == (overlarp.length - 1)) {
+                                newBaseline.push(baseline[i]);
+                            }
+                        }
+                    }
+                }
+                return newBaseline;
+            }
+
+        }
+
 
         //转换border to baseline 数据
         function borderToBaseline(border) {
