@@ -22,7 +22,7 @@
 
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
-        SectionMenu.FirstMenu_Init();
+        SectionMenu.FirstMenu_Init(view.name);
 
         CallbackL(arguments);
     };

@@ -2,13 +2,15 @@
 (function () { 
     var ViewParam = {
         name : "Section2",
-        type:ViewType.SECTION
+        type: ViewType.SECTION,
+        load:"refresh",//refresh evertime load
+
     }
     Section2View = function () {
         //以父类的构造函数初始化
         Section2View.superClass.constructor.call(this, ViewParam);
         //初始化
-        Section2View.prototype.init(this,this,Section2View.prototype.addEvents);
+        Section2View.prototype.init(this,this);
     }
 
     //Super Class
@@ -22,7 +24,7 @@
 
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
-        SectionMenu.FirstMenu_Init();
+        SectionMenu.FirstMenu_Init(view.name);
 
         //3D Cube初始化方法
         Rotate3DCube.Init();

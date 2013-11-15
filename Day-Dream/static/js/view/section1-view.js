@@ -2,13 +2,25 @@
 (function () { 
     var ViewParam = {
         name : "Section1",
-        type:ViewType.SECTION
+        type: ViewType.SECTION,
+        load:"once",//once 只加载一次
     }
     Section1View = function () {
         //以父类的构造函数初始化
         Section1View.superClass.constructor.call(this, ViewParam);
         //初始化
-        Section1View.prototype.init(this,this);
+        switch (this.load) {
+            case "once": 
+                if(this.loaded){
+                    return;
+                }else{
+                    Section1View.prototype.init(this,this);
+                    this.loaded = true;
+                } 
+                break;
+            case ""
+        }
+        
     }
 
     //Super Class
@@ -22,7 +34,7 @@
         
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
-        SectionMenu.FirstMenu_Init();
+        SectionMenu.FirstMenu_Init(view.name);
 
 
         Section1View.prototype.addEvents.call(this, view);

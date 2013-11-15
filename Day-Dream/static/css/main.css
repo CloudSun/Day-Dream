@@ -103,7 +103,7 @@ li
 }
 /* Menu CSS Start*/
 #Baseline {
-    position: fixed;
+    position: absolute;
     height: 6px;
     background-color: #aaa;
     z-index: 200;
@@ -128,7 +128,7 @@ li
 {
     border-width:15px;
     border-style:solid;
-    border-color:#AAA #FFF;
+    border-color:#AAA transparent;
     border-top: 0px;
 }
 #FMArrowContainer
@@ -170,7 +170,7 @@ li
     float:left;
     font-size:20px;
     text-align:center;
-    background-color:#aaa;    
+    background-color:#ccc;    
     color:#fff;
     cursor: pointer;
 	   
@@ -202,7 +202,6 @@ li
 }
 .second-menu-ul
 {
-    width:165px;
     height:auto;
     position:relative;
     float:left;    
@@ -210,7 +209,7 @@ li
 }
 #SecondMenuContainer
 {
-    width: 1000px;
+    width: auto;
     position: relative;
     margin: auto;
     bottom: 0px;
@@ -218,37 +217,55 @@ li
 .second-class-li
 {    
     height: 0px;
-    line-height: 50px;
-    text-align: center;
     color:#fff;
-    width: 165px;
     left: 0px;
-    cursor: pointer;
+    overflow:hidden;
+}
+.third-li-content {
+    position:relative;
+    float:left;
+    text-align: center;
     background-color:#ddd;
 }
-.SecondClassLi_hover 
-{
+.second-class-li.selected .second-li-content
+{    
     color:#fff;
     background-color:#aaa;  
 }
+.second-class-li.selected .sm-arrow-right
+{    
+    border: 25px solid transparent;
+    border-left-color:#aaa;
+    border-right: 0px;
+}
+
+.second-li-content
+{    
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color:#fff;
+    position:relative;
+    float:left;
+    cursor: pointer;
+    background-color:#ddd;
+}
 #SM_LeftBar
 {
-    width: 3px;
+    width: 4px;
     height: 100%;
     position: absolute;
     bottom: 0px;
     left: 0px;
     background-color: #AAA;
-    
 }
 
 .sm-arrow-container {
-    width: 50px;
+    width: 25px;
     height: 50px;
-    overflow: hidden;
-    margin-left: 165px;
-    margin-top: -50px;
-    display: none;
+    position:relative;
+    float:left;
+    overflow:hidden;
 }
 
 .sm-arrow-right {
@@ -256,17 +273,11 @@ li
     border-left-color:#ddd;
     border-right: 0px;
 }
-.SMArrowRight_hover {
-    border: 25px solid transparent;
-    border-left-color:#aaa;
-    border-right: 0px;
-}
 
 /* Third Menu*/
 #ThirdMenu
 {
     position:absolute;
-    left:168px;
     width:auto;
     height:auto;  
     z-index:45;
@@ -276,20 +287,18 @@ li
     position:relative;
     width:auto;
     height:auto;
-    display:none;
  }
- .ThirdClassLi
+ .third-class-li
  {
+     position:relative;
      color:#fff;
-     width:125px;
-     height:50px;
-     line-height:50px;
      text-align:center; 
-     margin: 0px 25px 3px;
+     margin: 0px 25px;
      cursor:pointer;
-     background-color:#ddd;
+     overflow:hidden;
+     width:0px;
  }
-  .ThirdClassLi_hover
+  .third-class-li_hover
  {
      background-color:#aaa;
      color:#FFF;
@@ -299,18 +308,16 @@ li
     width: 25px;
     height: 50px;
     overflow: hidden;
-    right: 0px;
-    position: absolute;  
-    margin-top: -50px;
+    position: relative;
+    float:left;
 }
 .TMArrowContainerL
 {
     width:25px;
     height:50px;
     overflow:hidden;
-    left:0px;
-    position:absolute; 
-    margin-top: -50px;
+    position:relative;
+    float:left; 
 }
 .TMArrowLeft{
     border: 25px solid transparent;
@@ -322,10 +329,13 @@ li
     border-left-color: #ddd;
     border-right: 0px;
 }
-.TMArrowLeft_hover{
+.third-class-li.selected .third-li-content {
+    background-color:#aaa;
+}
+.third-class-li.selected .TMArrowLeft{
     border-right-color:#aaa;
 }
-.TMArrowRight_hover{
+.third-class-li.selected .TMArrowRight{
     border-left-color: #aaa;
 }
 
