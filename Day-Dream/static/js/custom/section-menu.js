@@ -185,16 +185,7 @@ var SectionMenu = {
         width:0,
         height:0,
     },
-    THIRDMENU: [
-        ["S1_Third1", "S1_Third2", "S1_Third3", "S1_Third4", "S1_Third5"],
-        ["S2_Third1", "S2_Third2", "S2_Third3", "S2_Third4", "S2_Third5", "S2_Third6", "S2_Third7", "S2_Third8"],
-        ["S3_Third1", "S3_Third2", "S3_Third3", "S3_Third4", "S3_Third5", "S3_Third6"],
-        ["S4_Third1", "S4_Third2"],
-        ["S5_Third1", "S5_Third2", "S5_Third3"],
-        ["S6_Third1", "S6_Third2", "S6_Third3", "S6_Third4", "S6_Third5", "S6_Third6"],
-        ["S7_Third1", "S7_Third2"],
-        ["S8_Third1", "S8_Third2", "S8_Third3"]
-        ],
+    /* 暂时到ThirdMenu
     FORTHMENU : [
         ["T1_Forth1", "T1_Forth2", "T1_Forth3", "T1_Forth4", "T1_Forth5"],
         ["T2_Forth1", "T2_Forth2", "T2_Forth3", "T2_Forth4", "T2_Forth5", "T2_Forth6", "T2_Forth7", "T2_Forth8"],
@@ -205,6 +196,7 @@ var SectionMenu = {
         ["T7_Forth1", "T7_Forth2", "T7_Forth3", "T7_Forth4"],
         ["T8_Forth1", "T8_Forth2", "T8_Forth3"]
     ],
+    */
     FirstMenu_Init: function (viewname) {
         //上横线
         var _this = this;
@@ -304,56 +296,56 @@ var SectionMenu = {
     },
     FirstMenu_MoveOut:function(){
         Flag_FMdownStatus = false;
-            $(".fm-container-hover").clearQueue();
-            $("#FMViewZoom").clearQueue();
-            $(".fm-container-hover").css({
-                top: '0px'
-            });
-            $("#FMViewZoom").animate({
-                top: - this.FM_size.height + "px",
-            }, 400);
-            //移动Hover
-            $(".fm-container-hover").animate({
-                top: this.FM_size.height + "px",
-            }, 400);
-        },
-        FirstMenuSelectedClick: function () {
-            //主菜单FirstMenu menuSelected点击效果changeFM.addClass("menuSelected");
-            var _this = this;
-            $(".menuSelected[type='honeycomb']").unbind("click").click(function () {
-                var currentFM = _this.CurrentFM();
-                var second = _this.FIRSTMENU[currentFM.index].SecondMenu ;
-                if (!second) {
-                    return;
-                }
-                var arrowContainer = $("#FMArrowContainer");
-                var arrow = arrowContainer.children();
-                var className = arrow.attr("class");
-                var FirstArrowDown = "FirstMenuArrowDown";
-                var FirstArrowUp = "FirstMenuArrowUp";
-                if (className == FirstArrowDown) {
-                    //下箭头状态
-                    arrow.removeClass().addClass(FirstArrowUp);
-                    arrowContainer.css({
-                        "top":"-15px",
-                    })
-                    _this.SecondMenuHidden();
-                } else {
-                    //上箭头状态
-                    arrow.removeClass().addClass(FirstArrowDown);
-                    arrowContainer.css({
-                        "top":"0px",
-                    });
-                    _this.SecondMenuShow();
-                }
-                //$("#FMArrowContainer").removeClass("FirstMenuArrowUp_Effect");
-                //$("#FMArrowContainer").addClass("FirstMenuArrowDown_Effect").css("height", "25px");
-                //$("#BaselineMainContainer").css("overflow", "hidden");
-                //Clear ThirdMenuUL
-                if ($(this).attr("type") == "honeycomb") {
+        $(".fm-container-hover").clearQueue();
+        $("#FMViewZoom").clearQueue();
+        $(".fm-container-hover").css({
+            top: '0px'
+        });
+        $("#FMViewZoom").animate({
+            top: - this.FM_size.height + "px",
+        }, 400);
+        //移动Hover
+        $(".fm-container-hover").animate({
+            top: this.FM_size.height + "px",
+        }, 400);
+    },
+    FirstMenuSelected_Click: function () {
+        //主菜单FirstMenu menuSelected点击效果changeFM.addClass("menuSelected");
+        var _this = this;
+        $(".menuSelected[type='honeycomb']").unbind("click").click(function () {
+        var currentFM = _this.CurrentFM();
+        var second = _this.FIRSTMENU[currentFM.index].SecondMenu ;
+        if (!second) {
+            return;
+        }
+        var arrowContainer = $("#FMArrowContainer");
+        var arrow = arrowContainer.children();
+        var className = arrow.attr("class");
+        var FirstArrowDown = "FirstMenuArrowDown";
+        var FirstArrowUp = "FirstMenuArrowUp";
+        if (className == FirstArrowDown) {
+            //下箭头状态
+            arrow.removeClass().addClass(FirstArrowUp);
+            arrowContainer.css({
+                "top":"-15px",
+            })
+                _this.SecondMenu_Hidden();
+            } else {
+            //上箭头状态
+                arrow.removeClass().addClass(FirstArrowDown);
+                arrowContainer.css({
+                    "top":"0px",
+                });
+                _this.SecondMenu_Show();
+            }
+            //$("#FMArrowContainer").removeClass("FirstMenuArrowUp_Effect");
+            //$("#FMArrowContainer").addClass("FirstMenuArrowDown_Effect").css("height", "25px");
+            //$("#BaselineMainContainer").css("overflow", "hidden");
+            //Clear ThirdMenuUL
+            if ($(this).attr("type") == "honeycomb") {
                     
-                }
-            });
+            }
+        });
             /*$(".menuSelected[type='honeycomb']").mouseover(function () {
                 if ($(".second-class-li").css("height").toString() == "0px") {
                     $("#FMArrowContainer").addClass("FirstMenuArrowUp_Effect").css("height", "15px");
@@ -375,15 +367,176 @@ var SectionMenu = {
             });
             */
 
-        },
-        SecondMenuInit: function (func) {
-            var _this = this;
-            //!index && (index = 0);
-            var secondMenu = $("#SecondMenu");
-            var secondMenuUl = $("#SecondMenu .second-menu-ul");
-            var mapFM = $(".first-class-li.menuSelected");
-            var firstIndex = mapFM.attr("menu");
-            var space = 4;
+    },
+    AddFMEvents: function (viewname) {
+        var _this = this;
+        $("#FirstMenuUL").unbind("mouseout").mouseout(function () {
+            _this.FirstMenu_MoveOut();
+        });
+        //主菜单FirstMenu 滑动背景 hover效果
+        $('.first-class-li').unbind("mouseover").mouseover(function () {
+            var _thisli = this;
+            //adjust FMViewZoom position
+            event.stopPropagation();
+            $(".fm-container-hover").clearQueue();
+            $("#FMViewZoom").clearQueue();
+
+            if (Flag_FMdownStatus) {
+                //左右移入效果
+                var position = $(_thisli).position();
+                //移动Zoom
+                $("#FMViewZoom").animate({
+                    "left": position.left + "px",
+                }, 300);
+                //移动Hover
+                //var hoverLeft = (parseInt(menuId) - 1) * 150 * -1;
+                $(".fm-container-hover").animate({
+                    left: -position.left + 'px'
+                }, 300);
+                Flag_FMdownStatus = true;
+            } else {
+                //调整 ViewZoom的垂直位置
+                var position = $(_thisli).position();
+                $("#FMViewZoom").css({
+                    "top": -_this.FM_size.height + "px",
+                    "left": position.left + "px",
+                });
+                //上移入效果
+                //调整hover块
+                $(".fm-container-hover").css({
+                    top: _this.FM_size.height + "px",
+                    left: -position.left + 'px'
+                });
+                //Zoom下移
+                $("#FMViewZoom").animate({
+                    top: "0px"
+                }, 400);
+                //Hover上移
+                $(".fm-container-hover").animate({
+                    top: '0px'
+                }, 400);
+                Flag_FMdownStatus = true;
+            }
+        }).unbind("mouseout").mouseout(function () {
+            event.stopPropagation();
+        });
+
+
+        $("#Baseline").unbind("mouseover").mouseover(function () {
+            Flag_FMdownStatus = false;
+            _this.FirstMenu_MoveOut();
+            //$("#showText").html("FirstMenuULNum="+FirstMenuULNum+"BaselineCircleNum"+BaselineCircleNum++);
+        });
+
+        $('.first-class-li-hover').unbind("mouseout").mouseout(function () {
+            event.stopPropagation();
+        }).unbind("mouseover").mouseover(function () {
+            event.stopPropagation();
+        });
+
+
+
+
+        //FirstMenu 点击效果:not([class~="menuSelected"])
+        $('.first-class-li-hover').unbind("click").click(function () {
+            //hidden secondMenu 
+            _this.SecondMenu_Hidden();
+
+            //resize Target
+            /*
+            _this.FM_size.smallwidth = _this.FM_size.width - (_this.FM_size.width / GoldenScale - _this.FM_size.width) / (_this.FIRSTMENU.length - 1);
+            _this.FM_size.bigwidth = _this.FM_size.width / GoldenScale;
+            */
+            var type = $(this).attr("type");
+            var index = parseInt($(this).attr("menu"));
+
+            firstMenuHoveredClick(index, type);
+
+            //$("#FMArrowContainer").addClass("hidden");
+            _this.FirstMenuSelected_Click();
+
+            //FirstMenu View Transfer
+            //var menu = $(this).attr("menu")
+            var TargetView = _this.FIRSTMENU[index].view;
+            TargetView && Controler.transfer(new TargetView());
+        });
+
+        //addEvents End
+        //default First Section Menu selected
+        for (var i = 0; i < _this.FIRSTMENU.length; i++) {
+            if (_this.FIRSTMENU[i].viewname == viewname) {
+                var index = i;
+                var type = _this.FIRSTMENU[i].type;
+                firstMenuHoveredClick(index, type);
+            }
+        }
+
+        function firstMenuHoveredClick(index, type) {
+            $(".menuSelected").removeClass("menuSelected");
+            var changeFM = $($(".first-class-li")[index]);
+            changeFM.addClass("menuSelected");
+
+            var otherFM = $(".first-class-li[class!='" + $(".menuSelected").attr("class") + "']");
+            otherFM.animate({
+                "height": _this.FM_size.height + "px",
+                "line-height": _this.FM_size.height + "px",
+            }, 150);
+
+            changeFM.animate({
+                "height": 70 + "px",
+                "line-height": 70 + "px",
+            }, 200);
+
+            //FirstArrow
+            var FMArrow = $("#FMArrowContainer");
+            /*
+            FMArrow.css({
+                "width": 30 + "px",
+                "height":15+"px",
+            });
+            */
+            if (type == "honeycomb" && _this.FIRSTMENU[index].SecondMenu && _this.FIRSTMENU[index].SecondMenu.length > 0) {
+                FMArrow.children().removeClass().addClass("FirstMenuArrowUp");
+                FMArrow.css({ "top": -15 + "px" });
+            } else {
+                //设置默认为下箭头
+                FMArrow.children().removeClass().addClass("FirstMenuArrowDown");
+                FMArrow.css({ "top": 0 + "px" });
+            }
+            var Arrowleft = changeFM.position().left + parseInt(changeFM.css("width")) / 2 - parseInt(FMArrow.css("width")) / 2
+            FMArrow.css({
+                "left": Arrowleft + "px",
+            });
+            FMArrow.removeClass("hidden");
+            //resize FM
+
+
+            //resize Zoom 暂时不需要
+            /*
+            var firstViewZoom = $('#FMViewZoom');
+            firstViewZoom.css({
+                "width": _this.FM_size.width + "px",
+            });
+            var fmHoverContainer = $('.fm-container-hover');
+            for (var i = 0; i < _this.FIRSTMENU.length; i++) {
+                var f = _this.FIRSTMENU[i];
+                var firsthoverli = $($('.first-class-li-hover')[i]);// class="first-class-li" menu="1" type="honeycomb"
+                var firstMapli = $($('.first-class-li')[i]);
+                firsthoverli.css({
+                    "width": firstMapli.css("width"),
+                })
+            }
+            */
+        }
+    },
+    SecondMenu_Init: function (func) {
+        var _this = this;
+        //!index && (index = 0);
+        var secondMenu = $("#SecondMenu");
+        var secondMenuUl = $("#SecondMenu .second-menu-ul");
+        var mapFM = $(".first-class-li.menuSelected");
+        var firstIndex = mapFM.attr("menu");
+        var space = 4;
             var arrowWidth = 25;
             secondMenu.css({
                 left: ($(document).width() - parseInt($("#FirstMenuUL").css("width")))/2 + mapFM.position().left + "px",
@@ -411,10 +564,10 @@ var SectionMenu = {
 
             typeof func == "function" && func();
         },
-        SecondMenuShow: function (targetId) {
+    SecondMenu_Show: function (targetId) {
             var _this = this;
 
-            _this.SecondMenuInit(function () {
+            _this.SecondMenu_Init(function () {
                 $("#SecondMenu").removeClass("hidden");
                 $(".second-class-li").clearQueue();
                 var space = 4;
@@ -440,11 +593,11 @@ var SectionMenu = {
             });
             //show Arrow
         },
-        SecondMenuHidden: function (targetId) {
+    SecondMenu_Hidden: function (targetId) {
             var _this = this;
             $(".second-class-li").clearQueue();
             //hide Arrow
-            _this.ThirdMenuHidden();
+            _this.ThirdMenu_Hidden();
             hideSecondMenu();
 
             function hideSecondMenu(index) {
@@ -466,15 +619,7 @@ var SectionMenu = {
                 }, 50);
             }
         },
-        AddTMEvents:function(){
-            var _this = this;
-            var tm = $(".third-class-li");
-            tm.unbind("mouseover").mouseover(function () {
-                tm.removeClass("selected");
-                $(this).addClass("selected");
-            });
-        },
-        AddSMEvents:function(){
+    AddSMEvents:function(){
             var _this = this;
             var sm = $(".second-class-li");
             sm.unbind("mouseover").mouseover(function () {
@@ -482,172 +627,11 @@ var SectionMenu = {
                 if ($(this).attr("class").indexOf("selected")==-1) {
                     $(".second-class-li").removeClass("selected");
                     $(this).addClass("selected");
-                    _this.ThirdMenuShow();
+                    _this.ThirdMenu_Show();
                 }
             });
         },
-        AddFMEvents: function (viewname) {
-            var _this = this;
-            $("#FirstMenuUL").unbind("mouseout").mouseout(function () {
-                _this.FirstMenu_MoveOut();
-            });
-            //主菜单FirstMenu 滑动背景 hover效果
-            $('.first-class-li').unbind("mouseover").mouseover(function () {
-                var _thisli = this;
-                //adjust FMViewZoom position
-                event.stopPropagation();
-                $(".fm-container-hover").clearQueue();
-                $("#FMViewZoom").clearQueue();
-
-                if (Flag_FMdownStatus) {
-                    //左右移入效果
-                    var position = $(_thisli).position();
-                    //移动Zoom
-                    $("#FMViewZoom").animate({
-                        "left": position.left+"px",
-                    }, 300);
-                    //移动Hover
-                    //var hoverLeft = (parseInt(menuId) - 1) * 150 * -1;
-                    $(".fm-container-hover").animate({
-                        left: -position.left + 'px'
-                    }, 300);
-                    Flag_FMdownStatus = true;
-                } else {
-                    //调整 ViewZoom的垂直位置
-                    var position = $(_thisli).position();
-                    $("#FMViewZoom").css({
-                        "top": -_this.FM_size.height+"px",
-                        "left": position.left+"px",
-                    });
-                    //上移入效果
-                    //调整hover块
-                    $(".fm-container-hover").css({
-                        top: _this.FM_size.height+"px",
-                        left: -position.left + 'px'
-                    });
-                    //Zoom下移
-                    $("#FMViewZoom").animate({
-                        top: "0px"
-                    }, 400);
-                    //Hover上移
-                    $(".fm-container-hover").animate({
-                        top: '0px'
-                    }, 400);
-                    Flag_FMdownStatus = true;
-                }
-            }).unbind("mouseout").mouseout(function () {
-                event.stopPropagation();
-            });
-
-
-            $("#Baseline").unbind("mouseover").mouseover(function () {
-                Flag_FMdownStatus = false;
-                _this.FirstMenu_MoveOut();
-                //$("#showText").html("FirstMenuULNum="+FirstMenuULNum+"BaselineCircleNum"+BaselineCircleNum++);
-            });
-
-            $('.first-class-li-hover').unbind("mouseout").mouseout(function () {
-                event.stopPropagation();
-            }).unbind("mouseover").mouseover(function () {
-                event.stopPropagation();
-            });
-
-
-            
-
-            //FirstMenu 点击效果:not([class~="menuSelected"])
-            $('.first-class-li-hover').unbind("click").click(function () {
-                //hidden secondMenu 
-                _this.SecondMenuHidden();
-
-                //resize Target
-                /*
-                _this.FM_size.smallwidth = _this.FM_size.width - (_this.FM_size.width / GoldenScale - _this.FM_size.width) / (_this.FIRSTMENU.length - 1);
-                _this.FM_size.bigwidth = _this.FM_size.width / GoldenScale;
-                */
-                var type = $(this).attr("type");
-                var index = parseInt($(this).attr("menu"));
-                
-                firstMenuHoveredClick(index, type);
-
-                //$("#FMArrowContainer").addClass("hidden");
-                _this.FirstMenuSelectedClick();
-
-                //FirstMenu View Transfer
-                //var menu = $(this).attr("menu")
-                var TargetView = _this.FIRSTMENU[index].view;
-                TargetView && Controler.transfer(new TargetView());
-            });
-
-            //addEvents End
-            //default First Section Menu selected
-            for (var i = 0; i < _this.FIRSTMENU.length; i++) {
-                if (_this.FIRSTMENU[i].viewname == viewname) {
-                    var index = i;
-                    var type = _this.FIRSTMENU[i].type;
-                    firstMenuHoveredClick(index, type);
-                }
-            }
-
-            function firstMenuHoveredClick(index,type) {
-                $(".menuSelected").removeClass("menuSelected");
-                var changeFM = $($(".first-class-li")[index]);
-                changeFM.addClass("menuSelected");
-
-                var otherFM = $(".first-class-li[class!='" + $(".menuSelected").attr("class") + "']");
-                otherFM.animate({
-                    "height": _this.FM_size.height + "px",
-                    "line-height": _this.FM_size.height + "px",
-                }, 150);
-
-                changeFM.animate({
-                    "height": 70 + "px",
-                    "line-height": 70 + "px",
-                }, 200);
-
-                //FirstArrow
-                var FMArrow = $("#FMArrowContainer");
-                /*
-                FMArrow.css({
-                    "width": 30 + "px",
-                    "height":15+"px",
-                });
-                */
-                if (type == "honeycomb" && _this.FIRSTMENU[index].SecondMenu && _this.FIRSTMENU[index].SecondMenu.length > 0) {
-                    FMArrow.children().removeClass().addClass("FirstMenuArrowUp");
-                    FMArrow.css({ "top": -15 + "px" });
-                } else {
-                    //设置默认为下箭头
-                    FMArrow.children().removeClass().addClass("FirstMenuArrowDown");
-                    FMArrow.css({ "top": 0 + "px" });
-                }
-                var Arrowleft = changeFM.position().left + parseInt(changeFM.css("width")) / 2 - parseInt(FMArrow.css("width")) / 2
-                FMArrow.css({
-                    "left": Arrowleft + "px",
-                });
-                FMArrow.removeClass("hidden");
-                //resize FM
-
-
-                //resize Zoom 暂时不需要
-                /*
-                var firstViewZoom = $('#FMViewZoom');
-                firstViewZoom.css({
-                    "width": _this.FM_size.width + "px",
-                });
-                var fmHoverContainer = $('.fm-container-hover');
-                for (var i = 0; i < _this.FIRSTMENU.length; i++) {
-                    var f = _this.FIRSTMENU[i];
-                    var firsthoverli = $($('.first-class-li-hover')[i]);// class="first-class-li" menu="1" type="honeycomb"
-                    var firstMapli = $($('.first-class-li')[i]);
-                    firsthoverli.css({
-                        "width": firstMapli.css("width"),
-                    })
-                }
-                */
-            }
-        },
-        ThirdMenuInit: function (func) {
+    ThirdMenu_Init: function (func) {
             var _this = this;
             $("#ThirdMenuUl").html("");
             var first = _this.CurrentFM();
@@ -708,24 +692,12 @@ var SectionMenu = {
                 typeof func == "function" && func();
             }
         },
-        ThirdMenuHidden: function () {
-            var tm = $(".third-class-li");
-            /* 缩进
-            tm.animate({
-                "width":"0px",
-            },100, function () {
-                $("#ThirdMenuUl").html("");
-            })
-            */
-            tm.fadeOut(100);
-        },
-        
-        ThirdMenuShow: function () {
+    ThirdMenu_Show: function () {
             var _this = this;
             var firstMenu = _this.CurrentFM();
             var ThirdMenu = $("#ThirdMenu");
             var arrowSpace = 25;
-            _this.ThirdMenuInit(function () {
+            _this.ThirdMenu_Init(function () {
                 var tm = $(".third-class-li");
                 tm.clearQueue();
                 //BaseSizeNumber 210 = 2*3*5*7
@@ -764,7 +736,7 @@ var SectionMenu = {
                 //$(this).addClass("SecondClassLi_hover");
                 //$(this).children(".sm-arrow-container").css("display","block");
                 //$(this).children(".sm-arrow-container").children(".sm-arrow-right").addClass("SMArrowRight_hover");
-                //ThirdMenuInit
+                //ThirdMenu_Init
             /*
                 for (var i = 0; i < SectionMenu.THIRDMENU[(index - 1)].length; i++) {
                     
@@ -841,16 +813,24 @@ var SectionMenu = {
                 });
                 */
 
-        }
-    }
-
-    //主菜单 高亮menu的点击效果
-    //SectionMenu.FirstMenuSelectedClick();
-
-
-/* MenuSection 匹配函数 */
-var MenuSection = {
-    "1": Section1View,
-    "2": Section2View,
-    "3": Section3View,
+    },
+    ThirdMenu_Hidden: function () {
+        var tm = $(".third-class-li");
+        /* 缩进
+        tm.animate({
+            "width":"0px",
+        },100, function () {
+            $("#ThirdMenuUl").html("");
+        })
+        */
+        tm.fadeOut(100);
+    },
+    AddTMEvents: function () {
+        var _this = this;
+        var tm = $(".third-class-li");
+        tm.unbind("mouseover").mouseover(function () {
+            tm.removeClass("selected");
+            $(this).addClass("selected");
+        });
+    },
 }

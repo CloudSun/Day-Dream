@@ -4,6 +4,8 @@ var View = function (viewParam) {
     this.name = viewParam.name;
     this.target = $("#" + viewParam.name);
     this.viewtype = viewParam.type;
+    this.load = viewParam.load;
+    this.param = viewParam;//default
 };
 
 //视图初始化方法
@@ -80,5 +82,20 @@ var ViewType = {
     }
 }
 
-
+//判断 View的加载方式
+var LoadView = function (view,func) {
+    switch (view.load) {
+        case "once":
+            if (view.param.loaded) {
+                return;
+            } else {
+                typeof func == "function" && func();
+                view.param.loaded = true;
+            }
+            break;
+        case "refresh":
+            typeof func == "function" && func();
+            break;
+    }
+};
 

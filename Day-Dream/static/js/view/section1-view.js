@@ -1,30 +1,24 @@
-﻿var Section1View
+﻿var Section1View;
+var Section1ViewParam = {
+    name: "Section1",
+    type: ViewType.SECTION,
+    load: "once",//once 只加载一次
+    loaded: false,
+};
 (function () { 
-    var ViewParam = {
-        name : "Section1",
-        type: ViewType.SECTION,
-        load:"once",//once 只加载一次
-    }
     Section1View = function () {
         //以父类的构造函数初始化
-        Section1View.superClass.constructor.call(this, ViewParam);
+        Section1View.superClass.constructor.call(this, Section1ViewParam);
         //初始化
-        switch (this.load) {
-            case "once": 
-                if(this.loaded){
-                    return;
-                }else{
-                    Section1View.prototype.init(this,this);
-                    this.loaded = true;
-                } 
-                break;
-            case ""
-        }
+        var _this = this;
+        var init = function () { Section1View.prototype.init(_this, _this) };
+        //Load View
+        LoadView(_this, init);
         
     }
 
     //Super Class
-    extendViewClass(Section1View, View, ViewParam);
+    extendViewClass(Section1View, View, Section1ViewParam);
 
     Section1View.prototype.init = function (view) {
         //SuperClass init

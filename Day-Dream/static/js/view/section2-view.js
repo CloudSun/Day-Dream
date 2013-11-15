@@ -1,20 +1,23 @@
-﻿var Section2View
+﻿var Section2View;
+var Section2ViewParam = {
+    name: "Section2",
+    type: ViewType.SECTION,
+    load: "refresh",//refresh evertime load
+    loaded: false,
+};
 (function () { 
-    var ViewParam = {
-        name : "Section2",
-        type: ViewType.SECTION,
-        load:"refresh",//refresh evertime load
-
-    }
     Section2View = function () {
+        var _this = this;
         //以父类的构造函数初始化
-        Section2View.superClass.constructor.call(this, ViewParam);
+        Section2View.superClass.constructor.call(this, Section2ViewParam);
         //初始化
-        Section2View.prototype.init(this,this);
+        var init = function () { Section2View.prototype.init(_this, _this) };
+        //Load View
+        LoadView(_this, init);
     }
 
     //Super Class
-    extendViewClass(Section2View, View, ViewParam);
+    extendViewClass(Section2View, View, Section2ViewParam);
 
     Section2View.prototype.init = function (view) {
         //SuperClass init
