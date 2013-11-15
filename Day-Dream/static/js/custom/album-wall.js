@@ -57,7 +57,7 @@
     },
     Setting: {
         WallPageSizeMax: 20,
-        CoverSizeMin: { width: 70, height: 70 },
+        CoverSizeMin: { width: 50, height: 50 },//add 2*BorderWidth == 70
         BorderWidth: 10,
     },
     Wall: {
@@ -73,6 +73,17 @@
                 return AlbumWall.Wall.target.width() * AlbumWall.Wall.target.height();
             },
         },
+    },
+    //坐标轴
+    Axis: {
+        width_scale: 1,
+        height_scale: 1,
+        width: 0,
+        height: 0,
+        origin: { //原点
+            x: 0,
+            y: 0,
+        }
     },
     Init: function() {
         var _this = this;
@@ -122,12 +133,41 @@
         //split coverlist by wall pagesize 根据pageSize分割albumWall
         var pageLength = Math.ceil(coverList.length / _this.Setting.WallPageSizeMax);
         for (var i = 0; i < pageLength; i++) {
-            var list = coverList.splice(0, 20);
+            var list = coverList.splice(0, _this.Setting.WallPageSizeMax);
             //get page album-border sum area
             var albumBorderSumArea = 0;
             list.each(function(o, j) {
                 albumBorderSumArea += o.image.border_area;
             });
+            var wallSizeArea = _this.Wall.size.area();
+            var resizeBorderArea = 0;
+            if (albumBorderSumArea > wallSizeArea) {
+                //如果albumSize > average album size && the album size/ (albumBorderSumArea/_this.Wall.size.area())
+                var averageSize = wallSizeArea / list.length;
+                var areaScale = Math.sqrt(wallSizeArea / albumBorderSumArea);
+                list.each(function (o, j,averageSize,areaScale) {
+                    var resizeWidth = 0;
+                    var resizeHeight = 0;
+                    if (o.image.border_area > averageSize) {
+                        resizeWidth = o.image.width * areaScale;
+                        resizeHeight = o.image.height * areaScale;
+                    } else {
+                        resizeWidth = o.image.width;
+                        resizeHeight = o.image.height;
+                    }
+                    
+                    o.image.resize_width = resizeWidth;
+                    o.image.resize_height = resizeHeight;
+                    o.image.resize_border_area = (resizeWidth + 2 * _this.Setting.BorderWidth) * (resizeHeight + 2 * _this.Setting.BorderWidth);
+                    resizeBorderArea += o.image.resize_border_area;
+                    return o;
+                }, averageSize, areaScale);
+
+                //TODO
+                //仍然会有放不下的情况？
+
+                console.log("realBorderSizeArea="+albumBorderSumArea+" resizeBorderArea=" + resizeBorderArea + " wallSizeArea=" + wallSizeArea);
+            }
             var target = {
                 list: list,
                 border_sum_area: albumBorderSumArea,
@@ -135,6 +175,77 @@
             //根据WallSizeArea resize;
             _this.Album.PageList.push(target);
         }
+
+        //2 构建Wall 直角坐标轴
+        var wallWidth = _this.Wall.size.width();
+        var wallHeight = _this.Wall.size.height();
+        if (wallWidth > wallHeight) {
+            _this.Axis.width_scale = wallHeight / wallWidth;
+        } else {
+            _this.Axis.height_scale = wallWidth / wallHeight;
+        }
+        //原点坐标
+        //偏正为正方形的坐标系原点
+        _this.Axis.origin.x = _this.Axis.origin.y = Math.min(wallWidth, wallHeight) / 2;
+        //init location to put the album
+        _this.Axis.baseline = new Array();
+        
+        //PageList[0] albumList
+        var albumList = _this.Album.PageList[0].list.slice();
+        
+        //resize the album size according to the width_scale & height_scale 
+        albumList = albumList.each(function (a, i) {
+            a.image.axis_width = a.image.resize_width * AlbumWall.Axis.width_scale;
+            a.image.axis_height = a.image.resize_height * AlbumWall.Axis.height_scale;
+            return a;
+        });
+
+        //获取Baseline
+        //[1]:无baseline的情况
+        if (_this.Axis.baseline.length == 0) {
+            var album = albumList.splice(0,1);
+            //取坐标系-x方向为album上下对称点且右边对齐y轴
+            album.image.axis = {
+                border: {
+                    top: {
+                        y: album.image.axis_height / 2,
+                        limit: [-album.image.axis_width, 0],
+                    },
+                    right: {
+                        x: 0,
+                        limit: [-album.image.axis_height / 2, album.image.axis_height / 2],
+                    },
+                    bottom: {
+                        y: -album.image.axis_height / 2,
+                        limit: [-album.image.axis_width / 2, album.image.axis_width / 2],
+
+                    },
+                    left: {
+                        x: -album.image.axis_width,
+                        limit: [-album.image.axis_height / 2, album.image.axis_height / 2],
+
+                    },
+                },
+            }
+            var axisLocation = getAxisLocation(album.image.axis.border);
+            function getAxisLocation(border) {
+                var top = 0;
+                var left = 0;
+                top = AlbumWall.Axis.origin.y - border.top.y;
+                left = AlbumWall.Axis.origin.x - border.left.x;
+                return location = {
+                    top: top,
+                    left: left,
+                }
+            }
+            album.image.axis.location = {
+                top:album.image.axis
+            };
+        }
+
+
+        //获取CrossPoint
+
     },
 };
 
