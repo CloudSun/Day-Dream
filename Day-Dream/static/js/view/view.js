@@ -12,7 +12,11 @@ var View = function (viewParam) {
 View.prototype.init = function (view) {
     //获得视图对象 id = name
     console.log("View init");
+    !view && (view = this); 
     view.target.addClass(view.viewtype.classview);
+    //View Type Common init func
+    typeof view.viewtype.init == "function" && view.viewtype.init(view);
+
     //callback
     CallbackL(arguments);
 }
@@ -79,6 +83,10 @@ var ViewType = {
         classview: "section-view",
         showstyle: ViewShow.FADEIN,
         hidestyle: ViewHide.FADEOUT,
+        //common init function
+        init: function (view) {
+            Resize.SectionContainer(view);
+        }
     }
 }
 

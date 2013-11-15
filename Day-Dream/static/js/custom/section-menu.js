@@ -2,9 +2,9 @@
     var FirstMenuULNum = 0;
     var BaselineCircleNum = 0;
 
-
 var SectionMenu = {
-    inited:false,
+    inited: false,
+    baseWidth:BaseSizeNumber*5,
     CurrentFM:function(){
         var FMMap = $(".first-class-li.menuSelected");
         
@@ -208,7 +208,7 @@ var SectionMenu = {
         $("#BaselineCircle").css("width", "100%");
         //Init Size
         var firstMenuUl = $('#FirstMenuUL');
-        var firstMenuUl_width = BaseSizeNumber * 5;
+        var firstMenuUl_width = _this.baseWidth;
         var firstMenuUl_height = 70;
         var firstMenuLength = this.FIRSTMENU.length;
         firstMenuUl.css({ "width": firstMenuUl_width, "height": firstMenuUl_height, "margin":"0 auto" });
@@ -291,7 +291,7 @@ var SectionMenu = {
     },
     FirstArrowEffect: function () {
         $("#FMArrowContainer").removeClass("hidden");
-        var left = parseFloat($(".first-class-li.menuSelected").css("left")) + parseFloat($(".first-class-li.menuSelected").css("width")) / 2 - parseFloat($("#FMArrowContainer").css("width")) / 2;
+        var left = parseFloat($(".first-class-li.menuSelected").css("left")) + $(".first-class-li.menuSelected").width() / 2 - $("#FMArrowContainer").width() / 2;
         $("#FMArrowContainer").css("left", left + "px");
     },
     FirstMenu_MoveOut:function(){
@@ -449,16 +449,16 @@ var SectionMenu = {
             */
             var type = $(this).attr("type");
             var index = parseInt($(this).attr("menu"));
+            
+            firstMenuHoveredClick(index, type, function () {
+                //FirstMenu View Transfer
+                //var menu = $(this).attr("menu")
+                var TargetView = _this.FIRSTMENU[index].view;
+                TargetView && Controler.transfer(new TargetView());
 
-            firstMenuHoveredClick(index, type);
-
-            //$("#FMArrowContainer").addClass("hidden");
-            _this.FirstMenuSelected_Click();
-
-            //FirstMenu View Transfer
-            //var menu = $(this).attr("menu")
-            var TargetView = _this.FIRSTMENU[index].view;
-            TargetView && Controler.transfer(new TargetView());
+                _this.FirstMenuSelected_Click();
+            });
+            
         });
 
         //addEvents End
@@ -477,11 +477,12 @@ var SectionMenu = {
             changeFM.addClass("menuSelected");
 
             var otherFM = $(".first-class-li[class!='" + $(".menuSelected").attr("class") + "']");
-            otherFM.animate({
+            /*otherFM.animate({
                 "height": _this.FM_size.height + "px",
                 "line-height": _this.FM_size.height + "px",
-            }, 150);
+            }, 150);*/
 
+            //resize FM
             changeFM.animate({
                 "height": 70 + "px",
                 "line-height": 70 + "px",
@@ -503,13 +504,12 @@ var SectionMenu = {
                 FMArrow.children().removeClass().addClass("FirstMenuArrowDown");
                 FMArrow.css({ "top": 0 + "px" });
             }
-            var Arrowleft = changeFM.position().left + parseInt(changeFM.css("width")) / 2 - parseInt(FMArrow.css("width")) / 2
+            var Arrowleft = changeFM.position().left + changeFM.width() / 2 - FMArrow.width() / 2
             FMArrow.css({
                 "left": Arrowleft + "px",
             });
             FMArrow.removeClass("hidden");
-            //resize FM
-
+            
 
             //resize Zoom 暂时不需要
             /*
@@ -523,10 +523,12 @@ var SectionMenu = {
                 var firsthoverli = $($('.first-class-li-hover')[i]);// class="first-class-li" menu="1" type="honeycomb"
                 var firstMapli = $($('.first-class-li')[i]);
                 firsthoverli.css({
-                    "width": firstMapli.css("width"),
+                    "width": firstMapli.width(),
                 })
             }
             */
+
+            CallbackL(arguments);
         }
     },
     SecondMenu_Init: function (func) {
@@ -539,7 +541,7 @@ var SectionMenu = {
         var space = 4;
             var arrowWidth = 25;
             secondMenu.css({
-                left: ($(document).width() - parseInt($("#FirstMenuUL").css("width")))/2 + mapFM.position().left + "px",
+                left: ($(document).width() - $("#FirstMenuUL").width())/2 + mapFM.position().left + "px",
                 bottom: parseInt($("#MainMenu").css("height"))+parseInt($("#Baseline").css("height"))+"px",
             });
             var secondList = _this.FIRSTMENU[firstIndex].SecondMenu;
@@ -550,11 +552,11 @@ var SectionMenu = {
                 var secondContent = $('<li class="second-li-content">' + secondList[i].title + '</li>');
                 var smArrowRight = $('<div class="sm-arrow-container"><div class="sm-arrow-right"></div></div>');
                 second.css({
-                    "width": parseInt(mapFM.css("width")) + arrowWidth - space + "px",
+                    "width": mapFM.width() + arrowWidth - space + "px",
                     "margin-left": space + "px",
                 });
                 secondContent.css({
-                    "width": parseInt(mapFM.css("width")) - space + "px",
+                    "width": mapFM.width() - space + "px",
                 })
 
                 second.append(secondContent);
@@ -637,7 +639,7 @@ var SectionMenu = {
             var first = _this.CurrentFM();
             var second = _this.CurrentSM();
             var space = 4;
-            var left = space + parseInt(second.target.css("width"));
+            var left = space + second.target.width();
             var ThirdMenu = $("#ThirdMenu");
             var arrowWidth = 25;
             var thirdList = _this.FIRSTMENU[first.index].SecondMenu[second.index].ThirdMenu;
@@ -662,7 +664,7 @@ var SectionMenu = {
                     var li = $("<li class='third-class-li'></li>");
                     li.css({
                         //"width": "0px",//右延伸小姑偶
-                        "width":first.target.css("width"),//渐出效果
+                        "width":first.target.width(),//渐出效果
                         "height": "50px",
                         "line-height": "50px",
                         "margin-bottom": "4px",
@@ -674,14 +676,14 @@ var SectionMenu = {
                     var content = $("<div class='third-li-content'></div>");
 
                     content.css({
-                        "width": parseInt(first.target.css("width")) - arrowWidth * 2 + "px",
+                        "width": first.target.width() - arrowWidth * 2 + "px",
                         "height": "50px",
                         "line-height":"50px",
                     });
                     content.html(thirdList[i].title);
                     var liContainer = $("<div class='third-li-container'></div>")
                     liContainer.css({
-                        "width" : first.target.css("width"),
+                        "width" : first.target.width(),
                         "height" : "50px",
                     })
                     liContainer.append(leftArrow).append(content).append(rightArrow);
@@ -711,11 +713,11 @@ var SectionMenu = {
                     var t = $(tm[index]);
                     /* 延伸
                     t.animate({
-                        "width": parseInt(firstMenu.target.css("width")) / 2 + "px",
+                        "width": firstMenu.target.width() / 2 + "px",
                     }, 100, function () {
                         showThirdMenu(++index);
                         t.animate({
-                            "width": parseInt(firstMenu.target.css("width"))+ "px",
+                            "width": firstMenu.target.width()+ "px",
                         }, 100)}
                     );
                     */
