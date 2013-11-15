@@ -477,10 +477,10 @@ var SectionMenu = {
             changeFM.addClass("menuSelected");
 
             var otherFM = $(".first-class-li[class!='" + $(".menuSelected").attr("class") + "']");
-            /*otherFM.animate({
+            otherFM.animate({
                 "height": _this.FM_size.height + "px",
                 "line-height": _this.FM_size.height + "px",
-            }, 150);*/
+            }, 150);
 
             //resize FM
             changeFM.animate({
