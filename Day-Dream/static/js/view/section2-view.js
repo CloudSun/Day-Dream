@@ -29,6 +29,9 @@ var Section2ViewParam = {
         console.log(view.name + "View init");
         SectionMenu.FirstMenu_Init(view.name);
 
+        //3D Cube初始化方法
+        Rotate3DCube.Init();
+
         CallbackL(arguments);
     };
 
@@ -71,19 +74,11 @@ var Section2ViewParam = {
         //
         //3D Cube初始化方法
         //在主内容显示之后初始化
-        //
+        //Rotate3DCube.Init();
         var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
-        var targetImage = $($("#imageBoard").children("img")[0]);
-        //resize and get the currentPosition
-        targetImage = Resize.ImageActualCenter(targetImage);
-        targetImage.show();
-        targetImage.unbind("click").click(function () {
-            //next Image
-            var nextImage = $($("#imageBoard").children("img")[1])
-            //Init Rotate3DCube
-            Rotate3DCube.Init(targetImage, nextImage);
-        });
-        
+
+        Resize.ImageActualCenter($("#imageBoard").children("img"));
+
         CallbackL(arguments);
     };
     

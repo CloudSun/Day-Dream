@@ -65,7 +65,7 @@
     <Content Include="static\css\reset\html5-base.css" />
     <Content Include="static\css\reset\reset.css" />
     <Content Include="static\css\view\main-view.css" />
-    <Content Include="static\css\view\rotate3Dpane.css" />
+    <Content Include="static\css\view\section1view.css" />
     <Content Include="static\js\common.js" />
     <Content Include="static\js\control.js" />
     <Content Include="static\js\controler.js" />
