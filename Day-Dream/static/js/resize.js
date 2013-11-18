@@ -54,26 +54,37 @@ var Resize = {
         var _this = this;
         //loaded
         //img.load(function () {
-            //after img loaded
-            var parent = img.parent();
-            var width = img.width();
-            var height = img.height();
-            var parent_height = parent.height();
-            var parent_width = parent.width();
+        //after img loaded
+        var parent = img.parent();
+        var width = img.width();
+        var height = img.height();
+        var parent_height = parent.height();
+        var parent_width = parent.width();
 
-            img.css({
-                "position": "absolute",
-                "top": "50%",
-                "margin-top": height / 2 * -1 + "px",
-                "left": "50%",
-                "margin-left": width / 2 * -1 + "px",
-            });
+        img.css({
+            "position": "absolute",
+            "top": "50%",
+            "margin-top": height / 2 * -1 + "px",
+            "left": "50%",
+            "margin-left": width / 2 * -1 + "px",
+        });
 
-            if (img.attr("class").indexOf("hidden") != -1) {
-                img.removeClass("hidden");
-            }
+        /*
+        if (img.attr("class").indexOf("hidden") != -1) {
+            img.removeClass("hidden");
+        }
+        */
         //})
-        
+
+        //return actural absolute: left & top
+        var left = parent_width/2 - width/2;
+        var top = parent_height/2 - height/2;
+        img.currentPosition = {
+            left: left,
+            top: top,
+        }
+
+        return img;
 
     }
 }

@@ -10,7 +10,7 @@
         row: 0,
         col: 0,
     },
-    Init: function () {
+    Init: function (target,next) {
         console.log("Init 3D pane");
         //clear #Rotate3DCubeContainer
         var _this = this;
@@ -26,9 +26,42 @@
                         "width":_this.cube.size.w+"px",
                         "height": _this.cube.size.h + "px",
                     });
+                    //init front pane
+                    var front = $('<div class="pane-front"></div>');
+                    //init back pane
+                    var back = $('<div class="pane-end"></div>')
+
+                    //add front content
+                    var frontContent = target.clone();
+                    
+                    //add back content
+                    next = Resize.ImageActualCenter(next);
+                    var backContent = next.clone();
+
+                    //css posiion
+                    var cube_left = d * _this.cube.size.w;
+                    var cube_top = r * _this.cube.size.h;
+                    frontContent.css({
+                        "left": target.currentPosition.left - cube_left + "px",
+                        "top": target.currentPosition.top - cube_top + "px",
+                        "margin": "0px",
+                        "display":"block",
+                    });
+                    backContent.css({
+                        "left": next.currentPosition.left - cube_left + "px",
+                        "top": target.currentPosition.top - cube_top + "px",
+                        "margin": "0px",
+                        "display": "block",
+                    })
+
+                    //front.append(frontContent);
+                    //back.append(backContent);
+
                     //add front pane
-                    cube.append('<div class="pane-front">正</div>');
-                    cube.append('<div class="pane-end">正</div>');
+                    cube.append(front);
+                    //add back pane
+                    cube.append(back);
+
                     cube.attr("id", "cube-pane-" + r + "-" + d);
                     this.container.target.append(cube);
                 }
@@ -39,6 +72,7 @@
                 t.attr("index", i);
             }
 
+            _this.container.target.addClass("top-pane");
             this.AddEvent();
         }
     },
