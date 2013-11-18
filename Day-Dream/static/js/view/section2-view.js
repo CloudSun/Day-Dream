@@ -29,9 +29,6 @@ var Section2ViewParam = {
         console.log(view.name + "View init");
         SectionMenu.FirstMenu_Init(view.name);
 
-        //3D Cube初始化方法
-        Rotate3DCube.Init();
-
         CallbackL(arguments);
     };
 
@@ -72,6 +69,10 @@ var Section2ViewParam = {
         //TODO
         console.log(view.name + "View show");
         //
+        //3D Cube初始化方法
+        //在主内容显示之后初始化
+        Rotate3DCube.Init();
+
         CallbackL(arguments);
     };
     

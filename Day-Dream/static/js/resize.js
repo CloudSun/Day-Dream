@@ -19,6 +19,8 @@ var Resize = {
             "left": "50%",
             "margin-left": -width / 2 + "px",
         })
+        
+        //console.log("SectionContainer Resize Done");
     },
 
 }

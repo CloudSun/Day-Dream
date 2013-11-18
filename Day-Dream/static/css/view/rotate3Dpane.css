@@ -1,10 +1,8 @@
 ﻿#Rotate3DCubeContainer {
-    width: 800px;
-    height: 800px;
     margin: 0px auto;
     position: relative;
-    /*border: 1px solid black;*/
-    -webkit-perspective: 500;
+    border: 1px solid black;
+    -webkit-perspective: 500px;
 }
 
 .cubepane {
@@ -85,4 +83,23 @@
     -webkit-transition-timing-function: ease-in;
     -webkit-transform-style: preserve-3d;
     -webkit-transform: rotate3d(1,1,0,-180deg);
+}
+
+.backpane-ready-x {
+    -webkit-transform:rotate3d(0,1,0,180deg);
+    -webkit-backface-visibility:hidden;
+}
+
+.backpane-ready-y {
+    /*
+    -webkit-transform:rotate3d(1,0,0,180deg);
+    -webkit-backface-visibility:hidden;
+    */
+}
+
+.backpane-ready-z {
+    /*
+    -webkit-transform:rotate3d(0,0,1,180deg);
+    -webkit-backface-visibility:hidden;
+    */
 }
