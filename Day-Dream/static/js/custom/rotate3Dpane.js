@@ -15,21 +15,9 @@
         //clear #Rotate3DCubeContainer
         var _this = this;
         _this.container.target.html("");
-        var parentContainer = _this.container.target.parent();
-        var parentContainer_width = parentContainer.width();
-        var parentContainer_height = parentContainer.height();
-        var containerWidthScale = Math.floor(parentContainer_width / _this.cube.size.w);
-        var containerHeightScale = Math.floor(parentContainer_height / _this.cube.size.h);
-        //resize #Rotate3DCubeContainer
-        _this.container.target.css({
-            "width": containerWidthScale * _this.cube.size.w + "px",
-            "height": containerHeightScale * _this.cube.size.h + "px",
-            "top": "50%",
-            "margin-top": -containerHeightScale * _this.cube.size.h / 2 + "px",
-        });
-        //init row & col
-        _this.row = containerHeightScale;
-        _this.col = containerWidthScale;
+        var sizeScale = Resize.MapCubeContainer(_this.container.target)
+        _this.row = sizeScale.scaleHeight;
+        _this.col = sizeScale.scaleWidth;
         if (_this.container.target.children().length==0){
             for (var r = 0; r < _this.row; r++) {
                 for (var d = 0; d < _this.col; d++) {
