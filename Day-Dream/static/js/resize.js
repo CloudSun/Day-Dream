@@ -3,7 +3,7 @@
 var BaseSizeNumber = 2 * 3 * 5 * 7;//210
 var GoldenScale = 0.618;//黄金比例
 
-var cubeWidth = cubeHeight = 70;
+//var cubeWidth = cubeHeight = 70;
 var Resize = {
     square:70,
     SectionContainer: function (view) {

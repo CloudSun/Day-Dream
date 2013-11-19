@@ -81,15 +81,24 @@
     -webkit-transform-style: preserve-3d;
     -webkit-transform: rotate3d(1,1,0,-180deg);
 }
+.frontpane-ready-to-left {
+    -webkit-transform: rotate3d(0,1,0,0deg);
+    -webkit-backface-visibility: hidden;
+}
 
 .backpane-ready-to-left {
     -webkit-transform:rotate3d(0,1,0,180deg);
     -webkit-backface-visibility:hidden;
 }
 
-.backpane-ready-to-right {
+.frontpane-ready-to-right {
     -webkit-transform:rotate3d(0,1,0,0deg);
     -webkit-backface-visibility:hidden;
+}
+.backpane-ready-to-right
+{
+    -webkit-transform: rotate3d(0,1,0,180deg);
+    -webkit-backface-visibility: hidden;
 }
 
 .backpane-ready-y {

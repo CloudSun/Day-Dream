@@ -73,16 +73,20 @@ var Section2ViewParam = {
         //在主内容显示之后初始化
         //
         var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
-        var targetImage = $($("#imageBoard").children("img")[0]);
+        var images = $($("#imageBoard").children("img"));
         //resize and get the currentPosition
-        targetImage = Resize.ImageActualCenter(targetImage);
-        targetImage.show();
-        targetImage.unbind("click").click(function () {
-            //next Image
-            var nextImage = $($("#imageBoard").children("img")[1])
-            //Init Rotate3DCube
-            Rotate3DCube.Init(targetImage, nextImage);
-        });
+        var targetImage = 0;
+        if (images.length > 0) {
+            targetImage = Resize.ImageActualCenter($(images[0]));
+            targetImage.show();
+
+            if (images.length > 1) {
+                bindRotate3DCube(targetImage);
+            }
+        }
+
+        
+        
         
         CallbackL(arguments);
     };
