@@ -1,7 +1,8 @@
 var Rotate3DCube = {
     container: {
-        target: $("#Rotate3DCubeContainer"),
+        target: "",
     },
+    currentTarget:null,
     cube: {
         size: {
             w: 0,
@@ -11,21 +12,22 @@ var Rotate3DCube = {
         row: 0,
         col: 0,
     },
-    Init: function (target,next) {
+    Init: function (container,target) {
         console.log("Init 3D pane");
         //clear #Rotate3DCubeContainer
         var _this = this;
+        if (container.children(".Rotate3DCubeContainer").length == 0) {
+            var rotateContainer = $("<div class='Rotate3DCubeContainer'></div>");
+            container.append(rotateContainer);
+            _this.container.target = rotateContainer;
+        }
         _this.container.target.html("");
         var sizeScale = Resize.MapCubeContainer(_this.container.target);
-        //两个翻转size
+        //两个翻转size //TODO
         _this.row = sizeScale.scaleHeight;
         _this.col = sizeScale.scaleWidth;
         _this.cube.size.w = _this.cube.size.h = _this.cube.size.u;
-
-        target.css({
-            "display":"none",
-        })
-
+        
         if (_this.container.target.children().length==0){
             for (var r = 0; r < _this.row; r++) {
                 for (var d = 0; d < _this.col; d++) {
@@ -42,10 +44,6 @@ var Rotate3DCube = {
                     //add front content
                     var frontContent = target.clone();
                     
-                    //add back content
-                    next = Resize.ImageActualCenter(next);
-                    var backContent = next.clone();
-
                     //css posiion
                     var cube_left = d * _this.cube.size.w;
                     var cube_top = r * _this.cube.size.h;
@@ -54,6 +52,61 @@ var Rotate3DCube = {
                         "top": target.currentPosition.top - cube_top + "px",
                         "margin": "0px",
                         "display":"block",
+                    });
+
+                    front.append(frontContent);
+
+                    //add front pane
+                    cube.append(front);
+                    //add back pane
+                    cube.append(back);
+
+                    cube.attr("id", "cube-pane-" + r + "-" + d);
+                    this.container.target.append(cube);
+                }
+            }
+            //Add index
+            for (var i = 0; i < $(".cubepane").length; i++) {
+                var t = $($(".cubepane")[i]);
+                t.attr("index", i);
+            }
+            //_this.container.target.click();
+        }
+    },
+    nextTarget: function (next) {
+        console.log("Init 3D pane");
+        //clear #Rotate3DCubeContainer
+        var _this = this;
+        _this.currentTarget.css({
+            "display": "none",
+        })
+
+        //if (_this.container.target.children().length != 0) {
+        var cubes = _this.container.target.children(".cubepane");
+        if(cubes.length>0){
+            for (var r = 0; r < _this.row; r++) {
+                for (var d = 0; d < _this.col; d++) {
+                    var cube = $(cubes[r * _this.rol + d]);
+                    //init front pane
+                    var front = cube.find(".pane-front");
+                    //init back pane
+                    var back = cube.find("pane-end");
+                    
+                    //add back content
+                    if (!next.currentPosition) {
+                        next = Resize.ImageActualCenter(next);
+                    }
+
+                    var backContent = next.clone();
+
+                    //css posiion
+                    var cube_left = d * _this.cube.size.w;
+                    var cube_top = r * _this.cube.size.h;
+                    frontContent.css({
+                        "left": _this.currentTarget.currentPosition.left - cube_left + "px",
+                        "top": _this.currentTarget.currentPosition.top - cube_top + "px",
+                        "margin": "0px",
+                        "display": "block",
                     });
                     backContent.css({
                         "left": next.currentPosition.left - cube_left + "px",
@@ -129,6 +182,10 @@ var Rotate3DCube = {
         var delay = 0.2;
         var duration = 0.6;
         var panes = $(_this.container.target.children());
+        lastpanes = $(panes[panes.length - 1]);
+        lastpanes.bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
+            alert("TransitionEnd");
+        });
         for (var i = 0; i < panes.length; i++) {
             var pane = $(panes[i]);
             var backpane = pane.find(".pane-end");
@@ -145,6 +202,9 @@ var Rotate3DCube = {
             pane.css("-webkit-transition-delay", spaceTime + "s");
             pane.css("-webkit-transition-duration", duration + "s");
         }
+        
+
+
     }
     
 }

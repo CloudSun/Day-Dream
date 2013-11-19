@@ -73,6 +73,7 @@ var Section2ViewParam = {
         //在主内容显示之后初始化
         //
         var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
+
         var images = $($("#imageBoard").children("img"));
         //resize and get the currentPosition
         var targetImage = 0;

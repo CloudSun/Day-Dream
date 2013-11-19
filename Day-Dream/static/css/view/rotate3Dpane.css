@@ -1,8 +1,8 @@
-#Rotate3DCubeContainer {
-    margin: 0px auto;
-    position: relative;
+.Rotate3DCubeContainer {
+    position:absolute;
     -webkit-perspective: 500px;
     overflow:hidden;
+    z-index:-1;
 }
 
 .cubepane {
