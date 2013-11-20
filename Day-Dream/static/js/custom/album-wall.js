@@ -567,51 +567,54 @@
             } else {
                 for (var i = 0; i < baseline.length;i++){
                     for (var j = 0; j < overlarp.length; j++) {
-                        var b = baseline[i];
+                        var b = baseline.slice()[i];
                         var l = overlarp[j];
                         if (b.x == l.x && b.y == l.y && l.f >= b.f && l.t <= b.t ) {
+                            var t = baseline.slice()[i];;
                             //删除或者拆分被重合的baseline
                             if (l.f > b.f) {
                                 //前段间隔. l.f的开始位置为b.t的结束位置
-                                b.f = b.f;
-                                b.t = l.f;
+                                t.f = t.f;
+                                t.t = l.f;
                                 if (b.y) {//y值不为null,x轴平行方向line
                                     if (b.space == "y") { //space == "y" 方向为y轴正方向，为topborder
                                         //topborder，修改b.to.x值
-                                        b.to.x = b.t;
+                                        t.to.x = b.t;
                                     } else { //y轴负方向，为bottomborder
                                         //bottomborder,修改b.from.x值
-                                        b.from.x = b.t;
+                                        t.from.x = b.t;
                                     }
                                 } else { //x值不为bull,y轴平行方向line
                                     if (b.space == "x") { //space == "x" x轴正方向, 为rightborder
                                         //rightborder,修改b.from.y
-                                        b.from.y = b.t;
+                                        t.from.y = b.t;
                                     } else {
                                         //leftborder
-                                        b.to.y = b.t;
+                                        t.to.y = b.t;
                                     }
                                 }
-                                newBaseline.push(b);
+                                newBaseline.push(t);
                                 debugger;
-                            } else if (l.t < b.t) {
+                            }
+                            t = baseline.slice()[i];
+                            if (l.t < b.t) {
                                 //后段间隔,l.t的结束位置为b.f的开始位置
-                                b.f = l.t;
-                                b.t = b.t;
-                                if (b.y) {
+                                t.f = l.t;
+                                t.t = b.t;
+                                if (t.y) {
                                     if (b.space == "y") {
-                                        b.from.x = b.f;
+                                        t.from.x = b.f;
                                     } else {
-                                        b.to.x = b.f;
+                                        t.to.x = b.f;
                                     }
                                 } else {
                                     if (b.space == "x") {
-                                        b.to.y = b.f;
+                                        t.to.y = b.f;
                                     } else {
-                                        b.from.y = b.f;
+                                        t.from.y = b.f;
                                     }
                                 }
-                                newBaseline.push(b);
+                                newBaseline.push(t);
                                 debugger;
                             } else {
                                 //前段重合或者后段重合或者完全重合，移除
@@ -922,6 +925,4 @@ Array.prototype.pushArray = function (array) {
         console.log("pushArray param error");
     }
 };
-
-AlbumWall.Init();
 

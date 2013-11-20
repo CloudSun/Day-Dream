@@ -50,6 +50,8 @@ var Section3ViewParam = {
         Section3View.superClass.show.call(this, view);
         //TODO
         console.log(view.name + "View show");
+
+        AlbumWall.Init();
         //
         CallbackL(arguments);
     };
