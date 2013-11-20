@@ -73,10 +73,11 @@ var Section2ViewParam = {
         //在主内容显示之后初始化
         //
         var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
-
-        var images = $($("#imageBoard").children("img"));
+        var imagesContainer = $("#Section2 .section-container");
+        var imagesTarget = $($("#imageBoard").children("img")[0]);
+        Rotate3DCube.Init(imagesContainer, imagesTarget);
         //resize and get the currentPosition
-        var targetImage = 0;
+        /*var targetImage = 0;
         if (images.length > 0) {
             targetImage = Resize.ImageActualCenter($(images[0]));
             targetImage.show();
@@ -84,10 +85,7 @@ var Section2ViewParam = {
             if (images.length > 1) {
                 bindRotate3DCube(targetImage);
             }
-        }
-
-        
-        
+        }*/
         
         CallbackL(arguments);
     };

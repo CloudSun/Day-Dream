@@ -27,7 +27,15 @@ var Rotate3DCube = {
         _this.row = sizeScale.scaleHeight;
         _this.col = sizeScale.scaleWidth;
         _this.cube.size.w = _this.cube.size.h = _this.cube.size.u;
-        
+        if (!target.currentPosition) {
+            target = Resize.ImageActualCenter(target);
+            //show target
+            target.css({
+                "display":"block",
+            });
+        }
+        _this.currentTarget = target;
+        var targets = target.parent().children();
         if (_this.container.target.children().length==0){
             for (var r = 0; r < _this.row; r++) {
                 for (var d = 0; d < _this.col; d++) {
@@ -41,6 +49,7 @@ var Rotate3DCube = {
                     //init back pane
                     var back = $('<div class="pane-end"></div>')
 
+                    /*
                     //add front content
                     var frontContent = target.clone();
                     
@@ -55,7 +64,7 @@ var Rotate3DCube = {
                     });
 
                     front.append(frontContent);
-
+                    */
                     //add front pane
                     cube.append(front);
                     //add back pane
@@ -64,6 +73,8 @@ var Rotate3DCube = {
                     cube.attr("id", "cube-pane-" + r + "-" + d);
                     this.container.target.append(cube);
                 }
+
+                
             }
             //Add index
             for (var i = 0; i < $(".cubepane").length; i++) {
@@ -71,12 +82,74 @@ var Rotate3DCube = {
                 t.attr("index", i);
             }
             //_this.container.target.click();
+            //bind event
+            targets.unbind("click").click(function () {
+                _this.initNext();
+            });
+
+            console.log("Rotate3Dpane Init");
+
+            //Goto Init Front
+            _this.initFront(target);
         }
+
+        return _this;
     },
-    nextTarget: function (next) {
-        console.log("Init 3D pane");
-        //clear #Rotate3DCubeContainer
+    initFront: function (frontTarget) {
         var _this = this;
+        !frontTarget && (frontTarget = _this.currentTarget);
+
+        //if (_this.container.target.children().length == 0) {
+        var cubes = _this.container.target.find(".cubepane");
+
+
+        for (var r = 0; r < _this.row; r++) {
+                for (var d = 0; d < _this.col; d++) {
+                    var cube =$(cubes[r*_this.col+d]);
+                    
+                    //init front pane
+                    var front = cube.find(".pane-front");
+                    
+                    //add front content
+                    var frontContent = frontTarget.clone();
+
+                    //css posiion
+                    var cube_left = d * _this.cube.size.w;
+                    var cube_top = r * _this.cube.size.h;
+
+                    frontContent.css({
+                        "left": frontTarget.currentPosition.left - cube_left + "px",
+                        "top": frontTarget.currentPosition.top - cube_top + "px",
+                        "margin": "0px",
+                        "display": "block",
+                    });
+
+                    front.html(frontContent);
+                }
+            }
+        console.log("Front Panne Inited");
+
+        return _this;
+    }
+
+    //}
+    ,
+    initNext: function (next) {
+        var _this = this;
+        if (!next) {
+            next = _this.currentTarget.next();
+            if (next.length==0) {
+                next = $(_this.currentTarget.parent().children()[0]);
+                if (!next) {
+                    return;
+                }
+            }
+        }
+        //show Roate3DContainer to top
+        _this.container.target.removeClass("bottom-pane").addClass("top-pane");
+
+
+        //clear #Rotate3DCubeContainer
         _this.currentTarget.css({
             "display": "none",
         })
@@ -86,11 +159,11 @@ var Rotate3DCube = {
         if(cubes.length>0){
             for (var r = 0; r < _this.row; r++) {
                 for (var d = 0; d < _this.col; d++) {
-                    var cube = $(cubes[r * _this.rol + d]);
+                    var cube = $(cubes[r * _this.col + d]);
                     //init front pane
                     var front = cube.find(".pane-front");
                     //init back pane
-                    var back = cube.find("pane-end");
+                    var back = cube.find(".pane-end");
                     
                     //add back content
                     if (!next.currentPosition) {
@@ -102,44 +175,50 @@ var Rotate3DCube = {
                     //css posiion
                     var cube_left = d * _this.cube.size.w;
                     var cube_top = r * _this.cube.size.h;
-                    frontContent.css({
-                        "left": _this.currentTarget.currentPosition.left - cube_left + "px",
-                        "top": _this.currentTarget.currentPosition.top - cube_top + "px",
-                        "margin": "0px",
-                        "display": "block",
-                    });
+                    
                     backContent.css({
                         "left": next.currentPosition.left - cube_left + "px",
-                        "top": target.currentPosition.top - cube_top + "px",
+                        "top": next.currentPosition.top - cube_top + "px",
                         "margin": "0px",
                         "display": "block",
                     })
-
-                    front.append(frontContent);
                     back.append(backContent);
-
-                    //add front pane
-                    cube.append(front);
-                    //add back pane
+                   //add back pane
                     cube.append(back);
-
-                    cube.attr("id", "cube-pane-" + r + "-" + d);
-                    this.container.target.append(cube);
                 }
             }
+
             //Add index
             for (var i = 0; i < $(".cubepane").length; i++) {
                 var t = $($(".cubepane")[i]);
                 t.attr("index", i);
             }
 
-            _this.container.target.addClass("top-pane");
+            //last show pane call back
+            var lastpanes = $(cubes[cubes.length - 1]);
+            lastpanes.bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
+                console.log("TransitionEnd");
+                _this.currentTarget.css({
+                    "display":"block",
+                });
+                _this.container.target.removeClass("top-pane").addClass("bottom-pane");
+                //GOTO initCurrentFront
+                _this.resetPane().initFront();
+            });
 
-            _this.AddEvent();
+            
+            //change target iamgge
+            _this.currentTarget = next;
+
+            _this.showEffect();
             //_this.container.target.click();
+
+            console.log("3D pane showNext");
         }
+
+        return _this;
     },
-    AddEvent: function () {
+    showEffect: function () {
         //简单效果 1 [左上角起多米诺骨牌]
         var _this = this;
         /*
@@ -182,10 +261,7 @@ var Rotate3DCube = {
         var delay = 0.2;
         var duration = 0.6;
         var panes = $(_this.container.target.children());
-        lastpanes = $(panes[panes.length - 1]);
-        lastpanes.bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
-            alert("TransitionEnd");
-        });
+        
         for (var i = 0; i < panes.length; i++) {
             var pane = $(panes[i]);
             var backpane = pane.find(".pane-end");
@@ -202,9 +278,22 @@ var Rotate3DCube = {
             pane.css("-webkit-transition-delay", spaceTime + "s");
             pane.css("-webkit-transition-duration", duration + "s");
         }
+
+        return _this;
         
+    },
+    resetPane: function () {
+        var _this = this;
+        var cubes = $(_this.container.target.find(".cubepane"));
+        cubes.attr("class", "cubepane");
 
+        var frontPanes = $(_this.container.target.find(".pane-front"));
+        frontPanes.attr("class", "pane-front");
 
+        var endPanes = $(_this.container.target.find(".panne-end"));
+        endPanes.attr("class", "pane-end");
+
+        return _this;
     }
     
 }

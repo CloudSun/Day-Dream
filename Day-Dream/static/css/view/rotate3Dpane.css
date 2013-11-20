@@ -118,3 +118,6 @@
 .top-pane {
     z-index:999;
 }
+.bottom-pane {
+    z-index:-999;
+}
