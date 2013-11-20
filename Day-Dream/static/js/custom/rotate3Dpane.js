@@ -196,14 +196,10 @@ var Rotate3DCube = {
 
             //last show pane call back
             var lastpanes = $(cubes[cubes.length - 1]);
-            lastpanes.bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
+            lastpanes.unbind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd').bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
                 console.log("TransitionEnd");
-                _this.currentTarget.css({
-                    "display":"block",
-                });
-                _this.container.target.removeClass("top-pane").addClass("bottom-pane");
-                //GOTO initCurrentFront
-                _this.resetPane().initFront();
+                _this.AfterAll();
+                
             });
 
             
@@ -287,13 +283,29 @@ var Rotate3DCube = {
         var cubes = $(_this.container.target.find(".cubepane"));
         cubes.attr("class", "cubepane");
 
+        //clear duration & delay
+        cubes.css({
+            "-webkit-transition-delay" : "0s",
+            "-webkit-transition-duration":"0s",
+        })
+
         var frontPanes = $(_this.container.target.find(".pane-front"));
         frontPanes.attr("class", "pane-front");
 
-        var endPanes = $(_this.container.target.find(".panne-end"));
+        var endPanes = $(_this.container.target.find(".pane-end"));
         endPanes.attr("class", "pane-end");
 
         return _this;
+    },
+    AfterAll: function () {
+        var _this = this;
+        _this.currentTarget.css({
+            "display": "block",
+        });
+        _this.container.target.removeClass("top-pane").addClass("bottom-pane");
+        //GOTO initCurrentFront
+        _this.resetPane().initFront();
+        //alert("Affter All");
     }
     
 }
