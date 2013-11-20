@@ -318,12 +318,80 @@
                     }
 
                 } else if (AlbumWall.Axis.CrossPoint.length > 0) {//有crossPoint的情况
-                    console.log("TODO: CorssPoint.length=" + AlbumWall.Axis.CrossPoint.length);
+                    //根据AlbumWall.Axis.CrossPoint
+
+                        //get the baseline center point and the distance to the origin point
+                        var crossPointArray = AlbumWall.Axis.CrossPoint.each(function (b, i) {
+                            var x = b.point.x;
+                            var y = b.point.y;
+                            b.distance = Math.pow(x, 2) + Math.pow(y, 2);
+                            return b;
+                        });
+
+                        crossPointArray.sort(function (a, b) {
+                            //a在前，返回负数
+                            //b在前,返回正数
+                            //0，不变
+                            if (a.distance < b.distance) {
+                                return -1;
+                            } else if (a.distance == b.distance) {
+                                return 0;
+                            } else {
+                                return 1;
+                            }
+                        });
+
+                        var targetCrossPoint = crossPointArray[0];
+                        if (!targetCrossPoint.limit_x || (targetCrossPoint.limit_x && targetCorssPoint.limit_x >= album.image.axis_width)) {
+
+                        }
+                        
+
+                        album.image.axis = {};
+                        switch (targetBaseline.space) {
+                            case "y":
+                                album.image.axis.location = {
+                                    x: targetBaseline.center.x - (album.image.axis_width / 2),
+                                    y: targetBaseline.center.y + (album.image.axis_height),
+                                };
+                                break;
+                            case "-y":
+                                album.image.axis.location = {
+                                    x: targetBaseline.center.x - (album.image.axis_width / 2),
+                                    y: targetBaseline.center.y,
+                                };
+                                break;
+                            case "x":
+                                album.image.axis.location = {
+                                    x: targetBaseline.center.x,
+                                    y: targetBaseline.center.y + (album.image.axis_height / 2),
+                                };
+                                break;
+                            case "-x":
+                                album.image.axis.location = {
+                                    x: targetBaseline.center.x - (album.image.axis_width),
+                                    y: targetBaseline.center.y + (album.image.axis_height / 2),
+                                };
+                                break;
+                        }
+
+                        album.image.axis.border = getAxisImageBorder(album.image);
+
+                        //test
+                        var baseline = borderToBaseline(album.image.axis.border);
+                        if (validateBaseline(baseline)) {
+                            //添加并且整合AlbumWall.Axis.Baseline
+                            addBaseLine(baseline);
+                            //完成本次排列
+                            afterArrange(album,albumList)
+                        }
                 }
 
                 function afterArrange(album, albumList) {
                     //添加到最终内容Content
                     AlbumWall.Axis.Content.push(album);
+                    AlbumWall.Axis.CrossPoint = getCrossPoint(AlbumWall.Axis.Baseline);
+                    AlbumWall.Axis.CrossPoint = getSac(AlbumWall.Axis.CrossPoint);
                     if (albumList.length > 0) {
                         caculateAlbumArrange(albumList);
                     }
@@ -559,43 +627,40 @@
             return crossPointArray;
         }
 
-        //根据crosspoint判断是否有凹区间，获取这个区间的数据
+        //根据crosspoint判断是否有凹区间，获取这个区间的数据 -- cancel
+        //-- update 修改方法为判断crossPoint点的space方向的limit值
+        //limit: 0 (无限) , number
         function getSac(crosspoint) {
-            var sacArray= new Array();
             for (var i = 0; i < crosspoint; i++) {
                 var c1 = crosspoint[i];
                 var c2;
+                var cIndex = i + 1;
                 if (i < (crosspoint.length - 1)) {
                     c2 = crosspoint[i + 1];
                 } else {
                     c2 = crosspoint[0];
+                    cIndex = 0;
                 }
 
                 if (c1.point.x == c2.point.x) {//处于同一平行于y轴的直线上
                     if (c1.space_x == c2.space_x) {//x轴空白方向一致
                         if (c1.space_y != c2.space_y) {//y轴空白方向相反。形成凹区间
-                            var sacBaseline = {
-                                space: c1.space_x,
-                                from: c1.point,
-                                to: c2.point,
-                                length:Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y))),
-                            }
-                            sacArray.push(sacBaseline);
+                            //update c1
+                            crosspoint[i].limit_y = Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y)));
+                            //update c2;
+                            crosspoint[cIndex].limit_y = Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y)));
                         }
-                    }else if(c1.space_y == c2.space){
+                    }
+                }else if(c1.point.y == c2.point.y){
+                    if(c1.space_y == c2.space_y){
                         if (c1.space_x != c2.space_x) {
-                            var sacBaseline = {
-                                space: c1.space_y,
-                                from: c1.point,
-                                to: c2.point,
-                                length:Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x))),
-                            }
-                            sacArray.push(sacBaseline);
+                            crosspoint[i].limit_x = Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x)));
+                            crosspoint[cIndex].limit_x = Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x)));
                         }
                     }
                 }
             }
-            return sacArray;
+            return crosspoint;
         }
 
         //转换border to baseline 数据
