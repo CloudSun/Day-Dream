@@ -2,7 +2,9 @@ var Rotate3DCube = {
     container: {
         target: "",
     },
-    currentTarget:null,
+    currentTarget: null,
+    currentEvent: null,
+    currentPosition:null,
     cube: {
         size: {
             w: 0,
@@ -83,7 +85,29 @@ var Rotate3DCube = {
             }
             //_this.container.target.click();
             //bind event
-            targets.unbind("click").click(function () {
+            //target.parent().unbind("click").click(function (e) {
+            target.parent().unbind("click").click(function (e) {
+                var currentImageSize = {
+                    width: _this.currentTarget.width(),
+                    height:_this.currentTarget.height(),
+                }
+                var imageContainer = _this.currentTarget.parent();
+                var containerSize = {
+                    width: imageContainer.width(),
+                    height:imageContainer.height(),
+                }
+
+                var mouseLeft = e.offsetX - (currentImageSize.width-containerSize.width) / 2;
+                var mouseTop = e.offsetY - (currentImageSize.height - containerSize.height) / 2;
+
+                var cubePosition = {
+                    row: Math.floor(mouseTop / _this.cube.size.u),
+                    col: Math.floor(mouseLeft / _this.cube.size.u),
+                }
+                console.log("left:" + mouseLeft + " top:" + mouseTop);
+                console.log("pane[" + cubePosition.row + "," + cubePosition.col + "]")
+
+                _this.currentPosition = cubePosition;
                 _this.initNext();
             });
 
@@ -195,7 +219,9 @@ var Rotate3DCube = {
             }
 
             //last show pane call back
-            var lastpanes = $(cubes[cubes.length - 1]);
+            //最右下角的
+            //var lastpanes = $(cubes[cubes.length - 1]);
+
             lastpanes.unbind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd').bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
                 console.log("TransitionEnd");
                 _this.AfterAll();
@@ -214,6 +240,7 @@ var Rotate3DCube = {
 
         return _this;
     },
+
     showEffect: function () {
         //简单效果 1 [左上角起多米诺骨牌]
         var _this = this;
@@ -254,10 +281,10 @@ var Rotate3DCube = {
         */
         //从左上角起的连片翻转
         //add delay
-        var delay = 0.2;
-        var duration = 0.6;
+        var delay = 0.1;
+        var duration = 2.0;
         var panes = $(_this.container.target.children());
-        
+        /*
         for (var i = 0; i < panes.length; i++) {
             var pane = $(panes[i]);
             var backpane = pane.find(".pane-end");
@@ -266,16 +293,34 @@ var Rotate3DCube = {
             var r = parseInt(i / _this.col);
             var d = i % _this.col;
             //backpane add ready ckass
-            frontpane.addClass("frontpane-ready-to-right");
-            backpane.addClass("backpane-ready-to-right");
-            pane.addClass("pane-to-right");
+            rotateTo("left-top",frontpane,backpane,pane);
 
             var spaceTime = (d + r) * delay;
             pane.css("-webkit-transition-delay", spaceTime + "s");
             pane.css("-webkit-transition-duration", duration + "s");
         }
+        */
+
+        //getCurrentPosition 
+        //根据点击点反转
+        for (var i = 0; i < panes.length; i++) {
+            var pane = $(panes[i]);
+            var backpane = pane.find(".pane-end");
+            var frontpane = pane.find(".pane-front");
+            //add transition class
+            var r = parseInt(i / _this.col);
+            var d = i % _this.col;
+        }
 
         return _this;
+
+        function rotateTo(forward,frontpane,backpane,pane) {
+            !forward && (forward = "right-top");
+            forward = forward.toLowerCase();
+            frontpane.addClass("frontpane-ready-to-" + forward);
+            backpane.addClass("backpane-ready-to-" + forward);
+            pane.addClass("pane-to-" + forward);
+        }
         
     },
     resetPane: function () {
