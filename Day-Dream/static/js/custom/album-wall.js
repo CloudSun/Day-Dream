@@ -191,8 +191,8 @@
             var resizeBorderArea = 0;
             if (albumBorderSumArea > wallSizeArea) {
                 //如果albumSize > average album size && the album size/ (albumBorderSumArea/_this.Wall.size.area())
-                var averageSize = wallSizeArea / list.length;
-                var areaScale = Math.sqrt(wallSizeArea / albumBorderSumArea);
+                var averageSize = parseInt(wallSizeArea / list.length);
+                var areaScale = parseInt(Math.sqrt(wallSizeArea / albumBorderSumArea));
                 list.each(function(o, j, averageSize, areaScale) {
                     var resizeWidth = 0;
                     var resizeHeight = 0;
@@ -215,13 +215,13 @@
                 //仍然会有放不下的情况？
                 console.log("realBorderSizeArea=" + albumBorderSumArea + " resizeBorderArea=" + resizeBorderArea + " wallSizeArea=" + wallSizeArea);
             } else {
-                var averageSize = wallSizeArea / list.length;
+                var averageSize = parseInt(wallSizeArea / list.length);
                 list.each(function(o, j, averageSize) {
                     var resizeWidth = 0;
                     var resizeHeight = 0;
                     if (o.image.border_area > averageSize) {
-                        resizeWidth = o.image.width * Math.sqrt(averageSize / o.image.border_area);
-                        resizeHeight = o.image.height * Math.sqrt(averageSize / o.image.border_area);
+                        resizeWidth = o.image.width * parseInt(Math.sqrt(parseInt(averageSize / o.image.border_area)));
+                        resizeHeight = o.image.height * parseInt(Math.sqrt(parseInt(averageSize / o.image.border_area)));
                     } else {
                         resizeWidth = o.image.width;
                         resizeHeight = o.image.height;
@@ -246,13 +246,13 @@
         var wallWidth = _this.Wall.size.width();
         var wallHeight = _this.Wall.size.height();
         if (wallWidth > wallHeight) {
-            _this.Axis.width_scale = wallHeight / wallWidth;
+            _this.Axis.width_scale = parseInt(wallHeight / wallWidth);
         } else {
-            _this.Axis.height_scale = wallWidth / wallHeight;
+            _this.Axis.height_scale = parseInt(wallWidth / wallHeight);
         }
         //原点坐标
         //偏正为正方形的坐标系原点
-        _this.Axis.origin.x = _this.Axis.origin.y = Math.min(wallWidth, wallHeight) / 2;
+        _this.Axis.origin.x = _this.Axis.origin.y = parseInt(Math.min(wallWidth, wallHeight) / 2);
         //init location to put the album
         _this.Axis.baseline = new Array();
 
@@ -280,7 +280,7 @@
                 album.image.axis = {};
                 album.image.axis.location = {
                     x: -album.image.axis_width,
-                    y: album.image.axis_height / 2,
+                    y: parseInt(album.image.axis_height / 2),
                 };
 
                 album.image.axis.border = getAxisImageBorder(album.image);
@@ -299,8 +299,8 @@
                 if (validateBaseline(AlbumWall.Axis.Baseline)) {
                     //get the baseline center point and the distance to the origin point
                     var outBaselineCenter = AlbumWall.Axis.OutBaseline.each(function (b, i) {
-                        var x = (b.from.x + b.to.x) / 2;
-                        var y = (b.from.y + b.to.y) / 2;
+                        var x = parseInt((b.from.x + b.to.x) / 2);
+                        var y = parseInt((b.from.y + b.to.y) / 2);
                         b.type = "out-baseline-center";
                         b.distance = Math.pow(x, 2) + Math.pow(y, 2);
                         b.center = {
@@ -319,7 +319,6 @@
                         b.type = "cross-point";
                         return b;
                     });
-
                     var conditionList = new Array();
                     conditionList.pushArray(outBaselineCenter);
                     conditionList.pushArray(crossPointArray);
@@ -349,26 +348,26 @@
                         switch (targetBaseline.space) {
                         case "y":
                             album.image.axis.location = {
-                                x: targetBaseline.center.x - (album.image.axis_width / 2),
+                                x: targetBaseline.center.x - parseInt((album.image.axis_width / 2)),
                                 y: targetBaseline.center.y + (album.image.axis_height),
                             };
                             break;
                         case "-y":
                             album.image.axis.location = {
-                                x: targetBaseline.center.x - (album.image.axis_width / 2),
+                                x: targetBaseline.center.x - parseInt((album.image.axis_width / 2)),
                                 y: targetBaseline.center.y,
                             };
                             break;
                         case "x":
                             album.image.axis.location = {
                                 x: targetBaseline.center.x,
-                                y: targetBaseline.center.y + (album.image.axis_height / 2),
+                                y: targetBaseline.center.y + parseInt((album.image.axis_height / 2)),
                             };
                             break;
                         case "-x":
                             album.image.axis.location = {
                                 x: targetBaseline.center.x - (album.image.axis_width),
-                                y: targetBaseline.center.y + (album.image.axis_height / 2),
+                                y: targetBaseline.center.y + parseInt((album.image.axis_height / 2)),
                             };
                             break;
                         }
