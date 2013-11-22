@@ -11,8 +11,6 @@ var Rotate3DCube = {
             h: 0,
             u: 70,
         },
-        row: 0,
-        col: 0,
     },
     Init: function (container,target) {
         console.log("Init 3D pane");
@@ -221,7 +219,48 @@ var Rotate3DCube = {
             //last show pane call back
             //最右下角的
             //var lastpanes = $(cubes[cubes.length - 1]);
-
+            var top_left ={
+                step:_this.currentPosition.row + _this.currentPosition.col,
+                position: {
+                    row: 0,
+                    col:0,
+                }
+            }
+            var top_right = {
+                step: _this.currentPosition.row + (_this.col - 1) - _this.currentPosition.col,
+                position: {
+                    row: 0,
+                    col:_this.col-1,
+                }
+            }
+            var bottom_left = {
+                step: _this.row - 1 - _this.currentPosition.row + _this.currentPosition.col,
+                position: {
+                    row: _this.row - 1,
+                    col:0,
+                }
+            }
+            var bottom_right = {
+                step: _this.row - 1 - _this.currentPosition.row + _this.col - 1 - _this.currentPosition.col,
+                position: {
+                    row: _this.row - 1,
+                    col: _this.col - 1,
+                }
+            }
+            var stepMax = Math.max(top_left.step, top_right.step, bottom_left.step, bottom_right.step);
+            var stepArray = [top_left,top_right,bottom_left,bottom_right];
+            var lastPosition = null;
+            for (var i = 0; i < stepArray.length; i++) {
+                if (stepArray[i].step == stepMax) {
+                    lastPosition = stepArray[i];
+                    break;
+                }
+            }
+            //clear all
+            cubes.unbind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd')
+            var lastIndex = lastPosition.position.row * _this.col + lastPosition.position.col;
+            var lastpanes = $(cubes[lastIndex]);
+            console.log("lastPositin= row:" + lastPosition.position.row + " col:" + lastPosition.position.col+" lastNumber:"+lastIndex);
             lastpanes.unbind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd').bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
                 console.log("TransitionEnd");
                 _this.AfterAll();
@@ -282,7 +321,7 @@ var Rotate3DCube = {
         //从左上角起的连片翻转
         //add delay
         var delay = 0.1;
-        var duration = 2.0;
+        var duration = 0.7;
         var panes = $(_this.container.target.children());
         /*
         for (var i = 0; i < panes.length; i++) {
@@ -310,6 +349,44 @@ var Rotate3DCube = {
             //add transition class
             var r = parseInt(i / _this.col);
             var d = i % _this.col;
+            var step = Math.abs(_this.currentPosition.row - r) + Math.abs(_this.currentPosition.col - d);
+            var spaceTime = step * delay;
+            //判断方向,坐标轴建立
+            var distanceX = (d - _this.currentPosition.col);
+            var distanceY = (r - _this.currentPosition.row)*-1;
+            //rotateTo("left-top", frontpane, backpane, pane);
+            var tan = distanceY / distanceX;
+            if ((tan && tan >= Math.tan(-15 / 180 * Math.PI) && tan <= Math.tan(15 / 180 * Math.PI))|| distanceY==0) {
+                if (distanceX > 0) {
+                    rotateTo("right", frontpane, backpane, pane);
+                } else {
+                    rotateTo("left", frontpane, backpane, pane);
+                }
+                
+            } else if (distanceX==0|| tan >= Math.tan(75 / 180 * Math.PI)||tan<=Math.tan(-75/180*Math.PI)) {
+                console.log("[r:" + r + ",d:" + d + "]");
+                console.log("[distanceX:" + distanceX + ",distanceY:" + distanceY + "]");
+                console.log("tan=" + tan);
+                if (distanceY > 0) {
+                    rotateTo("top", frontpane, backpane, pane);
+                } else {
+                    rotateTo("bottom", frontpane, backpane, pane);
+                }
+            }else if (tan > Math.tan(15 / 180 * Math.PI) && tan < Math.tan(75 / 180 * Math.PI)) {
+                if (distanceX > 0) {
+                    rotateTo("right-top", frontpane, backpane, pane);
+                } else {
+                    rotateTo("left-bottom", frontpane, backpane, pane);
+                }
+            } else if (tan > Math.tan(-75 / 180 * Math.PI)&& tan<Math.tan(-15/180*Math.PI)) {
+                if (distanceX > 0) {
+                    rotateTo("right-bottom", frontpane, backpane, pane);
+                } else {
+                    rotateTo("left-top", frontpane, backpane, pane);
+                }
+            }
+            pane.css("-webkit-transition-delay", spaceTime + "s");
+            pane.css("-webkit-transition-duration", duration + "s");
         }
 
         return _this;

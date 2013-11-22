@@ -4,7 +4,7 @@
 
 var SectionMenu = {
     inited: false,
-    baseWidth:BaseSizeNumber*5,
+    baseWidth:Math.floor(window.outerWidth/BaseSizeNumber)*BaseSizeNumber,
     CurrentFM:function(){
         var FMMap = $(".first-class-li.menuSelected");
         

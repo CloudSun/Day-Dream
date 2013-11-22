@@ -2,7 +2,7 @@ var Section2View;
 var Section2ViewParam = {
     name: "Section2",
     type: ViewType.SECTION,
-    load: "refresh",//refresh evertime load
+    load: "once",//refresh evertime load
     loaded: false,
 };
 (function () { 
@@ -29,6 +29,13 @@ var Section2ViewParam = {
         console.log(view.name + "View init");
         SectionMenu.FirstMenu_Init(view.name);
 
+        //3D Cube初始化方法
+        //在主内容显示之后初始化
+        var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
+        var imagesContainer = $("#Section2 .section-container");
+        var imagesTarget = $($("#imageBoard").children("img")[0]);
+        Rotate3DCube.Init(imagesContainer, imagesTarget);
+
         CallbackL(arguments);
     };
 
@@ -39,7 +46,7 @@ var Section2ViewParam = {
         Section2View.superClass.addEvents.call(this, view);
         //TODO
         console.log(view.name + "View addEvent");
-
+        
         /*
         $("#pane").click(function () {
             $("#pane1_1").addClass("pane-x-transition");
@@ -69,13 +76,8 @@ var Section2ViewParam = {
         //TODO
         console.log(view.name + "View show");
         //
-        //3D Cube初始化方法
-        //在主内容显示之后初始化
-        //
-        var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
-        var imagesContainer = $("#Section2 .section-container");
-        var imagesTarget = $($("#imageBoard").children("img")[0]);
-        Rotate3DCube.Init(imagesContainer, imagesTarget);
+        //临时方法
+        Resize.ImageActualCenter($($("#imageBoard").children("img")[0]));
         //resize and get the currentPosition
         /*var targetImage = 0;
         if (images.length > 0) {
