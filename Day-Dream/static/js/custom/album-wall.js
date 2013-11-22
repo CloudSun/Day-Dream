@@ -314,6 +314,8 @@
         //原点坐标
         //偏正为正方形的坐标系原点
         _this.Axis.origin.x = _this.Axis.origin.y = toFixed(Math.min(wallWidth, wallHeight) / 2);
+        _this.Axis.width = _this.Axis.origin.x * 2;
+        _this.Axis.height = _this.Axis.origin.y * 2;
         //init location to put the album
         _this.Axis.baseline = new Array();
 
@@ -514,6 +516,46 @@
             AlbumWall.Axis.CrossPoint = getSac(AlbumWall.Axis.CrossPoint);
             if (albumList.length > 0) {
                 caculateAlbumArrange(albumList);
+            } else {
+                //arrange complete
+
+                //TODO
+                //判断baseline，判断最左baseline和最右baseline之间的距离，>AlbumWall.Axis.width
+                //获取最左边
+                var leftBaseline, rightBaseline, topBaseline, bottomBaseline;
+                for (var i = 0; i < AlbumWall.Axis.Baseline.length; i++) {
+                    var b = AlbumWall.Axis.Baseline[i];
+                    switch (b.space) {
+                        case "x"://rightborder
+                            if (!rightBaseline || (rightBaseline && rightBaseline.x < b.x)) {
+                                rightBaseline = b;
+                            }
+                            break;
+                        case "-x"://leftborder
+                            if (!leftBaseline || (leftBaseline && leftBaseline.x > b.x)) {
+                                leftBaseline = b;
+                            }
+                            break;
+                        case "y"://topborder
+                            if (!topBaseline || (topBaseline && topBaseline.y < b.y)) {
+                                topBaseline = b;
+                            }
+                            break;
+                        case "-y"://bottomborder
+                            if (!bottomBaseline || (bottomBaseline && bottomBaseline.y > b.y)) {
+                                bottomBaseline = b;
+                            }
+                            break;
+                    }
+                }
+                var borderWidth, borderHeight;
+                if (leftBaseline && rightBaseline && topBaseline && bottomBaseline) {
+                    borderWidth = Math.abs(rightBaseline.x - leftBaseline.x);
+                    borderHeight = Math.abs(topBaseline.y - bottomBaseline.y)
+                } else {
+                    throw exception;
+                }
+                //
             }
         }
 
@@ -525,7 +567,7 @@
                     //第一象限
                     album.image.axis.location = {
                         x: targetCrossPoint.point.x,
-                        y: targetCrossPoint.point.y + album.image.axis_height,
+                        y: toFixed(targetCrossPoint.point.y + album.image.axis_height),
                     };
                     break;
                 case "x-y":
@@ -538,15 +580,15 @@
                 case "-x-y":
                     //第三象限
                     album.image.axis.location = {
-                        x: targetCrossPoint.point.x - album.image.axis_width,
+                        x: toFixed(targetCrossPoint.point.x - album.image.axis_width),
                         y: targetCrossPoint.point.y,
                     };
                     break;
                 case "-xy":
                     //第四象限
                     album.image.axis.location = {
-                        x: targetCrossPoint.point.x - album.image.axis_width,
-                        y: targetCrossPoint.point.y + album.image.axis_height,
+                        x: toFixed(targetCrossPoint.point.x - album.image.axis_width),
+                        y: toFixed(targetCrossPoint.point.y + album.image.axis_height),
                     };
                     break;
             }
@@ -567,7 +609,7 @@
             var albumHeight = album.image.axis_height / AlbumWall.Axis.height_scale;
             var albumTop = (AlbumWall.Axis.origin.y - album.image.axis.location.y) / AlbumWall.Axis.height_scale;
             var albumLeft = (album.image.axis.location.x + AlbumWall.Axis.origin.x) / AlbumWall.Axis.width_scale;
-            var albumContainer = $("<div class='albumContainer' style='border:1px dashed #fff;box-sizing: border-box;position:absolute;"+
+            var albumContainer = $("<div class='albumContainer' style='border:1px dashed #fff;box-sizing: border-box;position:absolute;background:#ccc;"+
                 "width:"+albumWidth+"px;"+
                 "height:"+albumHeight+"px;"+
                 "top:"+albumTop+"px;"+
@@ -931,16 +973,16 @@
                     if (c1.space_x == c2.space_x) {//x轴空白方向一致
                         if (c1.space_y != c2.space_y) {//y轴空白方向相反。形成凹区间
                             //update c1
-                            crosspoint[i].limit_y = Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y)));
+                            crosspoint[i].limit_y = toFixed(Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y))));
                             //update c2;
-                            crosspoint[cIndex].limit_y = Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y)));
+                            crosspoint[cIndex].limit_y =toFixed(Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y))));
                         }
                     }
                 }else if(c1.point.y == c2.point.y){
                     if(c1.space_y == c2.space_y){
                         if (c1.space_x != c2.space_x) {
-                            crosspoint[i].limit_x = Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x)));
-                            crosspoint[cIndex].limit_x = Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x)));
+                            crosspoint[i].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x))));
+                            crosspoint[cIndex].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x))));
                         }
                     }
                 }

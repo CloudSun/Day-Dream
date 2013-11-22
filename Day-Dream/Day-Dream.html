@@ -24,12 +24,6 @@
     <link type="text/css" rel="stylesheet" href="static/css/view/rotate3Dpane.css" />
 </head>
 <body>
-    <script>
-        function showDefaultImg(imgObj) {
-            imgObj.onerror = null;
-            imgObj.src = "images/default.jpg";  //默认图片url
-        }
-    </script>
     <div id="MainContainer" style="position:fixed">
         <!-- Page Section -->
         <!-- Login -->
@@ -106,10 +100,7 @@
 
             <section id="Section1">
                 <!--<h1>Section1</h1>-->
-                <div class="section-container" >
-                    <img src="img.png" onerror="showDefaultImg(this)" />
-                </div>
-                     <!--style="background: url(http://localhost:56498/static/img/sleep.png) no-repeat bottom right; background-size: auto 100%; background-color: rgba(255,255,255,0.2);"></div>-->
+                <div class="section-container" style="background: url(http://localhost:56498/static/img/sleep.png) no-repeat bottom right; background-size: auto 100%; background-color: rgba(255,255,255,0.2);"></div>
 
             </section>
             <section id="Section2">
