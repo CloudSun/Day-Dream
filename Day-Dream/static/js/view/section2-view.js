@@ -29,14 +29,43 @@ var Section2ViewParam = {
         console.log(view.name + "View init");
         SectionMenu.FirstMenu_Init(view.name);
 
-        //3D Cube初始化方法
-        //在主内容显示之后初始化
-        var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
-        var imagesContainer = $("#Section2 .section-container");
-        var imagesTarget = $($("#imageBoard").children("img")[0]);
-        Rotate3DCube.Init(imagesContainer, imagesTarget);
+        /*Init Html content*/
+        var imageBoard = $('<div id="imageBoard"></div>');
+        var imgList = [{
+            title:"",
+            src:"content/img/image1.jpg",
+        },{
+            title:"",
+            src:"content/img/image2.jpg",
+        },{
+            title:"",
+            src:"content/img/image3.jpg",
+        },{
+            title:"",
+            src:"content/img/image4.jpg",
+        }]
+        for (var i = 0 ; i < imgList.length;i++) {
+            var img = $('<img src="' + imgList[i].src + '" alt=' + imgList[i].title + '>');
+            //img.addClass("hidden");
+            img.resize(function () {
+                console.log("img resize");
+            })
+            imageBoard.append(img);
+        }
 
-        CallbackL(arguments);
+        var SectionContainer = view.target.find(".section-container");
+        SectionContainer.html(imageBoard);
+
+        var _arguments = arguments
+        var dataTarget = imageBoard;
+
+        dataTarget.ready(function () {
+            view.Inited = true;
+            view.show();
+            CallbackL(_arguments)
+        });
+        
+        //CallbackL(arguments)
     };
 
     Section2View.prototype.addEvents = function (view) {
@@ -72,6 +101,10 @@ var Section2ViewParam = {
     Section2View.prototype.show = function (view) {
         //SuperClass show
         !view && (view = this);
+        if (!view.Inited) {
+            return;
+        }
+
         Section2View.superClass.show.call(this, view);
         //TODO
         console.log(view.name + "View show");
@@ -79,15 +112,14 @@ var Section2ViewParam = {
         //临时方法
         Resize.ImageActualCenter($($("#imageBoard").children("img")[0]));
         //resize and get the currentPosition
-        /*var targetImage = 0;
-        if (images.length > 0) {
-            targetImage = Resize.ImageActualCenter($(images[0]));
-            targetImage.show();
+        
+        //3D Cube初始化方法
+        //在主内容显示之后初始化
+        var sizeScale = Resize.MapCubeContainer($("#imageBoard"));
+        var imagesContainer = $("#Section2 .section-container");
+        var imagesTarget = $($("#imageBoard").children("img")[0]);
+        Rotate3DCube.Init(imagesContainer, imagesTarget);
 
-            if (images.length > 1) {
-                bindRotate3DCube(targetImage);
-            }
-        }*/
         
         CallbackL(arguments);
     };

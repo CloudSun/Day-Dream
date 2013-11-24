@@ -16,3 +16,4 @@ $().ready(function () {
     Controler.transfer(new Section2View());
 
 });
+

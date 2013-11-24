@@ -20,6 +20,8 @@ var Rotate3DCube = {
             var rotateContainer = $("<div class='Rotate3DCubeContainer'></div>");
             container.append(rotateContainer);
             _this.container.target = rotateContainer;
+        } else {
+            return;
         }
         _this.container.target.html("");
         var sizeScale = Resize.MapCubeContainer(_this.container.target);
@@ -204,7 +206,7 @@ var Rotate3DCube = {
                         "margin": "0px",
                         "display": "block",
                     })
-                    back.append(backContent);
+                    back.html(backContent);
                    //add back pane
                     cube.append(back);
                 }
