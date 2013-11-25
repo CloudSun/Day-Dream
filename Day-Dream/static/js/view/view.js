@@ -85,7 +85,8 @@ var ViewType = {
         hidestyle: ViewHide.FADEOUT,
         //common init function
         init: function (view) {
-            Resize.section_container(view);
+            //section 栏的初始化方法，定义section
+            Resize.Section.onresize(view.target.children(".section-container"));
         }
     }
 }
