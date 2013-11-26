@@ -12,7 +12,7 @@ var Resize = {
             //width depend on FirstMenu
             !target && (target = Controler.currentView.target.children(".section-container"));
             !target && function () { return };
-            var width = SectionMenu.baseWidth;
+            var width = SectionMenu.baseWidth();
             var height = $(document).height() - parseInt($("#MainMenu").css("height"));
             (!smooth && smooth != 0) && (smooth = 0);
             //绝对 剧中
@@ -29,7 +29,8 @@ var Resize = {
             if (!this.list.containsDom(target)) {
                 this.list.push(target);
             }
-            
+
+            CallbackL(arguments);
         },
         list:new Array(),
     },
@@ -55,14 +56,16 @@ var Resize = {
                 "-webkit-transition-duration": smooth + "s",
             });
 
+
+            if (!this.list.containsDom(target)) {
+                this.list.push(target);
+            }
+
+            CallbackL(arguments);
             //return size scale
             return {
                 "scaleWidth": scale_width,
                 "scaleHeight": scale_height
-            }
-
-            if (!this.list.containsDom(target)) {
-                this.list.push(target);
             }
         },
         list:new Array(),
@@ -98,12 +101,35 @@ var Resize = {
             if (!this.list.containsDom(img)) {
                 this.list.push(img);
             }
+
+            CallbackL(arguments);
             return img;
         },
         list: new Array(),
     },
     onResize: function () {
-
+        var _this = this
+        Resize.Section.list.each(function (target, i) {
+            var callback = null;
+            if (i == Resize.Section.list.length - 1) {
+                callback = function () {
+                    Resize.MapCube.list.each(function (target, i) {
+                        if (i == Resize.MapCube.list.length - 1) {
+                            var callback = null;
+                            callback = function () {
+                                Resize.ImageRealCenter.list.each(function (target, i) {
+                                    Resize.ImageRealCenter.onresize(target, 1);
+                                })
+                            }
+                            Resize.MapCube.onresize(target, 1,callback);
+                        }
+                    })
+                }
+            }
+            Resize.Section.onresize(target, 1,callback);
+        });
+        
+        
     }
     
 }
@@ -118,9 +144,13 @@ $(window).resize(function () {
             console.log("=> fire windows resize");
             clearTimeout(resizetime);
             resizetime = null;
+
+            SectionMenu.onresize(function () {
+                Resize.onResize();
+            });
+            
         },1000)
     }
-    
 });
 
 

@@ -4,7 +4,9 @@
 
 var SectionMenu = {
     inited: false,
-    baseWidth:Math.floor(window.outerWidth/BaseSizeNumber)*BaseSizeNumber,
+    baseWidth: function () {
+        return Math.floor(window.outerWidth / BaseSizeNumber) * BaseSizeNumber
+    },
     CurrentFM:function(){
         var FMMap = $(".first-class-li.menuSelected");
         
@@ -208,7 +210,7 @@ var SectionMenu = {
         $("#BaselineCircle").css("width", "100%");
         //Init Size
         var firstMenuUl = $('#FirstMenuUL');
-        var firstMenuUl_width = _this.baseWidth;
+        var firstMenuUl_width = _this.baseWidth();
         var firstMenuUl_height = 70;
         var firstMenuLength = this.FIRSTMENU.length;
         firstMenuUl.css({ "width": firstMenuUl_width, "height": firstMenuUl_height, "margin":"0 auto" });
@@ -299,12 +301,9 @@ var SectionMenu = {
             _this.FirstMenu_Init();
             return;
         }
-        _this.inited = true;
-
-        $("#BaselineCircle").css("width", "100%");
         //Init Size
         var firstMenuUl = $('#FirstMenuUL');
-        var firstMenuUl_width = _this.baseWidth;
+        var firstMenuUl_width = _this.baseWidth();
         var firstMenuUl_height = 70;
         var firstMenuLength = this.FIRSTMENU.length;
         firstMenuUl.css({ "width": firstMenuUl_width, "height": firstMenuUl_height, "margin": "0 auto" });
@@ -316,26 +315,21 @@ var SectionMenu = {
 
         for (var i = 0; i < firstMenuLength; i++) {
             var f = this.FIRSTMENU[i];
-            var firstli = $('<li></li>');// class="first-class-li" menu="1" type="honeycomb"
-            firstli.addClass("first-class-li");
+            var firstli = $(firstMenuUl.find("li")[i]);// class="first-class-li" menu="1" type="honeycomb"
             firstli.css({
                 "width": this.FM_size.width + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
             })
-            firstli.attr("menu", i);
-            firstli.attr("type", f.type);
-            firstli.html(f.title);
-            firstMenuUl.append(firstli);
         }
         // #FMViewZoom
-        var firstViewZoom = $('<div id="FMViewZoom"></div>');
+        var firstViewZoom = $("#FMViewZoom");
         firstViewZoom.css({
             "width": this.FM_size.width + "px",
             "height": this.FM_size.height + "px",
             "top": -this.FM_size.height + "px",
         });
-        var fmHoverContainer = $('<ul class="fm-container-hover"></ul>');
+        var fmHoverContainer = firstViewZoom.find(".fm-container-hover");
         fmHoverContainer.css({
             "width": firstMenuUl_width + "px",
             "height": this.FM_size.height + "px",
@@ -343,21 +337,19 @@ var SectionMenu = {
 
         for (var i = 0; i < firstMenuLength; i++) {
             var f = this.FIRSTMENU[i];
-            var firsthoverli = $('<li></li>');// class="first-class-li" menu="1" type="honeycomb"
+            var firsthoverli = fmHoverContainer.find("li");// class="first-class-li" menu="1" type="honeycomb"
             firsthoverli.addClass("first-class-li-hover");
             firsthoverli.css({
                 "width": this.FM_size.width + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
             })
-            firsthoverli.attr("menu", i);
-            firsthoverli.attr("type", f.type);
-            firsthoverli.html(f.title);
-            fmHoverContainer.append(firsthoverli);
         }
-        firstViewZoom.append(fmHoverContainer);
-        firstMenuUl.append(firstViewZoom);
+      
+        
+        _this.AddFMEvents();
 
+        CallbackL(arguments);
         //Init First Menu Hover node
 
         /*
@@ -468,6 +460,9 @@ var SectionMenu = {
     },
     AddFMEvents: function (viewname) {
         var _this = this;
+        if (!viewname) {
+            viewname = Controler.currentView.name;
+        }
         $("#FirstMenuUL").unbind("mouseout").mouseout(function () {
             _this.FirstMenu_MoveOut();
         });
