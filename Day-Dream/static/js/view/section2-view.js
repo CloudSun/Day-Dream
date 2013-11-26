@@ -123,12 +123,12 @@ var Section2View_Status = {
         console.log(view.name + "View show");
         //
         //临时方法
-        Resize.image_center_actual($($("#imageBoard").children("img")[0]));
+        Resize.ImageRealCenter.onresize($($("#imageBoard").children("img")[0]));
         //resize and get the currentPosition
         
         //3D Cube初始化方法
         //在主内容显示之后初始化
-        var sizeScale = Resize.mapcube_container($("#imageBoard"));
+        Resize.MapCube.onresize($("#imageBoard"));
         var imagesContainer = $("#Section2 .section-container");
         var imagesTarget = $($("#imageBoard").children("img")[0]);
         Rotate3DCube.Init(imagesContainer, imagesTarget);
