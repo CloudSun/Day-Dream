@@ -205,15 +205,25 @@ var SectionMenu = {
         if(_this.inited){
             return ;
         }
-        _this.inited = true;
 
         $("#BaselineCircle").css("width", "100%");
         //Init Size
+        /*
+        TODO init the structor
+        var SectionMainContainer = $("#SectionContainer");
+        var MainMenu = $('<nav id="MainMenu"></nav>')
+        */
         var firstMenuUl = $('#FirstMenuUL');
         var firstMenuUl_width = _this.baseWidth();
         var firstMenuUl_height = 70;
         var firstMenuLength = this.FIRSTMENU.length;
-        firstMenuUl.css({ "width": firstMenuUl_width, "height": firstMenuUl_height, "margin":"0 auto" });
+        firstMenuUl.css({
+            "width": firstMenuUl_width,
+            "height": firstMenuUl_height,
+            "margin": "0 auto",
+            "-webkit-transition-duration":"0.5s",
+        });
+        
         //Init First Menu node
         this.FM_size.width = firstMenuUl_width / firstMenuLength;
         this.FM_size.height = firstMenuUl_height * GoldenScale;
@@ -228,6 +238,7 @@ var SectionMenu = {
                 "width": this.FM_size.width  + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
+                "-webkit-transition-duration": "0.5s",
             })
             firstli.attr("menu", i);
             firstli.attr("type", f.type);
@@ -240,11 +251,13 @@ var SectionMenu = {
             "width": this.FM_size.width + "px",
             "height": this.FM_size.height + "px",
             "top": -this.FM_size.height + "px",
+            "-webkit-transition-duration": "0.5s",
         });
         var fmHoverContainer = $('<ul class="fm-container-hover"></ul>');
         fmHoverContainer.css({
             "width": firstMenuUl_width + "px",
-            "height": this.FM_size.height+"px",
+            "height": this.FM_size.height + "px",
+            "-webkit-transition-duration": "0.5s",
         });
         
         for (var i = 0; i < firstMenuLength; i++) {
@@ -255,6 +268,7 @@ var SectionMenu = {
                 "width": this.FM_size.width + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
+                "-webkit-transition-duration": "0.5s",
             })
             firsthoverli.attr("menu", i);
             firsthoverli.attr("type", f.type);
@@ -382,7 +396,7 @@ var SectionMenu = {
     FirstArrowEffect: function () {
         $("#FMArrowContainer").removeClass("hidden");
         var left = parseFloat($(".first-class-li.menuSelected").css("left")) + $(".first-class-li.menuSelected").width() / 2 - $("#FMArrowContainer").width() / 2;
-        $("#FMArrowContainer").css("left", left + "px");
+        //$("#FMArrowContainer").css("left", left + "px");
     },
     FirstMenu_MoveOut:function(){
         Flag_FMdownStatus = false;
@@ -570,16 +584,29 @@ var SectionMenu = {
             changeFM.addClass("menuSelected");
 
             var otherFM = $(".first-class-li[class!='" + $(".menuSelected").attr("class") + "']");
-            otherFM.animate({
+            /*otherFM.animate({
                 "height": _this.FM_size.height + "px",
                 "line-height": _this.FM_size.height + "px",
-            }, 150);
+            }, 150);*/
+            otherFM.css({
+                "height": _this.FM_size.height + "px",
+                "line-height": _this.FM_size.height + "px",
+                "-webkit-transition-duration": "0.5s",
+            });
+            
 
             //resize FM
+            /*
             changeFM.animate({
                 "height": 70 + "px",
                 "line-height": 70 + "px",
             }, 200);
+            */
+            changeFM.css({
+                "height": 70 + "px",
+                "line-height": 70 + "px",
+                "-webkit-transition-duration": "0.5s",
+            });
 
             //FirstArrow
             var FMArrow = $("#FMArrowContainer");
@@ -597,11 +624,27 @@ var SectionMenu = {
                 FMArrow.children().removeClass().addClass("FirstMenuArrowDown");
                 FMArrow.css({ "top": 0 + "px" });
             }
-            var Arrowleft = changeFM.position().left + changeFM.width() / 2 - FMArrow.width() / 2
-            FMArrow.css({
-                "left": Arrowleft + "px",
-            });
-            FMArrow.removeClass("hidden");
+            changeFM.unbind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd').bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
+                var Arrowleft = $(this).position().left + $(this).width() / 2 - FMArrow.width() / 2
+                FMArrow.css({
+                    "left": Arrowleft + "px",
+                    "-webkit-transition-duration": "0.5s",
+                });
+                FMArrow.removeClass("hidden");
+            })
+            
+            if (!_this.inited) {
+                setTimeout(function () {
+                    var Arrowleft = changeFM.position().left + changeFM.width() / 2 - FMArrow.width() / 2
+                    FMArrow.css({
+                        "left": Arrowleft + "px",
+                        "-webkit-transition-duration": "0.5s",
+                    });
+                    FMArrow.removeClass("hidden");
+                }, 500);
+                
+            }
+            
             
 
             //resize Zoom 暂时不需要
@@ -620,6 +663,8 @@ var SectionMenu = {
                 })
             }
             */
+            //init End
+            _this.inited = true;
 
             CallbackL(arguments);
         }
