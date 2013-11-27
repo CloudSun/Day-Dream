@@ -121,7 +121,7 @@ li
 {
     border-width:15px;
     border-style:solid;
-    border-color:#fff #aaa #aaa #aaa;
+    border-color:#fff transparent transparent transparent;
     border-bottom: 0px;
 }
 .FirstMenuArrowUp
