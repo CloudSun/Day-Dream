@@ -6,24 +6,24 @@ var GoldenScale = 0.618;//黄金比例
 //var cubeWidth = cubeHeight = 70;
 var Resize = {
     square: 70,
-    Section:{
-        onresize:function(target,smooth){
+    Section: {
+        onresize: function(target, smooth) {
             //resize the section-container
             //width depend on FirstMenu
             !target && (target = Controler.currentView.target.children(".section-container"));
-            !target && function () { return };
+            !target && function() { return false; };
             var width = SectionMenu.baseWidth();
             var height = $(document).height() - parseInt($("#MainMenu").css("height"));
             (!smooth && smooth != 0) && (smooth = 0);
             //绝对 剧中
             target.css({
-                "width": width+"px",
+                "width": width + "px",
                 "height": height + "px",
-                "top":"0px",
+                "top": "0px",
                 "left": "50%",
                 "margin-left": -width / 2 + "px",
-                "-webkit-transition-duration":smooth+"s",
-            })
+                "-webkit-transition-duration": smooth + "s",
+            });
 
             //add to list
             if (!this.list.containsDom(target)) {
@@ -32,27 +32,27 @@ var Resize = {
 
             CallbackL(arguments);
         },
-        list:new Array(),
+        list: new Array(),
     },
-    MapCube:{
-        onresize: function (target,smooth) {
+    MapCube: {
+        onresize: function(target, smooth) {
             var parent = target.parent();
-            var parent_width = parent.width();
-            var parent_height = parent.height();
-            var scale_width = Math.floor(parent_width / Resize.square);
-            var scale_height = Math.floor(parent_height / Resize.square);
-            var target_width = scale_width * Resize.square;
-            var target_height = scale_height * Resize.square;
+            var parentWidth = parent.width();
+            var parentHeight = parent.height();
+            var scaleWidth = Math.floor(parentWidth / Resize.square);
+            var scaleHeight = Math.floor(parentHeight / Resize.square);
+            var targetWidth = scaleWidth * Resize.square;
+            var targetHeight = scaleHeight * Resize.square;
             //css
             (!smooth && smooth != 0) && (smooth = 0);
             target.css({
-                "width": target_width + "px",
-                "height": target_height + "px",
+                "width": targetWidth + "px",
+                "height": targetHeight + "px",
                 "position": "absolute",
                 "top": "50%",
-                "margin-top": target_height / 2 * -1 + "px",
+                "margin-top": targetHeight / 2 * -1 + "px",
                 "left": "50%",
-                "margin-left": target_width / 2 * -1 + "px",
+                "margin-left": targetWidth / 2 * -1 + "px",
                 "-webkit-transition-duration": smooth + "s",
             });
 
@@ -64,23 +64,23 @@ var Resize = {
             CallbackL(arguments);
             //return size scale
             return {
-                "scaleWidth": scale_width,
-                "scaleHeight": scale_height
+                "scaleWidth": scaleWidth,
+                "scaleHeight": scaleHeight
             }
         },
-        list:new Array(),
+        list: new Array(),
     },
     //图片resize Type:显示实际尺寸，容器居中
     ImageRealCenter: {
-        onresize: function (img,smooth) {
+        onresize: function(img, smooth) {
             //loaded
             //img.load(function () {
             //after img loaded
             var parent = img.parent();
             var width = img.width();
             var height = img.height();
-            var parent_height = parent.height();
-            var parent_width = parent.width();
+            var parentHeight = parent.height();
+            var parentWidth = parent.width();
             (!smooth && smooth != 0) && (smooth = 0);
             img.css({
                 "position": "absolute",
@@ -92,8 +92,8 @@ var Resize = {
             });
 
             //return actural absolute: left & top
-            var left = parent_width / 2 - width / 2;
-            var top = parent_height / 2 - height / 2;
+            var left = parentWidth / 2 - width / 2;
+            var top = parentHeight / 2 - height / 2;
             img.currentPosition = {
                 left: left,
                 top: top,
@@ -107,49 +107,36 @@ var Resize = {
         },
         list: new Array(),
     },
-    onResize: function () {
-        var _this = this
-        Resize.Section.list.each(function (target, i) {
-            var callback = null;
-            if (i == Resize.Section.list.length - 1) {
-                callback = function () {
-                    Resize.MapCube.list.each(function (target, i) {
-                        if (i == Resize.MapCube.list.length - 1) {
-                            var callback = null;
-                            callback = function () {
-                                Resize.ImageRealCenter.list.each(function (target, i) {
-                                    Resize.ImageRealCenter.onresize(target, 1);
-                                })
-                            }
-                            Resize.MapCube.onresize(target, 1,callback);
-                        }
-                    })
-                }
-            }
-            Resize.Section.onresize(target, 1,callback);
+    onResize: function() {
+        var _this = this;
+        Resize.Section.list.each(function(target, i) {
+            Resize.Section.onresize(target, 0.5);
         });
-        
-        
-    }
-    
-}
+        Resize.MapCube.list.each(function(target, i) {
+            Resize.MapCube.onresize(target, 0.5);
+        });
+        Resize.ImageRealCenter.list.each(function(target, i) {
+            Resize.ImageRealCenter.onresize(target, 0.5);
+        });
+    }    
+};
 
 
 //bind window resize event
-var resizetime
+var resizetime;
 $(window).resize(function () {
     //
-    if(!resizetime){
-        resizetime = setTimeout(function () {
+    if(!resizetime) {
+        resizetime = setTimeout(function() {
             console.log("=> fire windows resize");
             clearTimeout(resizetime);
             resizetime = null;
 
-            SectionMenu.onresize(function () {
+            SectionMenu.onresize(function() {
                 Resize.onResize();
             });
-            
-        },1000)
+
+        }, 1000);
     }
 });
 
@@ -176,7 +163,6 @@ Array.prototype.containsDom = function (a) {
                 return false;
             }
         }
-
         return false;
     } catch (e) { return false; }
 };
