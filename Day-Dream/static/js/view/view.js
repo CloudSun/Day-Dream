@@ -1,115 +1,152 @@
-﻿//View
-/* Base View Class */
-var View = function (viewParam) {
-    this.name = viewParam.name;
-    this.target = $("#" + viewParam.name);
-    this.viewtype = viewParam.type;
-    this.load = viewParam.load;
-    this.param = viewParam;//default
+var Section2View;
+var Section2ViewParam = {
+    name: "Section2",
+    type: ViewType.SECTION,
+    load: "once",//refresh evertime load
+    bgcolor: "rgba(100, 149, 237,0.6)",
+    loaded: false,
+};
+var Section2View_Status = {
+    Inited: false,
 };
 
-//视图初始化方法
-View.prototype.init = function (view) {
-    //获得视图对象 id = name
-    console.log("View init");
-    !view && (view = this); 
-    view.target.addClass(view.viewtype.classview);
-    //View Type Common init func
-    typeof view.viewtype.init == "function" && view.viewtype.init(view);
-
-    //callback
-    CallbackL(arguments);
-}
-
-//视图初始化方法
-View.prototype.addEvents = function () {
-    //获得视图对象 id = name
-    console.log("View addEvent");
-    //callback
-    CallbackL(arguments);
-}
-
-//视图显示方法
-View.prototype.show = function (view) {
-    view.viewtype.showstyle(view.target);
-    //TODO
-    console.log("View show");
-
-    //background color change
-    $("#SectionContainer").css({
-        "background-color":view.param.bgcolor,
-    })
-
-    //callback
-    CallbackL(arguments);
-}
-
-View.prototype.hide = function (view) {
-    view.viewtype.hidestyle(view.target);
-    //TODO
-    console.log("View hide");
-
-    //callback
-    CallbackL(arguments);
-}
-
-
-var ViewShow = {
-    NORMAL: function (target) {
-        target && target.removeClass("hidden")
-    },
-    FADEIN: function (target) {
-        target && target.fadeIn();
+(function () { 
+    Section2View = function () {
+        var _this = this;
+        //以父类的构造函数初始化
+        Section2View.superClass.constructor.call(this, Section2ViewParam);
+        //初始化
+        var init = function () { Section2View.prototype.init(_this, _this) };
+        //Load View
+        LoadView(_this, init);
     }
-}
 
-var ViewHide = {
-    NORMAL: function (target) {
-        target && target.addClass("hidden");
-    },
-    FADEOUT: function (target) {
-        target && target.fadeOut();
-    }
-}
-/*
- * 视图类型
- * 根据视图类型设定视图的大小，层级，容器，视图默认显示方式
- */
-var ViewType = {
-    FULL: {
-        container: $("#MainContainer"),
-        classview: "full-view",
-        showstyle: ViewShow.FADEIN, //设定默认的显示方式
-        hidestyle: ViewHide.FADEOUT, //设定默认的隐藏方式
+    //Super Class
+    extendViewClass(Section2View, View, Section2ViewParam);
 
-    },
-    SECTION:{
-        container: $("#SectionContainer"),
-        classview: "section-view",
-        showstyle: ViewShow.FADEIN,
-        hidestyle: ViewHide.FADEOUT,
-        //common init function
-        init: function (view) {
-            //section 栏的初始化方法，定义section
-            Resize.Section.onresize(view.target.children(".section-container"));
-        }
-    }
-}
+    Section2View.prototype.init = function (view) {
+        //SuperClass init
+        //在创建对象时进行初始化 需要传入初始化对象view
+        !view && (view = this);
+        Section1View.superClass.init.call(this, view);
 
-//判断 View的加载方式
-var LoadView = function (view,func) {
-    switch (view.load) {
-        case "once":
-            if (view.param.loaded) {
-                return;
-            } else {
-                typeof func == "function" && func();
-                view.param.loaded = true;
+        //SectionMenu初始化及显示方法
+        console.log(view.name + "View init");
+        SectionMenu.FirstMenu_Init(view.name);
+
+        /*Init Html content*/
+        var imageBoard = $('<div id="imageBoard"></div>');
+        var imgList = [{
+                title: "",
+                src: "content/img/image1.jpg",
+            }, {
+                title: "",
+                src: "content/img/image2.jpg",
+            }, {
+                title: "",
+                src: "content/img/image3.jpg",
+            }, {
+                title: "",
+                src: "content/img/image4.jpg",
+            }];
+
+        var dataTarget;
+
+        for (var i = 0 ; i < imgList.length;i++) {
+            var img = $('<img src="' + imgList[i].src + '" alt=' + imgList[i].title + '>');
+            img.addClass("hidden");
+            img.resize(function() {
+                console.log("img resize");
+            });
+            imageBoard.append(img);
+            if(i==0){
+                dataTarget = img;
             }
-            break;
-        case "refresh":
-            typeof func == "function" && func();
-            break;
-    }
-};
+        }
 
+        var SectionContainer = view.target.find(".section-container");
+        SectionContainer.html(imageBoard);
+
+        var _arguments = arguments;
+
+        dataTarget.load(function () {
+            Loaded();
+        });
+        
+        //after inited
+        function Loaded() {
+            Section2View_Status.Inited = true;
+            view.addEvents();
+            CallbackL(_arguments);
+        }
+    };
+
+    Section2View.prototype.addEvents = function (view) {
+        //SuperClass addEvents
+        //在创建对象时进行事件绑定 需要传入初始化对象view
+        !view && (view = this);
+        Section2View.superClass.addEvents.call(this, view);
+        //TODO
+        console.log(view.name + "View addEvent");
+        
+        /*
+        $("#pane").click(function () {
+            $("#pane1_1").addClass("pane-x-transition");
+        });
+        $("#paneY").click(function () {
+            $("#paneY").addClass("pane-y-transition");
+        });
+        $("#paneZ").click(function () {
+            $("#paneZ").addClass("pane-z-transition");
+        });
+        $("#back").click(function () {
+
+        })
+        */
+        /*$("#pane").on("webkitTransitionEnd", function () {
+            $("#pane").removeClass("pane-x-transition");
+            $("#pane").addClass("pane-y-transition");
+        })*/
+
+        view.show();
+        CallbackL(arguments);
+    };
+
+    Section2View.prototype.show = function (view) {
+        //SuperClass show
+        !view && (view = this);
+        if (!Section2View_Status.Inited) {
+            return;
+        }
+
+        Section2View.superClass.show.call(this, view);
+        //TODO
+        console.log(view.name + "View show");
+        //
+        //临时方法
+        Resize.ImageRealCenter.onresize($($("#imageBoard").children("img")[0]));
+        //resize and get the currentPosition
+        
+        //3D Cube初始化方法
+        //在主内容显示之后初始化
+        Resize.MapCube.onresize($("#imageBoard"));
+        var imagesContainer = $("#Section2 .section-container");
+        var imagesTarget = $($("#imageBoard").children("img")[0]);
+        Rotate3DCube.Init(imagesContainer, imagesTarget);
+
+        
+        CallbackL(arguments);
+    };
+    
+    Section2View.prototype.hide = function (view) {
+        //SuperClass hide
+        !view && (view = this);
+        Section1View.superClass.hide.call(this, view);
+        //TODO
+        console.log(view.name + "View hide");
+        //
+        CallbackL(arguments);
+    };
+    
+
+})();
