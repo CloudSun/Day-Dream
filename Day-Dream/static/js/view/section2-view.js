@@ -37,27 +37,27 @@ var Section2View_Status = {
         /*Init Html content*/
         var imageBoard = $('<div id="imageBoard"></div>');
         var imgList = [{
-            title:"",
-            src:"content/img/image1.jpg",
-        },{
-            title:"",
-            src:"content/img/image2.jpg",
-        },{
-            title:"",
-            src:"content/img/image3.jpg",
-        },{
-            title:"",
-            src:"content/img/image4.jpg",
-        }]
+                title: "",
+                src: "content/img/image1.jpg",
+            }, {
+                title: "",
+                src: "content/img/image2.jpg",
+            }, {
+                title: "",
+                src: "content/img/image3.jpg",
+            }, {
+                title: "",
+                src: "content/img/image4.jpg",
+            }];
 
         var dataTarget;
 
         for (var i = 0 ; i < imgList.length;i++) {
             var img = $('<img src="' + imgList[i].src + '" alt=' + imgList[i].title + '>');
             img.addClass("hidden");
-            img.resize(function () {
+            img.resize(function() {
                 console.log("img resize");
-            })
+            });
             imageBoard.append(img);
             if(i==0){
                 dataTarget = img;
@@ -67,7 +67,7 @@ var Section2View_Status = {
         var SectionContainer = view.target.find(".section-container");
         SectionContainer.html(imageBoard);
 
-        var _arguments = arguments
+        var _arguments = arguments;
 
         dataTarget.load(function () {
             Loaded();
