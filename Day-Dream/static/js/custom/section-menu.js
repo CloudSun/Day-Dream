@@ -1,4 +1,4 @@
-﻿    var Flag_FMdownStatus = 0;
+    var Flag_FMdownStatus = 0;
     var FirstMenuULNum = 0;
     var BaselineCircleNum = 0;
 
@@ -221,7 +221,7 @@ var SectionMenu = {
             "width": firstMenuUl_width,
             "height": firstMenuUl_height,
             "margin": "0 auto",
-            "-webkit-transition-duration":"0.5s",
+            "-webkit-transition-duration":"0.2s",
         });
         
         //Init First Menu node
@@ -238,7 +238,7 @@ var SectionMenu = {
                 "width": this.FM_size.width  + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
-                "-webkit-transition-duration": "0.5s",
+                "-webkit-transition-duration": "0.2s",
             })
             firstli.attr("menu", i);
             firstli.attr("type", f.type);
@@ -251,13 +251,13 @@ var SectionMenu = {
             "width": this.FM_size.width + "px",
             "height": this.FM_size.height + "px",
             "top": -this.FM_size.height + "px",
-            "-webkit-transition-duration": "0.5s",
+            "-webkit-transition-duration": "0.2s",
         });
         var fmHoverContainer = $('<ul class="fm-container-hover"></ul>');
         fmHoverContainer.css({
             "width": firstMenuUl_width + "px",
             "height": this.FM_size.height + "px",
-            "-webkit-transition-duration": "0.5s",
+            "-webkit-transition-duration": "0.2s",
         });
         
         for (var i = 0; i < firstMenuLength; i++) {
@@ -268,7 +268,7 @@ var SectionMenu = {
                 "width": this.FM_size.width + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
-                "-webkit-transition-duration": "0.5s",
+                "-webkit-transition-duration": "0.2s",
             })
             firsthoverli.attr("menu", i);
             firsthoverli.attr("type", f.type);
@@ -357,7 +357,7 @@ var SectionMenu = {
                 "width": this.FM_size.width + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
-            })
+            });
         }
       
         
@@ -624,26 +624,29 @@ var SectionMenu = {
                 FMArrow.children().removeClass().addClass("FirstMenuArrowDown");
                 FMArrow.css({ "top": 0 + "px" });
             }
-            changeFM.unbind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd').bind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
-                var Arrowleft = $(this).position().left + $(this).width() / 2 - FMArrow.width() / 2
+            // moztransitionend transitionend oTransitionEnd
+            changeFM.unbind('webkitTransitionEnd').bind('webkitTransitionEnd', function () {
+                if ($(this).attr("class").indexOf("menuSelected")!=-1){
+                var arrowleft = $(this).position().left + $(this).width() / 2 - FMArrow.width() / 2;
                 FMArrow.css({
-                    "left": Arrowleft + "px",
-                    "-webkit-transition-duration": "0.5s",
+                    "left": arrowleft + "px",
+                    "-webkit-transition-duration": "0.2s",
                 });
                 FMArrow.removeClass("hidden");
-            })
+                }
+            });
             
-            if (!_this.inited) {
+           //if (!_this.inited) {
                 setTimeout(function () {
-                    var Arrowleft = changeFM.position().left + changeFM.width() / 2 - FMArrow.width() / 2
+                    var arrowleft = changeFM.position().left + changeFM.width() / 2 - FMArrow.width() / 2
                     FMArrow.css({
-                        "left": Arrowleft + "px",
-                        "-webkit-transition-duration": "0.5s",
+                        "left": arrowleft + "px",
+                        "-webkit-transition-duration": "0.2s",
                     });
                     FMArrow.removeClass("hidden");
                 }, 500);
                 
-            }
+            //}
             
             
 
@@ -751,7 +754,7 @@ var SectionMenu = {
                     "height": "25px",
                     "margin-bottom": "0px",
                 }, 50, function () {
-                    hideSecondMenu(++index)
+                    hideSecondMenu(++index);
                 });
                 $(target).animate({
                     "height": "0px",
