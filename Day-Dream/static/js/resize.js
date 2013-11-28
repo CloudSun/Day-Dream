@@ -135,14 +135,18 @@ var Resize = {
     },
     onResize: function() {
         var _this = this;
-        var screenHeight = $(document).height();
-        var screenWidth = $(document).width();
+        var screenHeight = window.outerHeight;
+        var screenWidth = window.outerWidth;
 
         //resize SectionContainer background
         var sectionContainer = $("#SectionContainer");
         sectionContainer.css({
-            "background-image":"-webkit-gradient(radial, 10% -50%,"+screenWidth/2+", 0% 0%, "+screenWidth+", from(#fff),to(transparent))"+
-                ",-webkit-gradient(radial, 100% 100%,"+screenHeight/2+", 100% 100%, "+screenHeight+", from(#fff), to(transparent))",
+            "background-image":
+                "-webkit-gradient(radial, 20% 0%," + screenHeight /6 + ", 20% 0%, " + screenHeight/2 + ", from(#fff),to(transparent)),"+
+                "-webkit-gradient(radial, 10% -50%," + screenHeight /3 + ", 0% 0%, " + screenHeight + ", from(#fff),to(transparent))," +
+                "-webkit-gradient(radial, 60% 50%," + 0 + ",60% 50%, " + screenHeight / 16 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
+                "-webkit-gradient(radial, 73% 65%," + 0 + ",73% 65%, " + screenHeight / 8 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
+                "-webkit-gradient(radial, 100% 100%," + screenHeight / 12 + ", 100% 100%, " + screenHeight / 4 + ", from(#fff), to(transparent))",
         });
 
         Resize.Section.list.each(function(target, i) {

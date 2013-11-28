@@ -257,6 +257,7 @@ var SectionMenu = {
         fmHoverContainer.css({
             "width": firstMenuUl_width + "px",
             "height": this.FM_size.height + "px",
+            "top":this.FM_size.height+"px",
             "-webkit-transition-duration": "0.2s",
         });
         
@@ -395,8 +396,11 @@ var SectionMenu = {
     },
     FirstArrowEffect: function () {
         $("#FMArrowContainer").removeClass("hidden");
-        var left = parseFloat($(".first-class-li.menuSelected").css("left")) + $(".first-class-li.menuSelected").width() / 2 - $("#FMArrowContainer").width() / 2;
-        //$("#FMArrowContainer").css("left", left + "px");
+        var left = parseFloat($(".first-class-li.menuSelected").position().left) + $(".first-class-li.menuSelected").width() / 2 - $("#FMArrowContainer").width() / 2;
+        $("#FMArrowContainer").css({
+            "left": left + "px",
+
+        });
     },
     FirstMenu_MoveOut:function(){
         Flag_FMdownStatus = false;
@@ -528,13 +532,14 @@ var SectionMenu = {
             event.stopPropagation();
         }).unbind('webkitTransitionEnd').bind('webkitTransitionEnd', function () {
             if ($(this).attr("class").indexOf("menuSelected") != -1) {
-                var FMArrow = $("#FMArrowContainer");
+                /*var FMArrow = $("#FMArrowContainer");
                 var arrowleft = $(this).position().left + $(this).width() / 2 - FMArrow.width() / 2;
                 FMArrow.css({
                     "left": arrowleft + "px",
-                    "-webkit-transition-duration": "0.2s",
                 });
                 FMArrow.removeClass("hidden");
+                */
+                _this.FirstArrowEffect();
             }
         });
 
