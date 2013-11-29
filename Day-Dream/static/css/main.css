@@ -30,6 +30,19 @@ li
     z-index:50;
        
 }
+#LoginTitle 
+{
+    position: relative;
+    margin-left: 50px;
+    margin-top: 50px;
+    width: 300px;
+    text-align: center;
+    font-size: 50px;
+    color: #fff;
+    font-weight: bolder;
+    border: 0px;
+    background: transparent;
+}
 #UserName 
 {
     position:relative;
@@ -39,28 +52,29 @@ li
     height:40px;
     text-align: center;
     font-size: 30px;
-    color:#bbb;
+    color:#fff;
     font-weight: bolder;
     border: 0px;
-    border-bottom:4px solid #888;
+    border-bottom:3px solid #888;
+    background: transparent;
 }
 #LoginBtn 
 {
     font-family: Aharoni;
-	width:100px;
-	height:100px;
-	margin:auto;
-	margin-top:45px;
-	border:8px solid #999;
-	border-radius:20px;
-	cursor:pointer;
-    
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    margin-top: 25px;
+    border: 3px solid #999;
+    border-radius: 20px;
+    cursor: pointer;
     vertical-align: middle;
-    line-height:100px;
+    line-height: 100px;
     text-align: center;
     font-size: 28px;
-    color:#999;
+    color: #999;
     font-weight: bold;
+    background: transparent;
 }
 .CircleOut 
 {
@@ -74,10 +88,11 @@ li
 	margin-top:-210px;
 	margin-left:-210px;
     
-	border:10px solid #aaa;
+	border:5px solid #aaa;
     border-radius:230px;
 
-    background-color:#fff;
+    background-color:#000;
+    -webkit-box-shadow: 0 0 100px 0px #fff,inset 0 0 50px 0px #fff;
 }
 .CircleIn 
 {
@@ -358,4 +373,19 @@ li
  }
 
 /* Menu CSS End*/
+div {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+ 
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+}

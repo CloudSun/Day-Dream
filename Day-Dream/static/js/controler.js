@@ -5,7 +5,9 @@
 var Controler = {
     prevView: new Array(),
     currentView: null,
+    nextView:null,
     transfer: function (nextView) {
+        this.nextView = nextView;
         if (this.prevView.length > 0 && this.prevView.name != nextView.name) {
             this.prevView[(this.prevView.length - 1)].hide();
         }

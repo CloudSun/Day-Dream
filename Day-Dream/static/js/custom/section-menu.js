@@ -9,18 +9,18 @@ var SectionMenu = {
     },
     CurrentFM:function(){
         var FMMap = $(".first-class-li.menuSelected");
-        
+
         return {
             "target": FMMap,
             "index": parseInt(FMMap.attr("menu")),
-        }
+        };
     },
     CurrentSM:function(){
         var SMMap = $(".second-class-li.selected");
         return {
             "target": SMMap,
-            "index":parseInt(SMMap.attr("smenu")),
-        }
+            "index": parseInt(SMMap.attr("smenu")),
+        };
     },
     FIRSTMENU: [
         {
@@ -235,11 +235,11 @@ var SectionMenu = {
             var firstli = $('<li></li>');// class="first-class-li" menu="1" type="honeycomb"
             firstli.addClass("first-class-li");
             firstli.css({
-                "width": this.FM_size.width  + "px",
+                "width": this.FM_size.width + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
                 "-webkit-transition-duration": "0.2s",
-            })
+            });
             firstli.attr("menu", i);
             firstli.attr("type", f.type);
             firstli.html(f.title);
@@ -337,7 +337,7 @@ var SectionMenu = {
                 "width": this.FM_size.width + "px",
                 "height": this.FM_size.height + "px",
                 "line-height": this.FM_size.height + "px",
-            })
+            });
         }
         // #FMViewZoom
         var firstViewZoom = $("#FMViewZoom");
@@ -437,8 +437,8 @@ var SectionMenu = {
             //下箭头状态
             arrow.removeClass().addClass(FirstArrowUp);
             arrowContainer.css({
-                "top":"-15px",
-            })
+                "top": "-15px",
+            });
                 _this.SecondMenu_Hidden();
             } else {
             //上箭头状态
@@ -577,8 +577,11 @@ var SectionMenu = {
             firstMenuHoveredClick(index, type, function () {
                 //FirstMenu View Transfer
                 //var menu = $(this).attr("menu")
-                var TargetView = _this.FIRSTMENU[index].view;
-                TargetView && Controler.transfer(new TargetView());
+                var targetView = _this.FIRSTMENU[index].view;
+                setTimeout(function() {
+                    targetView && Controler.transfer(new targetView());
+                }, 200);
+                
                 _this.FirstMenuSelected_Click();
             });
             

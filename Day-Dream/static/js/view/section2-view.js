@@ -10,16 +10,16 @@ var Section2View_Status = {
     Inited: false,
 };
 
-(function () { 
-    Section2View = function () {
+(function () {
+    Section2View = function() {
         var _this = this;
         //以父类的构造函数初始化
         Section2View.superClass.constructor.call(this, Section2ViewParam);
         //初始化
-        var init = function () { Section2View.prototype.init(_this, _this) };
+        var init = function() { Section2View.prototype.init(_this, _this) };
         //Load View
         LoadView(_this, init);
-    }
+    };
 
     //Super Class
     extendViewClass(Section2View, View, Section2ViewParam);

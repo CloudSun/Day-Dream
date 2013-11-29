@@ -6,16 +6,16 @@ var Section3ViewParam = {
     bgcolor: "rgba(255, 140, 0,0.6)",
     loaded: "false",
 };
-(function () { 
-    Section3View = function () {
+(function () {
+    Section3View = function() {
         //以父类的构造函数初始化
         Section3View.superClass.constructor.call(this, Section3ViewParam);
         //初始化
         var _this = this;
-        var init = function () { Section3View.prototype.init(_this, _this) };
+        var init = function() { Section3View.prototype.init(_this, _this) };
         //Load View
         LoadView(_this, init);
-    }
+    };
 
     //Super Class
     extendViewClass(Section3View, View, Section3ViewParam);

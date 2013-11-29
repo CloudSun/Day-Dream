@@ -35,11 +35,6 @@ View.prototype.show = function(view) {
     //TODO
     console.log("View show");
 
-    //background color change
-    $("#SectionContainer").css({
-        "background-color": view.param.bgcolor,
-    });
-
     //callback
     CallbackL(arguments);
 };
@@ -58,25 +53,39 @@ var ViewShow = {
     NORMAL: function(target) {
         target && target.removeClass("hidden");
     },
-    FADEIN: function(target) {
+    FADEIN: function (target) {
         if(target){
             target.css({
-                "opacity":"0",
+                "opacity": "0",
+                "-webkit-transition-delay":"1s",
                 "-webkit-transition-property": "opacity",
-                "-webkit-transition-duration": "0.4s",
+                "-webkit-transition-duration": "1.5s",
                 "-webkit-transition-timing-function": "ease-in-out",
             });
             target.removeClass("hidden");
             target.css({
                 "opacity": "1",
-        });
+                "background-color": Controler.nextView.param.bgcolor,
+            });
         };
     },
     Section:{
         FADEIN: function (target) {
+            //background color change
+
+            /*
+            $("#SectionContainer").css({
+                "background-color": Controler.nextView.param.bgcolor,
+            });
+            */
             $("#SectionContainer").removeClass("hidden");
-            ViewShow.FADEIN(target);
-        }
+            if (target) {
+                target.css({
+                    "opacity": "1",
+                    "z-index": "50",
+                });
+            };
+        },
     },
 };
 
@@ -103,9 +112,15 @@ var ViewHide = {
         */
     },
     Section: {
-        NORAML: function (target) {
-            ViewHide.NORMAL(target);
-            $("#SectionContainer").addClass("hidden");
+        NORMAL: function (target) {
+            //ViewHide.NORMAL(target);
+            //$("#SectionContainer").addClass("hidden");
+            if (target) {
+                target.css({
+                    "opacity": "0",
+                    "z-index": "25",
+                });
+            };
         }
     }
 };

@@ -7,16 +7,16 @@ var LoginViewParam = {
     loaded: false,
 };
 (function () {
-    LoginView = function () {
+    LoginView = function() {
         //以父类的构造函数初始化
         LoginView.superClass.constructor.call(this, LoginViewParam);
         //初始化
         var _this = this;
-        var init = function () { LoginView.prototype.init(_this, _this) };
+        var init = function() { LoginView.prototype.init(_this, _this) };
         //Load View
         LoadView(_this, init);
 
-    }
+    };
 
     //Super Class
     extendViewClass(LoginView, View, LoginViewParam);
@@ -50,7 +50,7 @@ var LoginViewParam = {
         }).unbind("mouseup").mouseup(function () {
             $(this).css({ 'background-color': '#999' });
         }).unbind("mouseout").mouseout(function () {
-            $(this).css({ 'background-color': '#fff', 'color': '#999' });
+            $(this).css({ 'background-color': 'transparent', 'color': '#999' });
         })
 
         $(".CircleZoom").unbind("mouseover").mouseover(function () {
@@ -68,7 +68,7 @@ var LoginViewParam = {
         */
 
         $("#UserName").unbind("focusin").focusin(function () {
-            $(this).css({ 'color': '#555' });
+            $(this).css({ 'color': '#fff' });
             if ($(this).attr('value').toString().toLowerCase().match("input your name")) {
                 $(this).attr('value', '');
             }
