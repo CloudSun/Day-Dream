@@ -67,6 +67,7 @@
     <Content Include="static\css\reset\reset.css" />
     <Content Include="static\css\view\main-view.css" />
     <Content Include="static\css\view\rotate3Dpane.css" />
+    <Content Include="static\img\sleep.png" />
     <Content Include="static\js\common.js" />
     <Content Include="static\js\control.js" />
     <Content Include="static\js\controler.js" />
@@ -97,9 +98,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="static\img\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
