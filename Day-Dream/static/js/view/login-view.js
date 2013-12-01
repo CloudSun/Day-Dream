@@ -30,7 +30,6 @@ var LoginViewParam = {
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
 
-        setCookie("username","Cloud",30)
 
         LoginView.prototype.addEvents.call(this, view);
         CallbackL(arguments);

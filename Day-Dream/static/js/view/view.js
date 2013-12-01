@@ -144,7 +144,11 @@ var ViewType = {
         init: function(view) {
             //section 栏的初始化方法，定义section
             Resize.Section.onresize(view.target.children(".section-container"));
-        }
+        },
+        show: function (view) {
+            //section 栏的show 方法, save current state
+            //TODO throw the url
+        },
     }
 };
 

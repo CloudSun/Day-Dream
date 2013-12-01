@@ -148,7 +148,19 @@ var Resize = {
                 "-webkit-gradient(radial, 73% 65%," + 0 + ",73% 65%, " + screenHeight / 8 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
                 "-webkit-gradient(radial, 100% 100%," + 0 + ", 100% 100%, " + screenHeight / 4 + ", from(#fff), to(transparent))",
         });
-        
+        //Section1View bg w/h = 1.6
+        //h screenH 70%
+        //w screenW 50
+        if (screenWidth /(screenHeight * 0.8) > 1) {
+            $("#Section1 .section-container").css({
+                "background-size": "auto 70%",
+            });
+        } else {
+            $("#Section1 .section-container").css({
+                "background-size": "100% auto",
+            });
+        }
+
 
         Resize.Section.list.each(function(target, i) {
             Resize.Section.onresize(target, 0.5);
