@@ -12,7 +12,7 @@ var LoginViewParam = {
         LoginView.superClass.constructor.call(this, LoginViewParam);
         //初始化
         var _this = this;
-        var init = function() { LoginView.prototype.init(_this, _this) };
+        var init = function() { LoginView.prototype.init(_this, _this); };
         //Load View
         LoadView(_this, init);
 
@@ -64,10 +64,13 @@ var LoginViewParam = {
             $(".CircleOut").removeClass("circleEffect").unbind('webkitTransitionEnd moztransitionend transitionend oTransitionEnd')
                 .bind('webkitAnimationEnd webkitTransitionEnd moztransitionend transitionend oTransitionEnd', function () {
                 console.log("circleEffect");
-                Controler.transfer(new Section1View());
-                $("#SectionContainer").css({
-                    "background-color": "rgba(0,0,0,0.9)",
-                });
+                    Controler.currentView.hide();
+                setTimeout(function () {
+                    $("#SectionContainer").css({
+                        "background-color": "rgba(0,0,0,0.9)",
+                    });
+                    Controler.transfer(new Section3View());
+                }, 200);
             }).addClass("circleShine");
         });
 

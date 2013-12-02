@@ -348,6 +348,7 @@ var SectionMenu = {
         fmHoverContainer.css({
             "width": firstMenuUl_width + "px",
             "height": this.FM_size.height + "px",
+            "top": this.FM_size.height + "px",
         });
 
         for (var i = 0; i < firstMenuLength; i++) {
@@ -399,7 +400,6 @@ var SectionMenu = {
         var left = parseFloat($(".first-class-li.menuSelected").position().left) + $(".first-class-li.menuSelected").width() / 2 - $("#FMArrowContainer").width() / 2;
         $("#FMArrowContainer").css({
             "left": left + "px",
-
         });
     },
     FirstMenu_MoveOut:function(){
