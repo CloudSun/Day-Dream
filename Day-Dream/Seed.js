@@ -383,6 +383,8 @@ var Controler ={
                         }
                     } else {
                         gameInfo.tolow++;
+                        Controler.stop();
+                        Controler.start();
                     }
 
                     document.getElementsByClassName("tbg-farm-dialog-common-btn inner-btn")[1].click();
