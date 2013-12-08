@@ -353,7 +353,7 @@ var Controler ={
             document.getElementsByClassName("matching-game-menu")[0].getElementsByTagName("span")[0].click();
             setTimeout(function () {
                 startCaculate();
-            }, 500);
+            }, 200);
         } else {
             startCaculate()
         }
@@ -390,10 +390,10 @@ var Controler ={
                     document.getElementsByClassName("tbg-farm-dialog-common-btn inner-btn")[1].click();
                     setTimeout(function () {
                         Controler.start();
-                    }, 3200);
+                    }, 3000);
                     
                 }
-            }, 500)
+            }, 200)
         }
         
 
@@ -434,13 +434,13 @@ function getKey(e) {
         Controler.stop();
     } else if (keycode == 76) {
         //显示成果 
-        console.log("亲，你到现在一共游戏" + gameInfo.time + "次，收货如下：【神马都木有】" + gameInfo.none + "次，【1块钱红包！！】" + gameInfo.oneyuan + "次， 【淘金币？】" + gameInfo.taojingbi + "次， 【分数太低】" + gameInfo.tolow+"次");
+        console.log("亲，你到现在一共游戏" + gameInfo.time + "次，收货如下：【种子！！】" + gameInfo.zhonghongbao + "次，【神马都木有】" + gameInfo.none + "次，【1块钱红包！！】" + gameInfo.oneyuan + "次， 【淘金币？】" + gameInfo.taojingbi + "次， 【分数太低】" + gameInfo.tolow + "次");
         if (gameInfo.oneyuan == 0) {
             console.log("“看来运气不咋滴啊，来，给你吹口仙气~，赶紧继续吧！”")
         } else if (gameInfo.oneyuan < 5) {
-            console.log("“呦~ 不错嘛，有" + gameInfo.oneyuan + "个了，加了个油~”");
+            console.log("“呦~ 不错嘛，有" + gameInfo.zhonghongbao + "个了，加了个油~”");
         } else if (gameInfo.oneyuan > 5) {
-            console.log("“哇塞，"+gameInfo.oneyuan+"个进账了，碉堡了！！”")
+            console.log("“哇塞，" + gameInfo.zhonghongbao + "个进账了，碉堡了！！”")
         } else if (gameInfo.tolow > 0) {
             console.log("“什么？ 分数太低？......额.......        这是Bug”")
         }

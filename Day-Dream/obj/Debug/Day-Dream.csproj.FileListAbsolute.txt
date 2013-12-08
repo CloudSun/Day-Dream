@@ -10,3 +10,9 @@ C:\Users\明\Documents\GitHub\Day-Dream\Day-Dream\bin\Day-Dream.pdb
 C:\Users\明\Documents\GitHub\Day-Dream\Day-Dream\obj\Debug\Day-Dream.csprojResolveAssemblyReference.cache
 C:\Users\明\Documents\GitHub\Day-Dream\Day-Dream\obj\Debug\Day-Dream.dll
 C:\Users\明\Documents\GitHub\Day-Dream\Day-Dream\obj\Debug\Day-Dream.pdb
+D:\GitHub\Day-Dream\Day-Dream\bin\Day-Dream.dll.config
+D:\GitHub\Day-Dream\Day-Dream\bin\Day-Dream.dll
+D:\GitHub\Day-Dream\Day-Dream\bin\Day-Dream.pdb
+D:\GitHub\Day-Dream\Day-Dream\obj\Debug\Day-Dream.csprojResolveAssemblyReference.cache
+D:\GitHub\Day-Dream\Day-Dream\obj\Debug\Day-Dream.dll
+D:\GitHub\Day-Dream\Day-Dream\obj\Debug\Day-Dream.pdb
