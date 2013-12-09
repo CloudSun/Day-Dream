@@ -64,3 +64,28 @@ function extendViewClass(subClass, superClass,viewPram) {
         superClass.prototype.constructor = superClass;
     }
 }
+
+function clone(o){
+    if (typeof o !== "object") throw TypeError();    //参数必须是对象
+    var object = {};    //将要返回的数组
+    for (prop in o) {    //遍历所有可枚举的属性
+        if (typeof o[prop] == "object") {
+            object[prop] = clone(o[prop]);
+        }
+        if (o[prop] == undefined) {
+            object[prop] = undefined;
+        }
+        if (o[prop] == null) {
+            object[prop] = null
+        }
+        if (o[prop] != o[prop]) {
+            object[prop] = NaN;
+        }
+        else if (isArray(o[prop])) {
+            object[prop] = o[prop].slice();
+        } else {
+            object[prop] = o[prop];
+        }
+    }
+    return object;
+}

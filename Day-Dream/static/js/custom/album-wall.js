@@ -232,7 +232,7 @@
             });
             var album = albumList.splice(0, 1)[0];
             //[1]:无baseline的情况
-            if (AlbumWall.Axis.baseline.length == 0) {
+            if (AlbumWall.Axis.Baseline.length == 0) {
                 //取坐标系-x方向为album上下对称点且右边对齐y轴
                 album.image.axis = {};
                 album.image.axis.location = {
@@ -273,19 +273,19 @@
                             y: y,
                             distance: Math.pow(x, 2) + Math.pow(y, 2)
                         };
-                        return { target: b, index: i };
+                        return b;
                     });
 
                     baselineCenter.sort(function (a, b) {
                         //a在前，返回负数
                         //b在前,返回正数
                         //0，不变
-                        if (a.target.center.distance < b.target.center.distance) {
+                        if (a.center.distance < b.center.distance) {
                             return -1;
-                        } else if (a.target.center.distance == b.target.center.distance) {
-                            if (a.target.space == "-x" || b.target.space == "-y") {
+                        } else if (a.center.distance == b.center.distance) {
+                            if (a.space == "-x" || b.space == "-y") {
                                 return -1;
-                            } else if (b.target.space == "-x" || a.target.space == "-y") {
+                            } else if (b.space == "-x" || a.space == "-y") {
                                 return 1;
                             } else {
                                 return 0;
@@ -473,9 +473,9 @@
         function drawAlbum(album) {
             var albumHeight = album.image.axis_width / AlbumWall.Axis.width_scale;
             var albumWidth = album.image.axis_height / AlbumWall.Axis.height_scale;
-            var albumTop = (album.image.axis.location.y + AlbumWall.Axis.origin.y) / AlbumWall.Axis.height_scale;
+            var albumTop = (AlbumWall.Axis.origin.y - album.image.axis.location.y) / AlbumWall.Axis.height_scale;
             var albumLeft = (album.image.axis.location.x + AlbumWall.Axis.origin.x) / AlbumWall.Axis.width_scale;
-            var albumContainer = $("<div class='albumContainer' style='border:1px dashed #000;box-sizing: border-box;position:absolute;"+
+            var albumContainer = $("<div class='albumContainer' style='border:1px dashed #fff;box-sizing: border-box;position:absolute;"+
                 "width:"+albumWidth+"px;"+
                 "height:"+albumHeight+"px;"+
                 "top:"+albumTop+"px;"+
@@ -567,51 +567,49 @@
             } else {
                 for (var i = 0; i < baseline.length;i++){
                     for (var j = 0; j < overlarp.length; j++) {
-                        var b = baseline.slice()[i];
-                        var l = overlarp[j];
+                        var b = clone(baseline[i]);
+                        var l = clone(overlarp[j]);
                         if (b.x == l.x && b.y == l.y && l.f >= b.f && l.t <= b.t ) {
-                            var t = baseline.slice()[i];;
+                            var t = clone(baseline.slice()[i]);
                             //删除或者拆分被重合的baseline
                             if (l.f > b.f) {
                                 //前段间隔. l.f的开始位置为b.t的结束位置
-                                t.f = t.f;
                                 t.t = l.f;
                                 if (b.y) {//y值不为null,x轴平行方向line
                                     if (b.space == "y") { //space == "y" 方向为y轴正方向，为topborder
                                         //topborder，修改b.to.x值
-                                        t.to.x = b.t;
+                                        t.to.x = l.f;
                                     } else { //y轴负方向，为bottomborder
                                         //bottomborder,修改b.from.x值
-                                        t.from.x = b.t;
+                                        t.from.x = l.f;
                                     }
                                 } else { //x值不为bull,y轴平行方向line
                                     if (b.space == "x") { //space == "x" x轴正方向, 为rightborder
                                         //rightborder,修改b.from.y
-                                        t.from.y = b.t;
+                                        t.from.y = l.f;
                                     } else {
                                         //leftborder
-                                        t.to.y = b.t;
+                                        t.to.y = l.f;
                                     }
                                 }
                                 newBaseline.push(t);
                                 debugger;
                             }
-                            t = baseline.slice()[i];
+                            t = clone(baseline.slice()[i]);
                             if (l.t < b.t) {
                                 //后段间隔,l.t的结束位置为b.f的开始位置
                                 t.f = l.t;
-                                t.t = b.t;
                                 if (t.y) {
                                     if (b.space == "y") {
-                                        t.from.x = b.f;
+                                        t.from.x = l.t;
                                     } else {
-                                        t.to.x = b.f;
+                                        t.to.x = l.t;
                                     }
                                 } else {
                                     if (b.space == "x") {
-                                        t.to.y = b.f;
+                                        t.to.y = l.t;
                                     } else {
-                                        t.from.y = b.f;
+                                        t.from.y = l.t;
                                     }
                                 }
                                 newBaseline.push(t);
