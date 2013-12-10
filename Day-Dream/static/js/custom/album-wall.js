@@ -91,6 +91,56 @@
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
+            }, {
+                title: "album10",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 84,
+                    height: 84,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album11",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 384,
+                    height: 124,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album12",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 84,
+                    height: 84,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album13",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 224,
+                    height: 154,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album14",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 584,
+                    height: 524,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
             }],
         //分割后的PageList
         PageList: new Array(),
@@ -151,6 +201,16 @@
             //a在前，返回负数
             //b在前,返回正数
             //0，不变
+            
+            if (a.image.area > b.image.area) {
+                    return -1;
+                } else if (a.image.area == b.image.area) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            
+            /*
             if (a.updatetime > b.updatetime) { //a最新更新
                 return -1;
             } else if (a.updatetime == b.updatetime) {
@@ -176,6 +236,7 @@
             } else {
                 return 1;
             }
+            */
         });
 
         //split coverlist by wall pagesize 根据pageSize分割albumWall
@@ -191,8 +252,8 @@
             var resizeBorderArea = 0;
             if (albumBorderSumArea > wallSizeArea) {
                 //如果albumSize > average album size && the album size/ (albumBorderSumArea/_this.Wall.size.area())
-                var averageSize = parseInt(wallSizeArea / list.length);
-                var areaScale = parseInt(Math.sqrt(wallSizeArea / albumBorderSumArea));
+                var averageSize = toFixed(wallSizeArea / list.length);
+                var areaScale = toFixed(Math.sqrt(wallSizeArea / albumBorderSumArea));
                 list.each(function(o, j, averageSize, areaScale) {
                     var resizeWidth = 0;
                     var resizeHeight = 0;
@@ -215,13 +276,13 @@
                 //仍然会有放不下的情况？
                 console.log("realBorderSizeArea=" + albumBorderSumArea + " resizeBorderArea=" + resizeBorderArea + " wallSizeArea=" + wallSizeArea);
             } else {
-                var averageSize = parseInt(wallSizeArea / list.length);
+                var averageSize = toFixed(wallSizeArea / list.length);
                 list.each(function(o, j, averageSize) {
                     var resizeWidth = 0;
                     var resizeHeight = 0;
                     if (o.image.border_area > averageSize) {
-                        resizeWidth = o.image.width * parseInt(Math.sqrt(parseInt(averageSize / o.image.border_area)));
-                        resizeHeight = o.image.height * parseInt(Math.sqrt(parseInt(averageSize / o.image.border_area)));
+                        resizeWidth = o.image.width * toFixed(Math.sqrt(toFixed(averageSize / o.image.border_area)));
+                        resizeHeight = o.image.height * toFixed(Math.sqrt(toFixed(averageSize / o.image.border_area)));
                     } else {
                         resizeWidth = o.image.width;
                         resizeHeight = o.image.height;
@@ -246,13 +307,13 @@
         var wallWidth = _this.Wall.size.width();
         var wallHeight = _this.Wall.size.height();
         if (wallWidth > wallHeight) {
-            _this.Axis.width_scale = parseInt(wallHeight / wallWidth);
+            _this.Axis.width_scale = toFixed(wallHeight / wallWidth);
         } else {
-            _this.Axis.height_scale = parseInt(wallWidth / wallHeight);
+            _this.Axis.height_scale = toFixed(wallWidth / wallHeight);
         }
         //原点坐标
         //偏正为正方形的坐标系原点
-        _this.Axis.origin.x = _this.Axis.origin.y = parseInt(Math.min(wallWidth, wallHeight) / 2);
+        _this.Axis.origin.x = _this.Axis.origin.y = toFixed(Math.min(wallWidth, wallHeight) / 2);
         //init location to put the album
         _this.Axis.baseline = new Array();
 
@@ -261,8 +322,8 @@
 
         //resize the album size according to the width_scale & height_scale 
         albumList = albumList.each(function(a) {
-            a.image.axis_width = a.image.resize_width * AlbumWall.Axis.width_scale;
-            a.image.axis_height = a.image.resize_height * AlbumWall.Axis.height_scale;
+            a.image.axis_width = toFixed(a.image.resize_width * AlbumWall.Axis.width_scale);
+            a.image.axis_height = toFixed(a.image.resize_height * AlbumWall.Axis.height_scale);
             return a;
         });
         //获取Baseline
@@ -280,7 +341,7 @@
                 album.image.axis = {};
                 album.image.axis.location = {
                     x: -album.image.axis_width,
-                    y: parseInt(album.image.axis_height / 2),
+                    y: toFixed((album.image.axis_height / 2),4),
                 };
 
                 album.image.axis.border = getAxisImageBorder(album.image);
@@ -299,8 +360,8 @@
                 if (validateBaseline(AlbumWall.Axis.Baseline)) {
                     //get the baseline center point and the distance to the origin point
                     var outBaselineCenter = AlbumWall.Axis.OutBaseline.each(function (b, i) {
-                        var x = parseInt((b.from.x + b.to.x) / 2);
-                        var y = parseInt((b.from.y + b.to.y) / 2);
+                        var x = toFixed((b.from.x + b.to.x) / 2);
+                        var y = toFixed((b.from.y + b.to.y) / 2);
                         b.type = "out-baseline-center";
                         b.distance = Math.pow(x, 2) + Math.pow(y, 2);
                         b.center = {
@@ -348,26 +409,26 @@
                         switch (targetBaseline.space) {
                         case "y":
                             album.image.axis.location = {
-                                x: targetBaseline.center.x - parseInt((album.image.axis_width / 2)),
-                                y: targetBaseline.center.y + (album.image.axis_height),
+                                x: toFixed(targetBaseline.center.x - toFixed(album.image.axis_width / 2)),
+                                y: toFixed(targetBaseline.center.y + album.image.axis_height),
                             };
                             break;
                         case "-y":
                             album.image.axis.location = {
-                                x: targetBaseline.center.x - parseInt((album.image.axis_width / 2)),
+                                x: toFixed(targetBaseline.center.x - toFixed(album.image.axis_width / 2)),
                                 y: targetBaseline.center.y,
                             };
                             break;
                         case "x":
                             album.image.axis.location = {
                                 x: targetBaseline.center.x,
-                                y: targetBaseline.center.y + parseInt((album.image.axis_height / 2)),
+                                y: toFixed(targetBaseline.center.y + toFixed(album.image.axis_height / 2)),
                             };
                             break;
                         case "-x":
                             album.image.axis.location = {
-                                x: targetBaseline.center.x - (album.image.axis_width),
-                                y: targetBaseline.center.y + parseInt((album.image.axis_height / 2)),
+                                x: toFixed(targetBaseline.center.x - album.image.axis_width),
+                                y: toFixed(targetBaseline.center.y + toFixed(album.image.axis_height / 2)),
                             };
                             break;
                         }
@@ -522,21 +583,22 @@
             var border = {
                 top: {
                     y: image.axis.location.y,
-                    limit: [image.axis.location.x, image.axis.location.x + image.axis_width],
+                    limit: [image.axis.location.x,toFixed(image.axis.location.x + image.axis_width)],
                 },
                 right: {
-                    x: image.axis.location.x + image.axis_width,
-                    limit: [image.axis.location.y - image.axis_height, image.axis.location.y],
+                    x: toFixed(image.axis.location.x + image.axis_width),
+                    limit: [toFixed(image.axis.location.y - image.axis_height), image.axis.location.y],
                 },
                 bottom: {
-                    y: image.axis.location.y - image.axis_height,
-                    limit: [image.axis.location.x, image.axis.location.x + image.axis_width],
+                    y: toFixed(image.axis.location.y - image.axis_height),
+                    limit: [image.axis.location.x, toFixed(image.axis.location.x + image.axis_width)],
                 },
                 left: {
                     x: image.axis.location.x,
-                    limit: [image.axis.location.y - image.axis_height, image.axis.location.y],
+                    limit: [toFixed(image.axis.location.y - image.axis_height), image.axis.location.y],
                 }
             };
+            
             return border;
         }
         
@@ -1048,3 +1110,8 @@ Array.prototype.pushArray = function (array) {
     }
 };
 
+function toFixed(number, n) {
+    !n && (n = 4);
+    var a = new Number(number);
+    return parseFloat(a.toFixed(n));
+}

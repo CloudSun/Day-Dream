@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="Day-Dream.html" />
     <Content Include="ideal\1.png" />
+    <Content Include="ideal\22496_1366977_479482.jpg" />
     <Content Include="ideal\info.txt" />
     <Content Include="others\Seed.js" />
     <Content Include="static\css\css3\style.css" />
