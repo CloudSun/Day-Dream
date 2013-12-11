@@ -204,7 +204,7 @@
             //a在前，返回负数
             //b在前,返回正数
             //0，不变
-            /*
+            
             if (a.image.area > b.image.area) {
                     return -1;
                 } else if (a.image.area == b.image.area) {
@@ -213,7 +213,7 @@
                     return 1;
                 }
             
-            /*/
+            /*
             if (a.updatetime > b.updatetime) { //a最新更新
                 return -1;
             } else if (a.updatetime == b.updatetime) {
@@ -239,6 +239,7 @@
             } else {
                 return 1;
             }
+            */
             
         });
 
@@ -339,7 +340,7 @@
                 throw Exception;
                 return null;
             });
-            var album = albumList.splice(0, 1)[0];
+            var album = albumList[0];
             //[1]:无baseline的情况
             if (AlbumWall.Axis.OutBaseline.length == 0 && AlbumWall.Axis.CrossPoint.length == 0) {
                 //取坐标系-x方向为album上下对称点且右边对齐y轴
@@ -356,6 +357,7 @@
                 if (validateBaseline(baseline)) {
                     addBaseLine(baseline);
                     //完成本次排列
+                    
                     afterArrange(album, albumList);
                 }
 
@@ -406,7 +408,9 @@
                         throw Exception;
                         return null;
                     }
-
+                    if (album.title == "album10") {
+                        debugger;
+                    }
                     if (condition.type == "out-baseline-center") {
                         //if is baselineCenter;
                         var targetBaseline = condition;
@@ -479,7 +483,7 @@
                                     var otheralbum = albumList.getIndex(j);
                                     addAlbum(otheralbum, albumList, targetCrossPoint);
                                 } else {
-                                    /*
+                                    
                                     if (j == albumList.length - 1) {
                                         //put an autoContent in;
                                         var autoWidth = 0;
@@ -501,15 +505,16 @@
                                         };
                                         addAlbum(autoContentAlbum, albumList, targetCrossPoint);
                                     }
-                                    */
+                                    
+                                    /*
                                     //TODO，不使用album填充，直接baseline里面截取链接
                                     //根据targetCrossPoint来获取形成闭区间的两个点以及他们的可延伸区域，并获取延伸段小的那个点作为填充的延伸baseline
                                     var currentIndex;
                                     for (var c = 0 ; c < crossPointArray.length; c++) {
-                                        var current = crossPointArray[i]
+                                        var current = crossPointArray[c]
                                         if (targetCrossPoint.point.x == current.point.x && targetCrossPoint.point.y == current.point.y) {
                                             if (!currentIndex&&currentIndex!=0) {
-                                                currentIndex = i;
+                                                currentIndex = c;
                                             } else {
                                                 throw "to match";
                                             }
@@ -517,8 +522,65 @@
                                     }
                                     if (!currentIndex && currentIndex != 0) {
                                         throw "no match index";
+                                    } else {
+                                        currentIndex;
+                                        //debugger;
+                                    };
+                                    var extendsCrossPoint = null;
+                                    //如果是下一个
+                                    if (currentIndex + 1 < crossPointArray.length) {
+                                        var next = crossPointArray[currentIndex + 1];
+                                        var current = targetCrossPoint;
+                                        extendsCrossPoint = getExtendsCrossPoint(next, current);
+                                    } else {
+                                        var next = crossPointArray[0];
+                                        extendsCrossPoint = getExtendsCrossPoint(next, current);
                                     }
+
+                                    //如果是上一个
+                                    if (currentIndex > 0) {
+                                        var prev = crossPointArray[currentIndex - 1];
+                                        var current = targetCrossPoint;
+                                        extendsCrossPoint = getExtendsCrossPoint(prev, current);
+                                    } else {
+                                        var prev = crossPointArray[crossPointArray.length - 1];
+                                        var current = targetCrossPoint;
+                                        extendsCrossPoint = getExtendsCrossPoint(prev, current);
+                                    }
+
+                                    if (extendsCrossPoint) {
+                                        //对现有的baseline从crosspoint处延伸填充闭合区域
+                                        debugger;
+
+                                    } else {
+                                        throw "no such extendsCrossPoint";
+                                    }
+
+
                                     //获取关联闭合区域点，比较获取可延伸点，然后延伸闭合baseline
+                                    function getExtendsCrossPoint(next, current) {
+                                        var crossPoint = null
+                                        if (next.limit_x && current.limit_x && next.limit_x == current.limit_x) {
+                                            //判断space_y_length
+                                            if (next.space_y_length < current.space_y_length) {
+                                                crossPoint = next;
+                                                debugger;
+                                            } else {
+                                                crossPoint = current;
+                                                debugger;
+                                            }
+                                        } else if (next.limit_y && current.limit_y && next.limit_y == current.limit_y) {
+                                            if (next.space_x_length < current.space_x_length) {
+                                                crossPoint = next;
+                                                debugger;
+                                            } else {
+                                                crossPoint = current;
+                                                debugger;
+                                            }
+                                        }
+                                        return crossPoint;
+                                    }
+                                    */
 
                                 }
                             }
@@ -529,6 +591,13 @@
         }
         
         function afterArrange(album, albumList) {
+            for (var i = 0; i < albumList.length; i++) {
+                if (album.title == albumList[i].title) {//区分album
+                    albumList.getIndex(i);
+                    debugger;
+                }
+            }
+
             //添加到最终内容Content
             AlbumWall.Axis.Content.push(album);
             drawAlbum(album);
@@ -739,7 +808,7 @@
         function removeOverlapLine(overlarp, baseline) {
             var newBaseline = new Array();
             if (!overlarp || overlarp.length == 0) {
-                console.log("overlarp error");
+                throw ("overlarp error");
                 return null;
             } else {
                 for (var i = 0; i < baseline.length; i++) {
@@ -921,6 +990,9 @@
                     outCrossPointArray.push(outCrossPoint);
                 }
             }
+            if (outCrossPointArray.length == 0) {
+                throw "outCrossPointArray none";
+            }
             return outCrossPointArray;
         }
 
@@ -1024,18 +1096,22 @@
                     if (c1.space_x == c2.space_x) {//x轴空白方向一致
                         if (c1.space_y != c2.space_y) {//y轴空白方向相反。形成凹区间
                             //debugger;
+                            if ((c1.space_y.indexOf("-") != -1 && c1.point.y > c2.point.y) || ((c2.space_y.indexOf("-") != -1 && c2.point.y > c1.point.y))) {
                             //update c1
                             crosspoint[i].limit_y = toFixed(Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y))));
                             //update c2;
                             crosspoint[cIndex].limit_y =toFixed(Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y))));
+                            }
                         }
                     }
                 }else if(c1.point.y == c2.point.y){
                     if(c1.space_y == c2.space_y){
                         if (c1.space_x != c2.space_x) {
                             //debugger;
-                            crosspoint[i].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2.point.x))));
-                            crosspoint[cIndex].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2.point.x))));
+                            if ((c1.space_x.indexOf("-") != -1 && c1.point.x > c2.point.x) || (c2.space_x.indexOf("-") != -1 && c2.point.x > c1.point.x)) {
+                                crosspoint[i].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2.point.x))));
+                                crosspoint[cIndex].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2.point.x))));
+                            }
                         }
                     }
                 }
@@ -1096,6 +1172,7 @@
         //验证baseline是否正确，完全闭合区间
         function validateBaseline(baseline) {
             if ((baseline.length < 4) || (baseline.length % 2 != 0)) {
+                throw "invalid baseline";
                 return false;
             }
             baseline.each(function (b, i) {
@@ -1105,13 +1182,13 @@
                     start = b;
                     prev = this[this.length - 1];
                     if (prev.to.x != start.from.x || prev.to.y != start.from.y) {
-                        console.log("baseline data error, not close area");
+                        throw ("baseline data error, not close area");
                         return false;
                     }
                 } else {
                     prev = this[i - 1];
                     if (prev.to.x != b.from.x || prev.to.y != b.from.y) {
-                        console.log("baseline data error, not close area");
+                        throw ("baseline data error, not close area");
                         return false;
                     }
                 }

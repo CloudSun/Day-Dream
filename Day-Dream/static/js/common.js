@@ -170,6 +170,8 @@ Array.prototype.contains = function (a) {
     } catch (e) { return false; }
 };
 
+
+
 Array.prototype.each = function (fn) {
     ///<summary>
     ///Execute function for each element in array and return result
