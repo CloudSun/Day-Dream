@@ -1,4 +1,4 @@
-﻿var AlbumWall = {
+var AlbumWall = {
     Album: {
         CoverList: [
             {
@@ -168,6 +168,9 @@
     Axis: {
         width_scale: 1,
         height_scale: 1,
+        scale: 1,
+        margin_left: 0,
+        margin_top:0,
         width: 0,
         height: 0,
         //原点
@@ -467,13 +470,12 @@
                         };
 
                         //if space available and add in;
-
                         if (widthAvailable(targetCrossPoint, album) && heightAvailable(targetCrossPoint, album)) {
                             addAlbum(album, albumList, targetCrossPoint);
                         } else {
                             //get other avaliable album to put in
                             for (var j = 0; j < albumList.length; j++) {
-                                if (widthAvailable(targetCrossPoint, albumList[i]) && heightAvailable(targetCrossPoint, albumList[i])) {
+                                if (widthAvailable(targetCrossPoint, albumList[j]) && heightAvailable(targetCrossPoint, albumList[j])) {
                                     var otheralbum = albumList.getIndex(i);
                                     addAlbum(otheralbum, albumList, targetCrossPoint);
                                 } else {
@@ -509,7 +511,6 @@
         function afterArrange(album, albumList) {
             //添加到最终内容Content
             AlbumWall.Axis.Content.push(album);
-            drawAlbum(album);
             AlbumWall.Axis.CrossPoint = getCrossPoint(AlbumWall.Axis.Baseline);
             AlbumWall.Axis.OutCrossPoint = getOutCrossPoint(AlbumWall.Axis.Baseline);
             AlbumWall.Axis.OutBaseline = getOutBaseline(AlbumWall.Axis.OutCrossPoint);
@@ -518,7 +519,7 @@
                 caculateAlbumArrange(albumList);
             } else {
                 //arrange complete
-
+                debugger;
                 //TODO
                 //判断baseline，判断最左baseline和最右baseline之间的距离，>AlbumWall.Axis.width
                 //获取最左边
@@ -548,14 +549,29 @@
                             break;
                     }
                 }
+                
                 var borderWidth, borderHeight;
                 if (leftBaseline && rightBaseline && topBaseline && bottomBaseline) {
-                    borderWidth = Math.abs(rightBaseline.x - leftBaseline.x);
-                    borderHeight = Math.abs(topBaseline.y - bottomBaseline.y)
+                    borderWidth = toFixed(Math.abs(rightBaseline.x - leftBaseline.x));
+                    borderHeight = toFixed(Math.abs(topBaseline.y - bottomBaseline.y));
+                    var maxBorder = Math.max(borderWidth, borderHeight);
+                    if (maxBorder > AlbumWall.Axis.width) {
+                        AlbumWall.Axis.scale = toFixed(AlbumWall.Axis.width / maxBorder);
+                    }
+                    var originX = toFixed((rightBaseline.x + leftBaseline.x) / 2);
+                    var originY = toFixed((topBaseline.y + bottomBaseline.y) / 2);
+                    AlbumWall.Axis.margin_left = (originX);
+                    AlbumWall.Axis.margin_top = (originY);
+                    
+                    debugger;
                 } else {
                     throw exception;
                 }
-                //
+                
+
+                AlbumWall.Axis.Content.each(function (album,i) {
+                    drawAlbum(album);
+                });
             }
         }
 
@@ -605,17 +621,18 @@
         }
 
         function drawAlbum(album) {
-            var albumWidth = album.image.axis_width / AlbumWall.Axis.width_scale;
-            var albumHeight = album.image.axis_height / AlbumWall.Axis.height_scale;
-            var albumTop = (AlbumWall.Axis.origin.y - album.image.axis.location.y) / AlbumWall.Axis.height_scale;
-            var albumLeft = (album.image.axis.location.x + AlbumWall.Axis.origin.x) / AlbumWall.Axis.width_scale;
-            var albumContainer = $("<div class='albumContainer' style='border:1px dashed #fff;box-sizing: border-box;position:absolute;background:#ccc;"+
+            var albumWidth = album.image.axis_width / AlbumWall.Axis.width_scale * AlbumWall.Axis.scale;
+            var albumHeight = album.image.axis_height / AlbumWall.Axis.height_scale * AlbumWall.Axis.scale;
+            var albumTop = ((AlbumWall.Axis.origin.y - album.image.axis.location.y + AlbumWall.Axis.margin_top) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.width) / AlbumWall.Axis.height_scale;
+            var albumLeft = ((album.image.axis.location.x + AlbumWall.Axis.origin.x + AlbumWall.Axis.margin_left) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.height) / AlbumWall.Axis.width_scale;
+            var albumContainer = $("<div class='albumContainer' style='border:1px dashed #fff;box-sizing: border-box;position:absolute;background:rgba(255,255,255,0.3);"+
                 "width:"+albumWidth+"px;"+
                 "height:"+albumHeight+"px;"+
                 "top:"+albumTop+"px;"+
-                "left:"+albumLeft+"px'></div>");
+                "left:" + albumLeft + "px'></div>");
+            albumContainer.html(album.title);
             AlbumWall.Wall.target.append(albumContainer);
-            debugger;
+            //debugger;
         }
 
 /*
@@ -716,19 +733,24 @@
                                     if (b.space == "y") { //space == "y" 方向为y轴正方向，为topborder
                                         //topborder，修改b.to.x值
                                         t.to.x = l.f;
+                                        t.length = Math.abs(t.to.x - t.from.x);
                                     } else { //y轴负方向，为bottomborder
                                         //bottomborder,修改b.from.x值
                                         t.from.x = l.f;
+                                        t.length = Math.abs(t.from.x - t.to.x);
                                     }
                                 } else { //x值不为bull,y轴平行方向line
                                     if (b.space == "x") { //space == "x" x轴正方向, 为rightborder
                                         //rightborder,修改b.from.y
                                         t.from.y = l.f;
+                                        t.length = Math.abs(t.from.y - t.to.y);
                                     } else {
                                         //leftborder
                                         t.to.y = l.f;
+                                        t.length = Math.abs(t.to.y - t.from.y);
                                     }
                                 }
+                                
                                 newBaseline.push(t);
                             }
                             t = clone(baseline.slice()[i]);
@@ -738,14 +760,18 @@
                                 if (t.y) {
                                     if (b.space == "y") {
                                         t.from.x = l.t;
+                                        t.length = Math.abs(t.to.x - t.from.x);
                                     } else {
                                         t.to.x = l.t;
+                                        t.length = Math.abs(t.from.x - t.to.x);
                                     }
                                 } else {
                                     if (b.space == "x") {
                                         t.to.y = l.t;
+                                        t.length = Math.abs(t.from.y - t.to.y);
                                     } else {
                                         t.from.y = l.t;
+                                        t.length = Math.abs(t.to.x - t.from.x);
                                     }
                                 }
                                 newBaseline.push(t);
@@ -931,7 +957,7 @@
                             t: Math.max(l1.point.y,l2.point.y),//limit to
                             from: l1.point, //从左至右
                             to: l2.point,
-                            length: Math.abs(Math.max(l1.point.y, l2.point.y) - Math.min(l1.point.y, l2.point.y)),
+                            length: toFixed(Math.abs(Math.max(l1.point.y, l2.point.y) - Math.min(l1.point.y, l2.point.y))),
                         };
                         baselineArray.push(baseline);
                     } else if (l1.space_y == l2.space_y) {
@@ -946,7 +972,7 @@
                             t: Math.max(l1.point.x, l2.point.x),//limit to
                             from: l1.point, //从左至右
                             to: l2.point,
-                            length: Math.abs(Math.max(l1.point.y, l2.point.y) - Math.min(l1.point.y, l2.point.y)),
+                            length: toFixed(Math.abs(Math.max(l1.point.y, l2.point.y) - Math.min(l1.point.y, l2.point.y))),
                         };
                         baselineArray.push(baseline);
                     }
@@ -958,7 +984,7 @@
         //根据crosspoint判断是否有凹区间，获取这个区间的数据 -- cancel
         //-- update 修改方法为判断crossPoint点的space方向的limit值
         function getSac(crosspoint) {
-            for (var i = 0; i < crosspoint; i++) {
+            for (var i = 0; i < crosspoint.length; i++) {
                 var c1 = crosspoint[i];
                 var c2;
                 var cIndex = i + 1;
@@ -972,6 +998,7 @@
                 if (c1.point.x == c2.point.x) {//处于同一平行于y轴的直线上
                     if (c1.space_x == c2.space_x) {//x轴空白方向一致
                         if (c1.space_y != c2.space_y) {//y轴空白方向相反。形成凹区间
+                            //debugger;
                             //update c1
                             crosspoint[i].limit_y = toFixed(Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y))));
                             //update c2;
@@ -981,8 +1008,9 @@
                 }else if(c1.point.y == c2.point.y){
                     if(c1.space_y == c2.space_y){
                         if (c1.space_x != c2.space_x) {
-                            crosspoint[i].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x))));
-                            crosspoint[cIndex].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2,point.x))));
+                            //debugger;
+                            crosspoint[i].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2.point.x))));
+                            crosspoint[cIndex].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2.point.x))));
                         }
                     }
                 }
