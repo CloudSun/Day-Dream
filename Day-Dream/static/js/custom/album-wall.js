@@ -1,4 +1,4 @@
-var AlbumWall = {
+﻿var AlbumWall = {
     Album: {
         CoverList: [
             {
@@ -204,7 +204,7 @@ var AlbumWall = {
             //a在前，返回负数
             //b在前,返回正数
             //0，不变
-            
+            /*
             if (a.image.area > b.image.area) {
                     return -1;
                 } else if (a.image.area == b.image.area) {
@@ -213,7 +213,7 @@ var AlbumWall = {
                     return 1;
                 }
             
-            /*
+            /*/
             if (a.updatetime > b.updatetime) { //a最新更新
                 return -1;
             } else if (a.updatetime == b.updatetime) {
@@ -239,7 +239,7 @@ var AlbumWall = {
             } else {
                 return 1;
             }
-            */
+            
         });
 
         //split coverlist by wall pagesize 根据pageSize分割albumWall
@@ -476,9 +476,10 @@ var AlbumWall = {
                             //get other avaliable album to put in
                             for (var j = 0; j < albumList.length; j++) {
                                 if (widthAvailable(targetCrossPoint, albumList[j]) && heightAvailable(targetCrossPoint, albumList[j])) {
-                                    var otheralbum = albumList.getIndex(i);
+                                    var otheralbum = albumList.getIndex(j);
                                     addAlbum(otheralbum, albumList, targetCrossPoint);
                                 } else {
+                                    /*
                                     if (j == albumList.length - 1) {
                                         //put an autoContent in;
                                         var autoWidth = 0;
@@ -500,6 +501,25 @@ var AlbumWall = {
                                         };
                                         addAlbum(autoContentAlbum, albumList, targetCrossPoint);
                                     }
+                                    */
+                                    //TODO，不使用album填充，直接baseline里面截取链接
+                                    //根据targetCrossPoint来获取形成闭区间的两个点以及他们的可延伸区域，并获取延伸段小的那个点作为填充的延伸baseline
+                                    var currentIndex;
+                                    for (var c = 0 ; c < crossPointArray.length; c++) {
+                                        var current = crossPointArray[i]
+                                        if (targetCrossPoint.point.x == current.point.x && targetCrossPoint.point.y == current.point.y) {
+                                            if (!currentIndex&&currentIndex!=0) {
+                                                currentIndex = i;
+                                            } else {
+                                                throw "to match";
+                                            }
+                                        }
+                                    }
+                                    if (!currentIndex && currentIndex != 0) {
+                                        throw "no match index";
+                                    }
+                                    //获取关联闭合区域点，比较获取可延伸点，然后延伸闭合baseline
+
                                 }
                             }
                         }
@@ -511,8 +531,13 @@ var AlbumWall = {
         function afterArrange(album, albumList) {
             //添加到最终内容Content
             AlbumWall.Axis.Content.push(album);
+            drawAlbum(album);
+            if (album.type == "auto") {
+                debugger;
+            }
             AlbumWall.Axis.CrossPoint = getCrossPoint(AlbumWall.Axis.Baseline);
             AlbumWall.Axis.OutCrossPoint = getOutCrossPoint(AlbumWall.Axis.Baseline);
+            
             AlbumWall.Axis.OutBaseline = getOutBaseline(AlbumWall.Axis.OutCrossPoint);
             AlbumWall.Axis.CrossPoint = getSac(AlbumWall.Axis.CrossPoint);
             if (albumList.length > 0) {
@@ -570,7 +595,7 @@ var AlbumWall = {
                 
 
                 AlbumWall.Axis.Content.each(function (album,i) {
-                    drawAlbum(album);
+                    //drawAlbum(album);
                 });
             }
         }
@@ -1160,8 +1185,6 @@ var AlbumWall = {
             }
             return newLine;
         }
-        
-
     },
 };
 
