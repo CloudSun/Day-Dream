@@ -483,9 +483,9 @@
                                     var otheralbum = albumList.getIndex(j);
                                     addAlbum(otheralbum, albumList, targetCrossPoint);
                                 } else {
-                                    
                                     if (j == albumList.length - 1) {
                                         //put an autoContent in;
+                                        /*
                                         var autoWidth = 0;
                                         var autoHeight = 0;
                                         if (targetCrossPoint.limit_x) {
@@ -504,14 +504,14 @@
                                             }
                                         };
                                         addAlbum(autoContentAlbum, albumList, targetCrossPoint);
-                                    }
-                                    
-                                    /*
+                                        */
+                                        
+                                     
                                     //TODO，不使用album填充，直接baseline里面截取链接
                                     //根据targetCrossPoint来获取形成闭区间的两个点以及他们的可延伸区域，并获取延伸段小的那个点作为填充的延伸baseline
                                     var currentIndex;
                                     for (var c = 0 ; c < crossPointArray.length; c++) {
-                                        var current = crossPointArray[c]
+                                        var current = crossPointArray[c];
                                         if (targetCrossPoint.point.x == current.point.x && targetCrossPoint.point.y == current.point.y) {
                                             if (!currentIndex&&currentIndex!=0) {
                                                 currentIndex = c;
@@ -520,6 +520,7 @@
                                             }
                                         }
                                     }
+                                        
                                     if (!currentIndex && currentIndex != 0) {
                                         throw "no match index";
                                     } else {
@@ -534,6 +535,7 @@
                                         extendsCrossPoint = getExtendsCrossPoint(next, current);
                                     } else {
                                         var next = crossPointArray[0];
+                                        var current = targetCrossPoint;
                                         extendsCrossPoint = getExtendsCrossPoint(next, current);
                                     }
 
@@ -551,37 +553,210 @@
                                     if (extendsCrossPoint) {
                                         //对现有的baseline从crosspoint处延伸填充闭合区域
                                         debugger;
-
+                                        AlbumWall.Axis.Baseline = extendBaseline(extendsCrossPoint);
+                                        afterArrange(null, albumList);
                                     } else {
                                         throw "no such extendsCrossPoint";
                                     }
+                                    
+                                    function extendBaseline(closePoint) {
+                                        var p1 = closePoint.p1;
+                                        var p2 = closePoint.p2;
+                                        var baseline = AlbumWall.Axis.Baseline;
+                                        var removeLine1;//移除的line1，p1和p2点所形成的baseline
+                                        var removeLine2;//移除的line2，p1点为一端的line
+                                        var cutLine3;//
+                                        
+                                        for (var i = 0; i < baseline.length; i++) {
+                                            var b = baseline[i];
+                                            //获取p1,p2连接baseline
+                                            if ((pointCompare(b.from, p1.point) && pointCompare(b.to, p2.point) || (pointCompare(b.to, p1.point) && pointCompare(b.from, p2.point)))) {
+                                                if (removeLine1) {
+                                                    throw "has removeLine1";
+                                                } else {
+                                                    removeLine1 = i;
+                                                }
+                                            }
+                                        }
+                                        if (!removeLine1) {
+                                            throw "no removeLine1";
+                                        }
+                                        //remove line1
+                                        var line1 = AlbumWall.Axis.Baseline.getIndex(removeLine1);
+                                        
+                                        for (var i = 0; i < baseline.length; i++) {
+                                            var b = baseline[i];
+                                            //获取p1的非闭合段
+                                            if ((pointCompare(b.from, p1.point) && !pointCompare(b.to, p2.point)) || (pointCompare(b.to, p1.point) && !pointCompare(b.from, p2.point))) {
+                                                if (removeLine2) {
+                                                    throw "has removeLine2";
+                                                } else {
+                                                    removeLine2 = i;
+                                                }
+                                            }
+                                        }
+                                        if (!removeLine2) {
+                                            throw "no removeLine2";
+                                        }
+                                        var line2 = AlbumWall.Axis.Baseline.getIndex(removeLine2);
+                                        
+                                        for (var i = 0; i < baseline.length; i++) {
+                                            var b = baseline[i];
+                                            //获取p2的非闭合段
+                                            if ((pointCompare(b.from, p2.point) && !pointCompare(b.to, p1.point)) || (pointCompare(b.to, p2.point) && !pointCompare(b.from, p1.point))) {
+                                                if (cutLine3) {
+                                                    throw "has cutLine3";
+                                                } else {
+                                                    cutLine3 = i;
+                                                    debugger;
+                                                }
+                                            }
+                                        }
+                                        if (!cutLine3) {
+                                            throw "no cutLine3";
+                                        }
 
+                                        var line3 = AlbumWall.Axis.Baseline[cutLine3];
+                                        
+                                        //获取line2的另一个点
+                                        var extendP1;
+                                        if (pointCompare(p1.point, line2.from)) {
+                                            extendP1 = line2.to;
 
+                                        } else {
+                                            extendP1 = line2.from;
+                                            if (!pointCompare(line2.to, p1.point)) {
+                                                throw "extendP1 error";
+                                            }
+                                        }
+                                        //var extendBaseline;
+                                        for (var i = 0; i < baseline.length; i++) {
+                                            var b = baseline[i];
+                                            //获取extendBaseline 
+                                            if (pointCompare(b.from, extendP1)) {
+                                                if (b.y == null) {  //平行于y轴
+                                                    if (b.space.indexOf("-") != -1) { //负方向
+
+                                                    } else {
+                                                        
+                                                    }
+                                                } else {
+                                                    if (b.space.indexOf("-") != -1) {
+
+                                                    } else {
+                                                        
+                                                    }
+                                                }
+                                            } else if (pointCompare(b.to, extendP1)) {
+                                                if (b.x == null) { //baseline平行于x轴
+                                                    if (b.space.indexOf("-") != -1) { //负方向
+                                                        //extendBaseline延伸 ，to延伸
+                                                        b.to.x = p2.point.x;
+                                                        b.f = p2.point.x;
+                                                        b.length = toFixed(b.from.x - b.to.x);
+                                                        //截断
+                                                        if (pointCompare(line3.from, p2)) {
+                                                            line3.from.y = b.y;
+                                                            line3.f = b.y;
+                                                            line3.length = Math.abs(line3.t - line3.f);
+                                                            if (!validateBaseline(AlbumWall.Axis.Baseline)) {
+                                                                throw "extend status1 validate error";
+                                                            } else {
+                                                                debugger;
+                                                            }
+                                                        } else {
+                                                            throw "extend status1 error";
+                                                        }
+                                                    } else { //baseline平行于x轴 ，y正方向
+                                                        //extendBaseline延伸 ，to延伸
+                                                        b.to.x = p2.point.x;
+                                                        b.t = p2.point.x;
+                                                        b.length = toFixed(b.to.x - b.to.x);
+                                                        //截断
+                                                        if (pointCompare(line3.from, p2)) {
+                                                            line3.from.y = b.y;
+                                                            line3.f = b.y;
+                                                            line3.length = Math.abs(line3.t - line3.f);
+                                                            if (!validateBaseline(AlbumWall.Axis.Baseline)) {
+                                                                throw "extend status1 validate error";
+                                                            } else {
+                                                                debugger;
+                                                            }
+                                                        } else {
+                                                            throw "extend status1 error";
+                                                        }
+                                                    }
+                                                } else {
+                                                    //平行于x轴方向
+                                                    if (b.space.indexOf("-") != -1) { //负方向
+                                                        //extendBaseline延伸 ，to延伸
+                                                        b.to.x = p2.point.x;
+                                                        b.f = p2.point.x;
+                                                        b.length = toFixed(b.from.x - b.to.x);
+                                                        
+                                                    } else {
+                                                        //平行于y轴 space_
+
+                                                    }
+                                                }
+
+                                                debugger;
+                                            }
+                                        }
+                                        debugger;
+
+                                        //extendBaseline 并且延长至Line3的交点
+
+                                    }
+
+                                    function pointCompare(p1, p2) {
+                                        if (p1.x == p2.x && p1.y == p2.y) {
+                                            return true;
+                                        } else {
+                                            return false;
+                                        }
+                                    }
+                                        
                                     //获取关联闭合区域点，比较获取可延伸点，然后延伸闭合baseline
                                     function getExtendsCrossPoint(next, current) {
-                                        var crossPoint = null
+                                        var crossPoint = null;
                                         if (next.limit_x && current.limit_x && next.limit_x == current.limit_x) {
                                             //判断space_y_length
                                             if (next.space_y_length < current.space_y_length) {
-                                                crossPoint = next;
+                                                crossPoint = {
+                                                    p1: next,
+                                                    p2: current,
+                                                };
                                                 debugger;
                                             } else {
-                                                crossPoint = current;
+                                                crossPoint = {
+                                                    p1: current,
+                                                    p2: next,
+                                                };
                                                 debugger;
                                             }
                                         } else if (next.limit_y && current.limit_y && next.limit_y == current.limit_y) {
                                             if (next.space_x_length < current.space_x_length) {
-                                                crossPoint = next;
+                                                crossPoint = {
+                                                    p1: next,
+                                                    p2: current,
+                                                };
                                                 debugger;
                                             } else {
-                                                crossPoint = current;
+                                                crossPoint = {
+                                                    p1: current,
+                                                    p2: next,
+                                                };
                                                 debugger;
                                             }
                                         }
+                                        if (!crossPoint) {
+                                            debugger;
+                                        }
                                         return crossPoint;
                                     }
-                                    */
-
+                                        
+                                    }
                                 }
                             }
                         }
@@ -591,18 +766,20 @@
         }
         
         function afterArrange(album, albumList) {
-            for (var i = 0; i < albumList.length; i++) {
-                if (album.title == albumList[i].title) {//区分album
-                    albumList.getIndex(i);
+            if(album){
+                for (var i = 0; i < albumList.length; i++) {
+                    if (album.title == albumList[i].title) {//区分album
+                        albumList.getIndex(i);
+                        debugger;
+                    }
+                }
+
+                //添加到最终内容Content
+                AlbumWall.Axis.Content.push(album);
+                drawAlbum(album);
+                if (album.type == "auto") {
                     debugger;
                 }
-            }
-
-            //添加到最终内容Content
-            AlbumWall.Axis.Content.push(album);
-            drawAlbum(album);
-            if (album.type == "auto") {
-                debugger;
             }
             AlbumWall.Axis.CrossPoint = getCrossPoint(AlbumWall.Axis.Baseline);
             AlbumWall.Axis.OutCrossPoint = getOutCrossPoint(AlbumWall.Axis.Baseline);
@@ -659,7 +836,7 @@
                     
                     debugger;
                 } else {
-                    throw exception;
+                    throw "baseline top,left,right,bottom error";
                 }
                 
 
@@ -751,7 +928,6 @@
                     limit: [toFixed(image.axis.location.y - image.axis_height), image.axis.location.y],
                 }
             };
-            
             return border;
         }
         
@@ -771,10 +947,8 @@
                 var albumBaseline = removeOverlapLine(overlarp, lastBaseLine);
                 //整合新的Axis.Baseline,并且获取crossPoint
                 lastBaseLine = mergeBaseline(axisBaseline, albumBaseline);
-
             }
             AlbumWall.Axis.Baseline = lastBaseLine;
-
         }
         
         //获取coverline 重合baseline
@@ -1220,7 +1394,6 @@
                 var b = baseline[0];
                 if (b.to.x == first.from.x && b.to.y == first.from.y) {
                     container.push(baseline.getIndex(0));
-                    console.log("connectBaseline:complete");
                     return container;
                 } 
             }
@@ -1229,17 +1402,6 @@
             }
         }
         
-        /*leftBorder = {
-            space: "-x",//x负方向空
-            x: border.left.x,
-            y: null,
-            f: border.left.limit[0],//limit from
-            t: border.left.limit[1],//limit to
-            from: { x: border.left.x, y: border.left.limit[0] },//从下到上
-            to: { x: border.left.x, y: border.left.limit[1] },
-            length: Math.abs(border.left.limit[1] - border.left.limit[0]),
-        };*/
-
         //移除链接后为同一直线的baseline
         function mergeExtraBaseline(baseline) {
             var newLine = new Array();
@@ -1269,6 +1431,7 @@
 Array.prototype.getIndex = function (index) {
     return this.splice(index, 1)[0];
 };
+
 //将一个数组push进另一个数组
 Array.prototype.pushArray = function (array) {
     if (isArray(array)) {
@@ -1276,7 +1439,7 @@ Array.prototype.pushArray = function (array) {
             target.push(a);
         }, this);
     } else {
-        console.log("pushArray param error");
+        throw ("pushArray param error");
     }
 };
 
