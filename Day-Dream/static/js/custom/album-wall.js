@@ -141,6 +141,66 @@
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
+            }, {
+                title: "album15",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 254,
+                    height: 244,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album16",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 164,
+                    height: 78,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album17",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 344,
+                    height: 234,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album18",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 384,
+                    height: 124,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album19",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 184,
+                    height: 324,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
+            }, {
+                title: "album20",
+                image: {
+                    src: "album/cover/photo5.jpg",
+                    width: 84,
+                    height: 224,
+                },
+                createtime: "20131201",
+                updatetime: "20131201",
+                pagesize: 1,
             }],
         //分割后的PageList
         PageList: new Array(),
@@ -536,18 +596,30 @@
                                     } else {
                                         var next = crossPointArray[0];
                                         var current = targetCrossPoint;
-                                        extendsCrossPoint = getExtendsCrossPoint(next, current);
+                                        if (extendsCrossPoint&&getExtendsCrossPoint(next, current)) {
+                                            throw "extendsCrossPoint repeat "
+                                        } else if (!extendsCrossPoint) {
+                                            extendsCrossPoint = getExtendsCrossPoint(next, current)
+                                        }
                                     }
 
                                     //如果是上一个
                                     if (currentIndex > 0) {
                                         var prev = crossPointArray[currentIndex - 1];
                                         var current = targetCrossPoint;
-                                        extendsCrossPoint = getExtendsCrossPoint(prev, current);
+                                        if (extendsCrossPoint && getExtendsCrossPoint(prev, current)) {
+                                            throw "extendsCrossPoint repeat "
+                                        } else if (!extendsCrossPoint) {
+                                            extendsCrossPoint = getExtendsCrossPoint(prev, current)
+                                        }
                                     } else {
                                         var prev = crossPointArray[crossPointArray.length - 1];
                                         var current = targetCrossPoint;
-                                        extendsCrossPoint = getExtendsCrossPoint(prev, current);
+                                        if (extendsCrossPoint && getExtendsCrossPoint(prev, current)) {
+                                            throw "extendsCrossPoint repeat "
+                                        } else if (!extendsCrossPoint) {
+                                            extendsCrossPoint = getExtendsCrossPoint(prev, current)
+                                        }
                                     }
 
                                     if (extendsCrossPoint) {
@@ -634,17 +706,83 @@
                                             var b = baseline[i];
                                             //获取extendBaseline 
                                             if (pointCompare(b.from, extendP1)) {
-                                                if (b.y == null) {  //平行于y轴
+                                                if (b.x == null) {  //平行于x轴
                                                     if (b.space.indexOf("-") != -1) { //负方向
-
+                                                        b.from.x = p2.point.x;
+                                                        b.t = p2.point.x;
+                                                        b.length = toFixed(b.t - b.f);
+                                                        //截断
+                                                        if (pointCompare(line3.to, p2.point)) {
+                                                            line3.to.y = b.from.y;
+                                                            line3.t = b.from.y;
+                                                            line3.length = Math.abs(line3.t - line3.f);
+                                                            debugger;
+                                                            if (!validateBaseline(AlbumWall.Axis.Baseline)) {
+                                                                throw "extend status5 validate error";
+                                                            } else {
+                                                                debugger;
+                                                            }
+                                                        } else {
+                                                            throw "extend status5 error";
+                                                        }
                                                     } else {
-                                                        
+                                                        b.from.x = p2.point.x;
+                                                        b.f = p2.point.x;
+                                                        b.length = toFixed(b.t - b.f);
+                                                        //截断
+                                                        if (pointCompare(line3.to, p2.point)) {
+                                                            line3.to.y = b.from.y;
+                                                            line3.f = b.from.y;
+                                                            line3.length = Math.abs(line3.t - line3.f);
+                                                            debugger;
+                                                            if (!validateBaseline(AlbumWall.Axis.Baseline)) {
+                                                                throw "extend status6 validate error";
+                                                            } else {
+                                                                debugger;
+                                                            }
+                                                        } else {
+                                                            throw "extend status6 error";
+                                                        }
                                                     }
                                                 } else {
                                                     if (b.space.indexOf("-") != -1) {
-
+                                                        //平行于y轴 负方向
+                                                        b.from.y = p2.point.y;
+                                                        b.f = p2.point.x;
+                                                        b.length = toFixed(b.t - b.f);
+                                                        //截断
+                                                        if (pointCompare(line3.to, p2.point)) {
+                                                            line3.to.x = b.from.x;
+                                                            line3.t = b.from.x;
+                                                            line3.length = Math.abs(line3.t - line3.f);
+                                                            debugger;
+                                                            if (!validateBaseline(AlbumWall.Axis.Baseline)) {
+                                                                throw "extend status7 validate error";
+                                                            } else {
+                                                                debugger;
+                                                            }
+                                                        } else {
+                                                            throw "extend status7 error";
+                                                        }
                                                     } else {
-                                                        
+                                                        //平行于y轴 正方向
+                                                        b.from.y = p2.point.y;
+                                                        b.t = p2.point.x;
+                                                        b.length = toFixed(b.t - b.f);
+                                                        //截断
+                                                        if (pointCompare(line3.to, p2.point)) {
+                                                            line3.to.x = b.from.x;
+                                                            line3.f = b.from.x;
+                                                            line3.length = Math.abs(line3.t - line3.f);
+                                                            debugger;
+                                                            if (!validateBaseline(AlbumWall.Axis.Baseline)) {
+                                                                throw "extend status8 validate error";
+                                                            } else {
+                                                                debugger;
+                                                            }
+                                                        } else {
+                                                            throw "extend status8 error";
+                                                        }
                                                     }
                                                 }
                                             } else if (pointCompare(b.to, extendP1)) {
@@ -653,12 +791,13 @@
                                                         //extendBaseline延伸 ，to延伸
                                                         b.to.x = p2.point.x;
                                                         b.f = p2.point.x;
-                                                        b.length = toFixed(b.from.x - b.to.x);
+                                                        b.length = toFixed(b.t - b.f);
                                                         //截断
-                                                        if (pointCompare(line3.from, p2)) {
-                                                            line3.from.y = b.y;
-                                                            line3.f = b.y;
+                                                        if (pointCompare(line3.from, p2.point)) {
+                                                            line3.from.y = b.to.y;
+                                                            line3.t = b.to.y;
                                                             line3.length = Math.abs(line3.t - line3.f);
+                                                            debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status1 validate error";
                                                             } else {
@@ -671,32 +810,61 @@
                                                         //extendBaseline延伸 ，to延伸
                                                         b.to.x = p2.point.x;
                                                         b.t = p2.point.x;
-                                                        b.length = toFixed(b.to.x - b.to.x);
+                                                        b.length = toFixed(b.t - b.f);
                                                         //截断
-                                                        if (pointCompare(line3.from, p2)) {
-                                                            line3.from.y = b.y;
-                                                            line3.f = b.y;
+                                                        if (pointCompare(line3.from, p2.point)) {
+                                                            line3.from.y = b.to.y;
+                                                            line3.f = b.to.y;
                                                             line3.length = Math.abs(line3.t - line3.f);
+                                                            debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
-                                                                throw "extend status1 validate error";
+                                                                throw "extend status2 validate error";
                                                             } else {
                                                                 debugger;
                                                             }
                                                         } else {
-                                                            throw "extend status1 error";
+                                                            throw "extend status2 error";
                                                         }
                                                     }
                                                 } else {
-                                                    //平行于x轴方向
+                                                    //平行于y轴方向
                                                     if (b.space.indexOf("-") != -1) { //负方向
-                                                        //extendBaseline延伸 ，to延伸
-                                                        b.to.x = p2.point.x;
-                                                        b.f = p2.point.x;
-                                                        b.length = toFixed(b.from.x - b.to.x);
-                                                        
+                                                        b.to.y = p2.point.y;
+                                                        b.t = p2.point.y;
+                                                        b.length = toFixed(b.t - b.f);
+                                                        //截断
+                                                        if (pointCompare(line3.from, p2.point)) {
+                                                            line3.from.x = b.to.x;
+                                                            line3.t = b.to.x;
+                                                            line3.length = Math.abs(line3.t - line3.f);
+                                                            debugger;
+                                                            if (!validateBaseline(AlbumWall.Axis.Baseline)) {
+                                                                throw "extend status3 validate error";
+                                                            } else {
+                                                                debugger;
+                                                            }
+                                                        } else {
+                                                            throw "extend status3 error";
+                                                        }
                                                     } else {
-                                                        //平行于y轴 space_
-
+                                                        //平行于y轴 正方向
+                                                        b.to.y = p2.point.y;
+                                                        b.f = p2.point.y;
+                                                        b.length = toFixed(b.t - b.f);
+                                                        //截断
+                                                        if (pointCompare(line3.from, p2.point)) {
+                                                            line3.from.x = b.to.x;
+                                                            line3.f = b.to.x;
+                                                            line3.length = Math.abs(line3.t - line3.f);
+                                                            debugger;
+                                                            if (!validateBaseline(AlbumWall.Axis.Baseline)) {
+                                                                throw "extend status4 validate error";
+                                                            } else {
+                                                                debugger;
+                                                            }
+                                                        } else {
+                                                            throw "extend status4 error";
+                                                        }
                                                     }
                                                 }
 
@@ -706,7 +874,7 @@
                                         debugger;
 
                                         //extendBaseline 并且延长至Line3的交点
-
+                                        return AlbumWall.Axis.Baseline;
                                     }
 
                                     function pointCompare(p1, p2) {
@@ -1001,25 +1169,26 @@
                                     if (b.space == "y") { //space == "y" 方向为y轴正方向，为topborder
                                         //topborder，修改b.to.x值
                                         t.to.x = l.f;
-                                        t.length = Math.abs(t.to.x - t.from.x);
+                                        t.length = toFixed(Math.abs(t.to.x - t.from.x));
                                     } else { //y轴负方向，为bottomborder
                                         //bottomborder,修改b.from.x值
                                         t.from.x = l.f;
-                                        t.length = Math.abs(t.from.x - t.to.x);
+                                        t.length = toFixed(Math.abs(t.from.x - t.to.x));
                                     }
                                 } else { //x值不为bull,y轴平行方向line
                                     if (b.space == "x") { //space == "x" x轴正方向, 为rightborder
                                         //rightborder,修改b.from.y
                                         t.from.y = l.f;
-                                        t.length = Math.abs(t.from.y - t.to.y);
+                                        t.length = toFixed(Math.abs(t.from.y - t.to.y));
                                     } else {
                                         //leftborder
                                         t.to.y = l.f;
-                                        t.length = Math.abs(t.to.y - t.from.y);
+                                        t.length = toFixed(Math.abs(t.to.y - t.from.y));
                                     }
                                 }
-                                
+                                debugger;
                                 newBaseline.push(t);
+                                
                             }
                             t = clone(baseline.slice()[i]);
                             if (l.t < b.t) {
@@ -1028,28 +1197,30 @@
                                 if (t.y) {
                                     if (b.space == "y") {
                                         t.from.x = l.t;
-                                        t.length = Math.abs(t.to.x - t.from.x);
+                                        t.length = toFixed(Math.abs(t.to.x - t.from.x));
                                     } else {
                                         t.to.x = l.t;
-                                        t.length = Math.abs(t.from.x - t.to.x);
+                                        t.length = toFixed(Math.abs(t.from.x - t.to.x));
                                     }
                                 } else {
                                     if (b.space == "x") {
                                         t.to.y = l.t;
-                                        t.length = Math.abs(t.from.y - t.to.y);
+                                        t.length = toFixed(Math.abs(t.from.y - t.to.y));
                                     } else {
                                         t.from.y = l.t;
-                                        t.length = Math.abs(t.to.x - t.from.x);
+                                        t.length = toFixed(Math.abs(t.to.x - t.from.x));
                                     }
                                 }
+                                debugger;
                                 newBaseline.push(t);
+                                
                             } else {
                                 //前段重合或者后段重合或者完全重合，移除
                                 //debugger;
                             }
                         } else {
                             if (j == (overlarp.length - 1)&&!cover) {
-                                newBaseline.push(baseline[i]);
+                                newBaseline.push(b);
                             }
                         }
                     }
