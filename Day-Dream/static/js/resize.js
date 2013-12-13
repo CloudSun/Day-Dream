@@ -102,7 +102,7 @@ var Resize = {
             if (resizeWidth) {
                 parentWidth = resizeWidth;
             }
-            var resizeHeight = parent.attr("resize-height")
+            var resizeHeight = parent.attr("resize-height");
             var parentHeight = parent.height();
             if (resizeHeight) {
                 parentHeight = resizeHeight;
@@ -160,8 +160,6 @@ var Resize = {
                 "background-size": "100% auto",
             });
         }
-
-
         Resize.Section.list.each(function(target, i) {
             Resize.Section.onresize(target, 0.5);
         });
@@ -171,6 +169,7 @@ var Resize = {
         Resize.ImageRealCenter.list.each(function(target, i) {
             Resize.ImageRealCenter.onresize(target, 0.5);
         });
+        AlbumWall.Init();
 
         Rotate3DCube.Init();
     }    

@@ -57,6 +57,19 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="album\cover\photo1.jpg" />
+    <Content Include="album\cover\photo10.jpg" />
+    <Content Include="album\cover\photo11.jpg" />
+    <Content Include="album\cover\photo12.jpg" />
+    <Content Include="album\cover\photo13.jpg" />
+    <Content Include="album\cover\photo2.jpg" />
+    <Content Include="album\cover\photo3.jpg" />
+    <Content Include="album\cover\photo4.jpg" />
+    <Content Include="album\cover\photo5.jpg" />
+    <Content Include="album\cover\photo6.jpg" />
+    <Content Include="album\cover\photo7.jpg" />
+    <Content Include="album\cover\photo8.jpg" />
+    <Content Include="album\cover\photo9.jpg" />
     <Content Include="Day-Dream.html" />
     <Content Include="ideal\1.png" />
     <Content Include="ideal\22496_1366977_479482.jpg" />
@@ -101,9 +114,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="album\cover\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

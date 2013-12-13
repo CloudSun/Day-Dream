@@ -2,6 +2,7 @@
     Album: {
         CoverList: [
             {
+                id:1,
                 title: "album1",
                 image: {
                     src: "album/cover/photo1.jpg",
@@ -12,6 +13,7 @@
                 updatetime: "20131105",
                 pagesize: 1,
             }, {
+                id: 2,
                 title: "album2",
                 image: {
                     src: "album/cover/photo2.jpg",
@@ -22,26 +24,29 @@
                 updatetime: "20131203",
                 pagesize: 1,
             }, {
+                id: 3,
                 title: "album3",
                 image: {
                     src: "album/cover/photo3.jpg",
-                    width: 290,
-                    height: 276,
+                    width: 600,
+                    height: 599,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 4,
                 title: "album4",
                 image: {
                     src: "album/cover/photo4.jpg",
-                    width: 347,
-                    height: 267,
+                    width: 600,
+                    height: 400,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 5,
                 title: "album5",
                 image: {
                     src: "album/cover/photo5.jpg",
@@ -52,86 +57,95 @@
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 6,
                 title: "album6",
                 image: {
                     src: "album/cover/photo5.jpg",
-                    width: 214,
-                    height: 224,
+                    width: 437,
+                    height: 589,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 7,
                 title: "album7",
                 image: {
                     src: "album/cover/photo5.jpg",
-                    width: 114,
-                    height: 124,
+                    width: 500,
+                    height: 331,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 8,
                 title: "album8",
                 image: {
                     src: "album/cover/photo5.jpg",
-                    width: 314,
-                    height: 124,
+                    width: 500,
+                    height: 333,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 9,
                 title: "album9",
                 image: {
                     src: "album/cover/photo5.jpg",
-                    width: 84,
-                    height: 124,
+                    width: 552,
+                    height: 461,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 10,
                 title: "album10",
                 image: {
                     src: "album/cover/photo5.jpg",
-                    width: 84,
-                    height: 84,
+                    width: 410,
+                    height: 600,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 11,
                 title: "album11",
                 image: {
                     src: "album/cover/photo5.jpg",
-                    width: 384,
-                    height: 124,
+                    width: 600,
+                    height: 600,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 12,
                 title: "album12",
                 image: {
                     src: "album/cover/photo5.jpg",
-                    width: 84,
-                    height: 84,
+                    width: 600,
+                    height: 600,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 13,
                 title: "album13",
                 image: {
                     src: "album/cover/photo5.jpg",
-                    width: 224,
-                    height: 154,
+                    width: 510,
+                    height: 340,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 14,
                 title: "album14",
                 image: {
                     src: "album/cover/photo5.jpg",
@@ -142,6 +156,7 @@
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 15,
                 title: "album15",
                 image: {
                     src: "album/cover/photo5.jpg",
@@ -152,6 +167,7 @@
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 16,
                 title: "album16",
                 image: {
                     src: "album/cover/photo5.jpg",
@@ -162,6 +178,7 @@
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 17,
                 title: "album17",
                 image: {
                     src: "album/cover/photo5.jpg",
@@ -172,6 +189,7 @@
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 18,
                 title: "album18",
                 image: {
                     src: "album/cover/photo5.jpg",
@@ -182,6 +200,7 @@
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 19,
                 title: "album19",
                 image: {
                     src: "album/cover/photo5.jpg",
@@ -192,6 +211,7 @@
                 updatetime: "20131201",
                 pagesize: 1,
             }, {
+                id: 20,
                 title: "album20",
                 image: {
                     src: "album/cover/photo5.jpg",
@@ -213,14 +233,26 @@
     Wall: {
         target: $(".album-wall"),
         size: {
-            width: function() {
-                return AlbumWall.Wall.target.width();
+            width: function () {
+                var width = AlbumWall.Wall.target.attr("resize-width");
+                if (width) {
+                    return width;
+                } else {
+                    return AlbumWall.Wall.target.width();
+                }
+                //return AlbumWall.Wall.target.width();
             },
-            height: function() {
-                return AlbumWall.Wall.target.height();
+            height: function () {
+                var height = AlbumWall.Wall.target.attr("resize-height");
+                if (height) {
+                    return height;
+                } else {
+                    return AlbumWall.Wall.target.height();
+                }
+               // return AlbumWall.Wall.target.height();
             },
-            area: function() {
-                return AlbumWall.Wall.target.width() * AlbumWall.Wall.target.height();
+            area: function () {
+                return AlbumWall.Wall.size.width() * AlbumWall.Wall.size.height();
             },
         },
     },
@@ -249,6 +281,21 @@
     Init: function() {
         var _this = this;
         var coverList = _this.Album.CoverList.slice();
+        var container = $("#Section3 .section-container");
+        var width = container.attr("resize-width");
+        if (!width) {
+            width = container.width();
+        }
+        var height = container.attr("resize-height");
+        if (!height) {
+            height = container.height();
+        }
+        AlbumWall.Wall.target.attr("resize-width", width + "px");
+        AlbumWall.Wall.target.attr("resize-height", height + "px");
+        AlbumWall.Wall.target.css({
+            "width": width + "px",
+            "height":height+"px",
+        });
         //添加计算的area图片面积
         coverList = coverList.each(function(a, i) {
             var cover = a;
@@ -273,7 +320,7 @@
                     return 1;
                 }
             
-            /*
+            /*/
             if (a.updatetime > b.updatetime) { //a最新更新
                 return -1;
             } else if (a.updatetime == b.updatetime) {
@@ -368,12 +415,14 @@
         }
 
         //2 构建Wall 直角坐标轴
-        var wallWidth = _this.Wall.size.width();
-        var wallHeight = _this.Wall.size.height();
+        var wallWidth = parseInt(_this.Wall.size.width());
+        var wallHeight = parseInt(_this.Wall.size.height());
         if (wallWidth > wallHeight) {
             _this.Axis.width_scale = toFixed(wallHeight / wallWidth);
+            _this.Axis.height_scale = 1;
         } else {
             _this.Axis.height_scale = toFixed(wallWidth / wallHeight);
+            _this.Axis.width_scale = 1;
         }
         //原点坐标
         //偏正为正方形的坐标系原点
@@ -392,6 +441,14 @@
             a.image.axis_height = toFixed(a.image.resize_height * AlbumWall.Axis.height_scale);
             return a;
         });
+        //Init
+        AlbumWall.Axis.Baseline = new Array(),
+        AlbumWall.Axis.OutBaseline = new Array(),
+        AlbumWall.Axis.CrossPoint= new Array(),
+        AlbumWall.Axis.OutCrossPoint= new Array(),
+        AlbumWall.Axis.Sac= new Array(),//死巷，凹区间块
+        AlbumWall.Axis.Content= new Array(),
+        AlbumWall.Axis.AutoContent = new Array(),//无填充死巷的自动填充块
         //获取Baseline
         caculateAlbumArrange(albumList);
 
@@ -404,12 +461,20 @@
             //[1]:无baseline的情况
             if (AlbumWall.Axis.OutBaseline.length == 0 && AlbumWall.Axis.CrossPoint.length == 0) {
                 //取坐标系-x方向为album上下对称点且右边对齐y轴
+                /*
                 album.image.axis = {};
                 album.image.axis.location = {
                     x: -album.image.axis_width,
                     y: toFixed((album.image.axis_height / 2),4),
                 };
-
+                */
+                
+                album.image.axis = {};
+                album.image.axis.location = {
+                    x: -toFixed(album.image.axis_width/2),
+                    y: toFixed((album.image.axis_height / 2)),
+                };
+                
                 album.image.axis.border = getAxisImageBorder(album.image);
 
                 //test
@@ -469,7 +534,7 @@
                         return null;
                     }
                     if (album.title == "album10") {
-                        debugger;
+                        //debugger;
                     }
                     if (condition.type == "out-baseline-center") {
                         //if is baselineCenter;
@@ -585,7 +650,7 @@
                                         throw "no match index";
                                     } else {
                                         currentIndex;
-                                        //debugger;
+                                        ////debugger;
                                     };
                                     var extendsCrossPoint = null;
                                     //如果是下一个
@@ -624,7 +689,7 @@
 
                                     if (extendsCrossPoint) {
                                         //对现有的baseline从crosspoint处延伸填充闭合区域
-                                        debugger;
+                                        //debugger;
                                         AlbumWall.Axis.Baseline = extendBaseline(extendsCrossPoint);
                                         afterArrange(null, albumList);
                                     } else {
@@ -650,7 +715,7 @@
                                                 }
                                             }
                                         }
-                                        if (!removeLine1) {
+                                        if (removeLine1==undefined) {
                                             throw "no removeLine1";
                                         }
                                         //remove line1
@@ -667,7 +732,7 @@
                                                 }
                                             }
                                         }
-                                        if (!removeLine2) {
+                                        if (removeLine2==undefined) {
                                             throw "no removeLine2";
                                         }
                                         var line2 = AlbumWall.Axis.Baseline.getIndex(removeLine2);
@@ -680,11 +745,11 @@
                                                     throw "has cutLine3";
                                                 } else {
                                                     cutLine3 = i;
-                                                    debugger;
+                                                    //debugger;
                                                 }
                                             }
                                         }
-                                        if (!cutLine3) {
+                                        if (cutLine3 == undefined) {
                                             throw "no cutLine3";
                                         }
 
@@ -716,11 +781,11 @@
                                                             line3.to.y = b.from.y;
                                                             line3.t = b.from.y;
                                                             line3.length = Math.abs(line3.t - line3.f);
-                                                            debugger;
+                                                            //debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status5 validate error";
                                                             } else {
-                                                                debugger;
+                                                                //debugger;
                                                             }
                                                         } else {
                                                             throw "extend status5 error";
@@ -734,11 +799,11 @@
                                                             line3.to.y = b.from.y;
                                                             line3.f = b.from.y;
                                                             line3.length = Math.abs(line3.t - line3.f);
-                                                            debugger;
+                                                            //debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status6 validate error";
                                                             } else {
-                                                                debugger;
+                                                                //debugger;
                                                             }
                                                         } else {
                                                             throw "extend status6 error";
@@ -755,11 +820,11 @@
                                                             line3.to.x = b.from.x;
                                                             line3.t = b.from.x;
                                                             line3.length = Math.abs(line3.t - line3.f);
-                                                            debugger;
+                                                            //debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status7 validate error";
                                                             } else {
-                                                                debugger;
+                                                                //debugger;
                                                             }
                                                         } else {
                                                             throw "extend status7 error";
@@ -774,11 +839,11 @@
                                                             line3.to.x = b.from.x;
                                                             line3.f = b.from.x;
                                                             line3.length = Math.abs(line3.t - line3.f);
-                                                            debugger;
+                                                            //debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status8 validate error";
                                                             } else {
-                                                                debugger;
+                                                                //debugger;
                                                             }
                                                         } else {
                                                             throw "extend status8 error";
@@ -797,11 +862,11 @@
                                                             line3.from.y = b.to.y;
                                                             line3.t = b.to.y;
                                                             line3.length = Math.abs(line3.t - line3.f);
-                                                            debugger;
+                                                            //debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status1 validate error";
                                                             } else {
-                                                                debugger;
+                                                                //debugger;
                                                             }
                                                         } else {
                                                             throw "extend status1 error";
@@ -816,11 +881,11 @@
                                                             line3.from.y = b.to.y;
                                                             line3.f = b.to.y;
                                                             line3.length = Math.abs(line3.t - line3.f);
-                                                            debugger;
+                                                            //debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status2 validate error";
                                                             } else {
-                                                                debugger;
+                                                                //debugger;
                                                             }
                                                         } else {
                                                             throw "extend status2 error";
@@ -837,11 +902,11 @@
                                                             line3.from.x = b.to.x;
                                                             line3.t = b.to.x;
                                                             line3.length = Math.abs(line3.t - line3.f);
-                                                            debugger;
+                                                            //debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status3 validate error";
                                                             } else {
-                                                                debugger;
+                                                                //debugger;
                                                             }
                                                         } else {
                                                             throw "extend status3 error";
@@ -856,11 +921,11 @@
                                                             line3.from.x = b.to.x;
                                                             line3.f = b.to.x;
                                                             line3.length = Math.abs(line3.t - line3.f);
-                                                            debugger;
+                                                            //debugger;
                                                             if (!validateBaseline(AlbumWall.Axis.Baseline)) {
                                                                 throw "extend status4 validate error";
                                                             } else {
-                                                                debugger;
+                                                                //debugger;
                                                             }
                                                         } else {
                                                             throw "extend status4 error";
@@ -868,10 +933,10 @@
                                                     }
                                                 }
 
-                                                debugger;
+                                                //debugger;
                                             }
                                         }
-                                        debugger;
+                                        //debugger;
 
                                         //extendBaseline 并且延长至Line3的交点
                                         return AlbumWall.Axis.Baseline;
@@ -895,13 +960,13 @@
                                                     p1: next,
                                                     p2: current,
                                                 };
-                                                debugger;
+                                                //debugger;
                                             } else {
                                                 crossPoint = {
                                                     p1: current,
                                                     p2: next,
                                                 };
-                                                debugger;
+                                                //debugger;
                                             }
                                         } else if (next.limit_y && current.limit_y && next.limit_y == current.limit_y) {
                                             if (next.space_x_length < current.space_x_length) {
@@ -909,17 +974,17 @@
                                                     p1: next,
                                                     p2: current,
                                                 };
-                                                debugger;
+                                                //debugger;
                                             } else {
                                                 crossPoint = {
                                                     p1: current,
                                                     p2: next,
                                                 };
-                                                debugger;
+                                                //debugger;
                                             }
                                         }
                                         if (!crossPoint) {
-                                            debugger;
+                                            //debugger;
                                         }
                                         return crossPoint;
                                     }
@@ -938,15 +1003,15 @@
                 for (var i = 0; i < albumList.length; i++) {
                     if (album.title == albumList[i].title) {//区分album
                         albumList.getIndex(i);
-                        debugger;
+                        //debugger;
                     }
                 }
 
                 //添加到最终内容Content
                 AlbumWall.Axis.Content.push(album);
-                drawAlbum(album);
+                //drawAlbum(album);
                 if (album.type == "auto") {
-                    debugger;
+                    //debugger;
                 }
             }
             AlbumWall.Axis.CrossPoint = getCrossPoint(AlbumWall.Axis.Baseline);
@@ -958,10 +1023,11 @@
                 caculateAlbumArrange(albumList);
             } else {
                 //arrange complete
-                debugger;
+                //debugger;
                 //TODO
                 //判断baseline，判断最左baseline和最右baseline之间的距离，>AlbumWall.Axis.width
                 //获取最左边
+                
                 var leftBaseline, rightBaseline, topBaseline, bottomBaseline;
                 for (var i = 0; i < AlbumWall.Axis.Baseline.length; i++) {
                     var b = AlbumWall.Axis.Baseline[i];
@@ -1001,16 +1067,16 @@
                     var originY = toFixed((topBaseline.y + bottomBaseline.y) / 2);
                     AlbumWall.Axis.margin_left = (originX);
                     AlbumWall.Axis.margin_top = (originY);
-                    
-                    debugger;
+                    //debugger;
                 } else {
                     throw "baseline top,left,right,bottom error";
                 }
                 
-
+                
                 AlbumWall.Axis.Content.each(function (album,i) {
-                    //drawAlbum(album);
+                    drawAlbum(album,i);
                 });
+                
             }
         }
 
@@ -1059,19 +1125,62 @@
             }
         }
 
-        function drawAlbum(album) {
+        function drawAlbum(album,i) {
             var albumWidth = album.image.axis_width / AlbumWall.Axis.width_scale * AlbumWall.Axis.scale;
             var albumHeight = album.image.axis_height / AlbumWall.Axis.height_scale * AlbumWall.Axis.scale;
             var albumTop = ((AlbumWall.Axis.origin.y - album.image.axis.location.y + AlbumWall.Axis.margin_top) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.width) / AlbumWall.Axis.height_scale;
-            var albumLeft = ((album.image.axis.location.x + AlbumWall.Axis.origin.x + AlbumWall.Axis.margin_left) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.height) / AlbumWall.Axis.width_scale;
-            var albumContainer = $("<div class='albumContainer' style='border:1px dashed #fff;box-sizing: border-box;position:absolute;background:rgba(255,255,255,0.3);"+
-                "width:"+albumWidth+"px;"+
-                "height:"+albumHeight+"px;"+
-                "top:"+albumTop+"px;"+
-                "left:" + albumLeft + "px'></div>");
-            albumContainer.html(album.title);
-            AlbumWall.Wall.target.append(albumContainer);
-            //debugger;
+            var albumLeft = ((album.image.axis.location.x + AlbumWall.Axis.origin.x - AlbumWall.Axis.margin_left) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.height) / AlbumWall.Axis.width_scale;
+            var borderWidth = AlbumWall.Setting.BorderWidth * AlbumWall.Axis.width_scale * AlbumWall.Axis.scale;
+            var borderHeight = AlbumWall.Setting.BorderWidth * AlbumWall.Axis.height_scale * AlbumWall.Axis.scale;
+            debugger;
+            var albumContainer = $("#" + album.id);
+            if (albumContainer.length == 0) {
+                albumContainer = $("<div " +
+                    "id='" + album.id + "' class='albumContainer' style='box-sizing: border-box;position:absolute;'></div>");
+               
+                var spaceTime = parseInt(i) * 0.1;
+                var duration = 1.1;
+                albumContainer.css({
+                    "-webkit-transition-delay": spaceTime + "s",
+                    "-webkit-transition-duration": duration + "s",
+                });
+                //albumContainer.html(album.title);
+                AlbumWall.Wall.target.append(albumContainer);
+                var cover = $("<img src='" + album.image.src + "'/>");
+                cover.css({
+                    "border-top": borderHeight + "px solid #fff",
+                    "border-bottom": borderHeight + "px solid #fff",
+                    "border-left": borderWidth + "px solid #fff",
+                    "border-right": borderWidth + "px solid #fff",
+                    "width": "100%",
+                    "height": "100%",
+                    "box-sizing": "border-box",
+                });
+                albumContainer.append(cover);
+            } else {
+                
+            }
+            albumContainer.css({
+                "width": albumWidth + "px",
+                "height": albumHeight + "px",
+                "top": albumTop + "px",
+                "left": albumLeft + "px",
+                "border-top": borderHeight + "px solid transparent",
+                "border-bottom": borderHeight + "px solid transparent",
+                "border-left": borderWidth + "px solid transparent",
+                "border-right": borderWidth + "px solid transparent",
+            });
+            albumContainer.find("img").css({
+                "border-top": borderHeight + "px solid #fff",
+                "border-bottom": borderHeight + "px solid #fff",
+                "border-left": borderWidth + "px solid #fff",
+                "border-right": borderWidth + "px solid #fff",
+                "width": "100%",
+                "height": "100%",
+                "box-sizing": "border-box",
+            });
+
+            ////debugger;
         }
 
 /*
@@ -1186,7 +1295,7 @@
                                         t.length = toFixed(Math.abs(t.to.y - t.from.y));
                                     }
                                 }
-                                debugger;
+                                //debugger;
                                 newBaseline.push(t);
                                 
                             }
@@ -1211,12 +1320,12 @@
                                         t.length = toFixed(Math.abs(t.to.x - t.from.x));
                                     }
                                 }
-                                debugger;
+                                //debugger;
                                 newBaseline.push(t);
                                 
                             } else {
                                 //前段重合或者后段重合或者完全重合，移除
-                                //debugger;
+                                ////debugger;
                             }
                         } else {
                             if (j == (overlarp.length - 1)&&!cover) {
@@ -1440,7 +1549,7 @@
                 if (c1.point.x == c2.point.x) {//处于同一平行于y轴的直线上
                     if (c1.space_x == c2.space_x) {//x轴空白方向一致
                         if (c1.space_y != c2.space_y) {//y轴空白方向相反。形成凹区间
-                            //debugger;
+                            ////debugger;
                             if ((c1.space_y.indexOf("-") != -1 && c1.point.y > c2.point.y) || ((c2.space_y.indexOf("-") != -1 && c2.point.y > c1.point.y))) {
                             //update c1
                             crosspoint[i].limit_y = toFixed(Math.abs((Math.max(c1.point.y,c2.point.y)-Math.min(c1.point.y,c2.point.y))));
@@ -1452,7 +1561,7 @@
                 }else if(c1.point.y == c2.point.y){
                     if(c1.space_y == c2.space_y){
                         if (c1.space_x != c2.space_x) {
-                            //debugger;
+                            ////debugger;
                             if ((c1.space_x.indexOf("-") != -1 && c1.point.x > c2.point.x) || (c2.space_x.indexOf("-") != -1 && c2.point.x > c1.point.x)) {
                                 crosspoint[i].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2.point.x))));
                                 crosspoint[cIndex].limit_x = toFixed(Math.abs((Math.max(c1.point.x,c2.point.x)-Math.min(c1.point.x,c2.point.x))));
