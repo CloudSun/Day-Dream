@@ -60,7 +60,7 @@
                 id: 6,
                 title: "album6",
                 image: {
-                    src: "album/cover/photo5.jpg",
+                    src: "album/cover/photo6.jpg",
                     width: 437,
                     height: 589,
                 },
@@ -71,7 +71,7 @@
                 id: 7,
                 title: "album7",
                 image: {
-                    src: "album/cover/photo5.jpg",
+                    src: "album/cover/photo7.jpg",
                     width: 500,
                     height: 331,
                 },
@@ -82,7 +82,7 @@
                 id: 8,
                 title: "album8",
                 image: {
-                    src: "album/cover/photo5.jpg",
+                    src: "album/cover/photo8.jpg",
                     width: 500,
                     height: 333,
                 },
@@ -93,9 +93,9 @@
                 id: 9,
                 title: "album9",
                 image: {
-                    src: "album/cover/photo5.jpg",
+                    src: "album/cover/photo9.jpg",
                     width: 552,
-                    height: 461,
+                    height: 561,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
@@ -104,7 +104,7 @@
                 id: 10,
                 title: "album10",
                 image: {
-                    src: "album/cover/photo5.jpg",
+                    src: "album/cover/photo10.jpg",
                     width: 410,
                     height: 600,
                 },
@@ -115,7 +115,7 @@
                 id: 11,
                 title: "album11",
                 image: {
-                    src: "album/cover/photo5.jpg",
+                    src: "album/cover/photo11.jpg",
                     width: 600,
                     height: 600,
                 },
@@ -126,7 +126,7 @@
                 id: 12,
                 title: "album12",
                 image: {
-                    src: "album/cover/photo5.jpg",
+                    src: "album/cover/photo12.jpg",
                     width: 600,
                     height: 600,
                 },
@@ -137,14 +137,14 @@
                 id: 13,
                 title: "album13",
                 image: {
-                    src: "album/cover/photo5.jpg",
+                    src: "album/cover/photo13.jpg",
                     width: 510,
                     height: 340,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
-            }, {
+            }, /*{
                 id: 14,
                 title: "album14",
                 image: {
@@ -221,7 +221,7 @@
                 createtime: "20131201",
                 updatetime: "20131201",
                 pagesize: 1,
-            }],
+            }*/],
         //分割后的PageList
         PageList: new Array(),
     },
@@ -1153,7 +1153,6 @@
                     "border-left": borderWidth + "px solid #fff",
                     "border-right": borderWidth + "px solid #fff",
                     "width": "100%",
-                    "height": "100%",
                     "box-sizing": "border-box",
                 });
                 albumContainer.append(cover);
@@ -1687,10 +1686,11 @@
             var newLine = new Array();
             for (var i = 0; i < baseline.length; i++) {
                 var b1 = baseline[i];
-                var bIndex = 0;
-                
+                var bIndex;
                 if (i < baseline.length - 1) {
                     bIndex = i + 1;
+                } else {
+                    bIndex = 0;
                 }
                 var b2 = baseline[bIndex];
                 if (b1.space == b2.space && b1.x == b2.x && b1.y == b2.y) {
@@ -1699,7 +1699,12 @@
                     b1.t = Math.max(b1.t, b2.t);
                     b1.to = b2.to;
                     b1.length += b2.length;
+                    if (bIndex == 0) {
+                        //当最后一个被merge的时候即合并了第一条baseline，去除newLine中的first baseline;
+                        newLine.getIndex(0);
+                    }
                 }
+                
                 newLine.push(b1);
             }
             return newLine;
