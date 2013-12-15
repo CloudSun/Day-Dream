@@ -1135,17 +1135,7 @@
                 //albumContainer.html(album.title);
                 AlbumWall.Wall.target.append(albumContainer);
                 var cover = $("<img src='" + album.image.src + "'/>");
-                var actualWidth = albumWidth - (borderWidth*4);
-                var actualHeight = albumHeight - (borderHeight*4);
-                var widthScale = actualWidth / album.image.width;
-                var heightNumber = album.image.height * widthScale;
-                var widthValue = "auto", heightValue = "auto";
-                if (heightNumber>actualHeight) {
-                    heightValue = "100%"; 
-                } 
-                cover.css({
-                    "height": heightValue, "width": widthValue, "display": "block", "margin": "auto",
-                });
+                
                 var coverContainer = $("<div></div>");
                 coverContainer.css({
                     "border-top": borderHeight + "px solid transparent",
@@ -1175,6 +1165,20 @@
                 "border-bottom": borderHeight + "px solid transparent",
                 "border-left": borderWidth + "px solid transparent",
                 "border-right": borderWidth + "px solid transparent",
+            });
+            cover = albumContainer.find("img");
+            var actualWidth = albumWidth - (borderWidth * 4);
+            var actualHeight = albumHeight - (borderHeight * 4);
+            var widthScale = actualWidth / album.image.width;
+            var heightNumber = album.image.height * widthScale;
+            var widthValue = "auto", heightValue = "auto";
+            if (heightNumber > actualHeight) {
+                heightValue = "100%";
+            } else {
+                widthValue = "100%";
+            }
+            cover.css({
+                "height": heightValue, "width": widthValue, "display": "block", "margin": "auto",
             });
 
             ////debugger;

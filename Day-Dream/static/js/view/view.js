@@ -32,6 +32,7 @@ View.prototype.addEvents = function() {
 //视图显示方法
 View.prototype.show = function(view) {
     view.viewtype.showstyle(view.target);
+    
     //TODO
     console.log("View show");
 
@@ -162,7 +163,8 @@ var ViewType = {
             //TODO throw the url
         },
         resizestyle: function (target) {
-            Resize.Section.onresize(null, 0.5);
+            target && (target = target.children(".section-container"));
+            Resize.Section.onresize(target, 0.5);
         }
     }
 };

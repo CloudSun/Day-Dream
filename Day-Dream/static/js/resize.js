@@ -143,9 +143,6 @@ var Resize = {
         Controler.currentView.resize();
         
         
-        //AlbumWall.Init();
-
-        Rotate3DCube.Init();
     },
     globalResize: function () {
         //GlobalResizeFunction
@@ -164,13 +161,6 @@ var Resize = {
             });
         }
         sectionBgResize();
-
-        Resize.MapCube.list.each(function (target, i) {
-            Resize.MapCube.onresize(target, 0.5);
-        });
-        Resize.ImageRealCenter.list.each(function (target, i) {
-            Resize.ImageRealCenter.onresize(null, 0.5);
-        });
 
         
     }

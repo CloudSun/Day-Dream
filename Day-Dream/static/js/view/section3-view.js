@@ -5,6 +5,7 @@ var Section3ViewParam = {
     load: "refresh",//refresh evertime load
     bgcolor: "rgba(255, 140, 0,0.6)",
     loaded: "false",
+    showtime: 0,
 };
 (function () {
     Section3View = function() {
@@ -72,6 +73,8 @@ var Section3ViewParam = {
         Section3View.superClass.resize.call(this, view);
         //TODO
         console.log(view.name + "View resize");
+
+        AlbumWall.Init();
         //
         CallbackL(arguments);
     }

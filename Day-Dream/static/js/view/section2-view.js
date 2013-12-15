@@ -5,7 +5,8 @@ var Section2ViewParam = {
     load: "once",//refresh evertime load
     bgcolor: "rgba(100, 149, 237,0.6)",
     loaded: false,
-    resize:new Array(),
+    resize: new Array(),
+    showtime:0,
 };
 
 (function () {
@@ -117,7 +118,9 @@ var Section2ViewParam = {
         console.log(view.name + "View show");
         //
         //临时方法
-        
+        if (view.param.showtime && view.resize) {
+            view.resize(view);
+        }
         //resize and get the currentPosition
         
         
@@ -139,6 +142,15 @@ var Section2ViewParam = {
         Section2View.superClass.resize.call(this, view);
         //TODO
         console.log(view.name + "View resize");
+
+        
+        Resize.MapCube.list.each(function (target, i) {
+            Resize.MapCube.onresize(target, 0.5);
+        });
+        Resize.ImageRealCenter.list.each(function (target, i) {
+            Resize.ImageRealCenter.onresize(target, 0.5);
+        });
+        Rotate3DCube.Init();
         //
         CallbackL(arguments);
     }
