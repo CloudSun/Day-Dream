@@ -95,7 +95,7 @@
                 image: {
                     src: "album/cover/photo9.jpg",
                     width: 552,
-                    height: 561,
+                    height: 461,
                 },
                 createtime: "20131201",
                 updatetime: "20131201",
@@ -258,6 +258,8 @@
     },
     //坐标轴
     Axis: {
+        custome_widthScale: 1,
+        custome_heightScale:0.9,
         width_scale: 1,
         height_scale: 1,
         scale: 1,
@@ -424,9 +426,15 @@
             _this.Axis.height_scale = toFixed(wallWidth / wallHeight);
             _this.Axis.width_scale = 1;
         }
+        //坐标轴微调
+        _this.Axis.height_scale = _this.Axis.height_scale / AlbumWall.Axis.custome_heightScale;
+        _this.Axis.width_scale = _this.Axis.width_scale / AlbumWall.Axis.custome_widthScale;
         //原点坐标
         //偏正为正方形的坐标系原点
-        _this.Axis.origin.x = _this.Axis.origin.y = toFixed(Math.min(wallWidth, wallHeight) / 2);
+        _this.Axis.origin.x = toFixed(Math.min(wallWidth, wallHeight) / 2);
+        _this.Axis.origin.y = toFixed(Math.min(wallWidth, wallHeight) / 2);
+        
+
         _this.Axis.width = _this.Axis.origin.x * 2;
         _this.Axis.height = _this.Axis.origin.y * 2;
         //init location to put the album
@@ -609,29 +617,6 @@
                                     addAlbum(otheralbum, albumList, targetCrossPoint);
                                 } else {
                                     if (j == albumList.length - 1) {
-                                        //put an autoContent in;
-                                        /*
-                                        var autoWidth = 0;
-                                        var autoHeight = 0;
-                                        if (targetCrossPoint.limit_x) {
-                                            autoWidth = targetCrossPoint.limit_x;
-                                            autoHeight = targetCrossPoint.space_y_length;
-                                        } else {
-                                            autoHeight = targetCrossPoint.limit_y;
-                                            autoWidth = targetCrossPoint.space_x_length;
-                                        }
-
-                                        var autoContentAlbum = {
-                                            type: "auto",
-                                            image: {
-                                                axis_height: autoHeight,
-                                                axis_width: autoWidth,
-                                            }
-                                        };
-                                        addAlbum(autoContentAlbum, albumList, targetCrossPoint);
-                                        */
-                                        
-                                     
                                     //TODO，不使用album填充，直接baseline里面截取链接
                                     //根据targetCrossPoint来获取形成闭区间的两个点以及他们的可延伸区域，并获取延伸段小的那个点作为填充的延伸baseline
                                     var currentIndex;
@@ -1128,11 +1113,11 @@
         function drawAlbum(album,i) {
             var albumWidth = album.image.axis_width / AlbumWall.Axis.width_scale * AlbumWall.Axis.scale;
             var albumHeight = album.image.axis_height / AlbumWall.Axis.height_scale * AlbumWall.Axis.scale;
-            var albumTop = ((AlbumWall.Axis.origin.y - album.image.axis.location.y + AlbumWall.Axis.margin_top) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.width) / AlbumWall.Axis.height_scale;
-            var albumLeft = ((album.image.axis.location.x + AlbumWall.Axis.origin.x - AlbumWall.Axis.margin_left) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.height) / AlbumWall.Axis.width_scale;
+            var albumTop = ((AlbumWall.Axis.origin.y - album.image.axis.location.y + AlbumWall.Axis.margin_top) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.width) / AlbumWall.Axis.height_scale + (1 - AlbumWall.Axis.custome_heightScale) / 2 * AlbumWall.Axis.width;
+            var albumLeft = ((album.image.axis.location.x + AlbumWall.Axis.origin.x - AlbumWall.Axis.margin_left) * AlbumWall.Axis.scale + (1 - AlbumWall.Axis.scale) / 2 * AlbumWall.Axis.height) / AlbumWall.Axis.width_scale + (1 - AlbumWall.Axis.custome_widthScale) / 2 * AlbumWall.Axis.height;
             var borderWidth = AlbumWall.Setting.BorderWidth * AlbumWall.Axis.width_scale * AlbumWall.Axis.scale;
             var borderHeight = AlbumWall.Setting.BorderWidth * AlbumWall.Axis.height_scale * AlbumWall.Axis.scale;
-            debugger;
+            //debugger;
             var albumContainer = $("#" + album.id);
             if (albumContainer.length == 0) {
                 albumContainer = $("<div " +
@@ -1144,20 +1129,36 @@
                     "-webkit-transition-delay": spaceTime + "s",
                     "-webkit-transition-duration": duration + "s",
                 });
+                if (album.id == "5") {
+                    debugger;
+                }
                 //albumContainer.html(album.title);
                 AlbumWall.Wall.target.append(albumContainer);
                 var cover = $("<img src='" + album.image.src + "'/>");
+                var actualWidth = albumWidth - (borderWidth*4);
+                var actualHeight = albumHeight - (borderHeight*4);
+                var widthScale = actualWidth / album.image.width;
+                var heightNumber = album.image.height * widthScale;
+                var widthValue = "auto", heightValue = "auto";
+                if (heightNumber>actualHeight) {
+                    heightValue = "100%"; 
+                } 
                 cover.css({
-                    "border-top": borderHeight + "px solid #fff",
-                    "border-bottom": borderHeight + "px solid #fff",
-                    "border-left": borderWidth + "px solid #fff",
-                    "border-right": borderWidth + "px solid #fff",
-                    "width": "100%",
-                    "box-sizing": "border-box",
+                    "height": heightValue, "width": widthValue, "display": "block", "margin": "auto",
                 });
-                albumContainer.append(cover);
-            } else {
-                
+                var coverContainer = $("<div></div>");
+                coverContainer.css({
+                    "border-top": borderHeight + "px solid transparent",
+                    "border-bottom": borderHeight + "px solid transparent",
+                    "border-left": borderWidth + "px solid transparent",
+                    "border-right": borderWidth + "px solid transparent",
+                    "box-sizing": "border-box",
+                    "width": "100%",
+                    "height": "100%",
+                    "background": "#fff",
+                });
+                coverContainer.append(cover);
+                albumContainer.append(coverContainer);
             }
             albumContainer.css({
                 "width": albumWidth + "px",
@@ -1169,14 +1170,11 @@
                 "border-left": borderWidth + "px solid transparent",
                 "border-right": borderWidth + "px solid transparent",
             });
-            albumContainer.find("img").css({
-                "border-top": borderHeight + "px solid #fff",
-                "border-bottom": borderHeight + "px solid #fff",
-                "border-left": borderWidth + "px solid #fff",
-                "border-right": borderWidth + "px solid #fff",
-                "width": "100%",
-                "height": "100%",
-                "box-sizing": "border-box",
+            albumContainer.find("div").css({
+                "border-top": borderHeight + "px solid transparent",
+                "border-bottom": borderHeight + "px solid transparent",
+                "border-left": borderWidth + "px solid transparent",
+                "border-right": borderWidth + "px solid transparent",
             });
 
             ////debugger;

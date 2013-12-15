@@ -44,6 +44,16 @@ View.prototype.hide = function(view) {
     //TODO
     console.log("View hide");
 
+    view.param.showtime += 1;
+    //callback
+    CallbackL(arguments);
+};
+
+View.prototype.resize = function (view) {
+    view.viewtype.resizestyle(view.target);
+    //TODO
+    console.log("View resize");
+
     //callback
     CallbackL(arguments);
 };
@@ -86,7 +96,9 @@ var ViewShow = {
                 });
             };
         },
+        
     },
+    
 };
 
 var ViewHide = {
@@ -149,6 +161,9 @@ var ViewType = {
             //section 栏的show 方法, save current state
             //TODO throw the url
         },
+        resizestyle: function (target) {
+            Resize.Section.onresize(null, 0.5);
+        }
     }
 };
 

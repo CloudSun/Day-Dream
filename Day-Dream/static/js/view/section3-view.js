@@ -30,6 +30,7 @@ var Section3ViewParam = {
         console.log(view.name + "View init");
         SectionMenu.FirstMenu_Init(view.name);
 
+        Section1View.prototype.addEvents.call(this, view);
         CallbackL(arguments);
     };
 
@@ -66,5 +67,13 @@ var Section3ViewParam = {
         CallbackL(arguments);
     };
     
+    Section3View.prototype.resize = function (view) {
+        !view && (view = this);
+        Section3View.superClass.resize.call(this, view);
+        //TODO
+        console.log(view.name + "View resize");
+        //
+        CallbackL(arguments);
+    }
 
 })();

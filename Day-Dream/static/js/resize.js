@@ -138,46 +138,48 @@ var Resize = {
         var screenHeight = window.outerHeight;
         var screenWidth = window.outerWidth;
 
-        //resize SectionContainer background
-        var sectionContainer = $("#SectionContainer");
-        sectionContainer.css({
-            "background-image":
-                "-webkit-gradient(radial, 20% 0%," + screenHeight /6 + ", 20% 0%, " + screenHeight/2 + ", from(#fff),to(transparent)),"+
-                "-webkit-gradient(radial, 10% -50%," + screenHeight /3 + ", 0% 0%, " + screenHeight + ", from(#fff),to(transparent))," +
-                "-webkit-gradient(radial, 60% 50%," + 0 + ",60% 50%, " + screenHeight / 16 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
-                "-webkit-gradient(radial, 73% 65%," + 0 + ",73% 65%, " + screenHeight / 8 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
-                "-webkit-gradient(radial, 100% 100%," + 0 + ", 100% 100%, " + screenHeight / 4 + ", from(#fff), to(transparent))",
-        });
-        //Section1View bg w/h = 1.6
-        //h screenH 70%
-        //w screenW 50
-        if (screenWidth /(screenHeight * 0.8) > 1) {
-            $("#Section1 .section-container").css({
-                "background-size": "auto 70%",
-            });
-        } else {
-            $("#Section1 .section-container").css({
-                "background-size": "100% auto",
-            });
-        }
-        Resize.Section.list.each(function(target, i) {
-            Resize.Section.onresize(target, 0.5);
-        });
-        Resize.MapCube.list.each(function(target, i) {
-            Resize.MapCube.onresize(target, 0.5);
-        });
-        Resize.ImageRealCenter.list.each(function(target, i) {
-            Resize.ImageRealCenter.onresize(target, 0.5);
-        });
-        AlbumWall.Init();
+        _this.globalResize();
+
+        Controler.currentView.resize();
+        
+        
+        //AlbumWall.Init();
 
         Rotate3DCube.Init();
-    }    
+    },
+    globalResize: function () {
+        //GlobalResizeFunction
+        var sectionBgResize = function () {
+            var screenHeight = window.outerHeight;
+            var screenWidth = window.outerWidth;
+            //resize SectionContainer background
+            var sectionContainer = $("#SectionContainer");
+            sectionContainer.css({
+                "background-image":
+                    "-webkit-gradient(radial, 20% 0%," + screenHeight / 6 + ", 20% 0%, " + screenHeight / 2 + ", from(#fff),to(transparent))," +
+                    "-webkit-gradient(radial, 10% -50%," + screenHeight / 3 + ", 0% 0%, " + screenHeight + ", from(#fff),to(transparent))," +
+                    "-webkit-gradient(radial, 60% 50%," + 0 + ",60% 50%, " + screenHeight / 16 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
+                    "-webkit-gradient(radial, 73% 65%," + 0 + ",73% 65%, " + screenHeight / 8 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
+                    "-webkit-gradient(radial, 100% 100%," + 0 + ", 100% 100%, " + screenHeight / 4 + ", from(#fff), to(transparent))",
+            });
+        }
+        sectionBgResize();
+
+        Resize.MapCube.list.each(function (target, i) {
+            Resize.MapCube.onresize(target, 0.5);
+        });
+        Resize.ImageRealCenter.list.each(function (target, i) {
+            Resize.ImageRealCenter.onresize(null, 0.5);
+        });
+
+        
+    }
 };
 
 
 //bind window resize event
 var resizetime;
+
 $(window).resize(function () {
     //
     if(!resizetime) {

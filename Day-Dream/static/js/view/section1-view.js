@@ -5,6 +5,7 @@ var Section1ViewParam = {
     load: "once",//once 只加载一次
     bgcolor: "rgba(154, 205, 50,0.6)",
     loaded: false,
+    showtime:0,
 };
 (function () {
     Section1View = function() {
@@ -65,4 +66,32 @@ var Section1ViewParam = {
         //
         CallbackL(arguments);
     };
+
+    Section1View.prototype.resize = function (view) {
+        !view && (view = this);
+        Section1View.superClass.resize.call(this, view);
+        //TODO
+        console.log(view.name + "View resize");
+        var bgResize = function () {
+            //Section1View bg w/h = 1.6
+            //h screenH 70%
+            //w screenW 50
+            var screenHeight = window.outerHeight;
+            var screenWidth = window.outerWidth;
+            if (screenWidth / (screenHeight * 0.8) > 1) {
+                $("#Section1 .section-container").css({
+                    "background-size": "auto 70%",
+                });
+            } else {
+                $("#Section1 .section-container").css({
+                    "background-size": "100% auto",
+                });
+            }
+        }
+        bgResize();
+        //
+        CallbackL(arguments);
+    }
 })();
+
+//Section1 resize function

@@ -5,9 +5,7 @@ var Section2ViewParam = {
     load: "once",//refresh evertime load
     bgcolor: "rgba(100, 149, 237,0.6)",
     loaded: false,
-};
-var Section2View_Status = {
-    Inited: false,
+    resize:new Array(),
 };
 
 (function () {
@@ -70,16 +68,30 @@ var Section2View_Status = {
         var _arguments = arguments;
 
         dataTarget.load(function () {
-            Loaded();
+            //加载完后
+            view.loaded();
         });
         
-        //after inited
-        function Loaded() {
-            Section2View_Status.Inited = true;
-            view.addEvents();
-            CallbackL(_arguments);
-        }
+        
     };
+    Section2View.prototype.loaded = function (view) {
+        !view && (view = this);
+
+        if (!view.param.showtime) {
+            //3D Cube初始化方法
+            //在主内容显示之后初始化
+            Resize.ImageRealCenter.onresize($($("#imageBoard").children("img")[0]));
+
+            Resize.MapCube.onresize($("#imageBoard"));
+            var imagesContainer = $("#Section2 .section-container");
+            var imagesTarget = $($("#imageBoard").children("img")[0]);
+            Rotate3DCube.Init(imagesContainer, imagesTarget);
+
+        }
+
+        view.addEvents();
+        CallbackL(arguments);
+    }
 
     Section2View.prototype.addEvents = function (view) {
         //SuperClass addEvents
@@ -89,51 +101,25 @@ var Section2View_Status = {
         //TODO
         console.log(view.name + "View addEvent");
         
-        /*
-        $("#pane").click(function () {
-            $("#pane1_1").addClass("pane-x-transition");
-        });
-        $("#paneY").click(function () {
-            $("#paneY").addClass("pane-y-transition");
-        });
-        $("#paneZ").click(function () {
-            $("#paneZ").addClass("pane-z-transition");
-        });
-        $("#back").click(function () {
 
-        })
-        */
-        /*$("#pane").on("webkitTransitionEnd", function () {
-            $("#pane").removeClass("pane-x-transition");
-            $("#pane").addClass("pane-y-transition");
-        })*/
+        //view.show();
 
-        view.show();
         CallbackL(arguments);
     };
 
     Section2View.prototype.show = function (view) {
         //SuperClass show
         !view && (view = this);
-        if (!Section2View_Status.Inited) {
-            return;
-        }
-
         Section2View.superClass.show.call(this, view);
+
+
         //TODO
         console.log(view.name + "View show");
         //
         //临时方法
-        Resize.ImageRealCenter.onresize($($("#imageBoard").children("img")[0]));
+        
         //resize and get the currentPosition
         
-        //3D Cube初始化方法
-        //在主内容显示之后初始化
-        Resize.MapCube.onresize($("#imageBoard"));
-        var imagesContainer = $("#Section2 .section-container");
-        var imagesTarget = $($("#imageBoard").children("img")[0]);
-        Rotate3DCube.Init(imagesContainer, imagesTarget);
-
         
         CallbackL(arguments);
     };
@@ -148,5 +134,12 @@ var Section2View_Status = {
         CallbackL(arguments);
     };
     
-
+    Section2View.prototype.resize = function (view) {
+        !view && (view = this);
+        Section2View.superClass.resize.call(this, view);
+        //TODO
+        console.log(view.name + "View resize");
+        //
+        CallbackL(arguments);
+    }
 })();
