@@ -1,4 +1,57 @@
-﻿.FirstMenuArrowUp_Effect
+﻿/*
+    雷达 时钟    
+*/
+
+#FilterBar{
+    /*
+    opacity:0;
+    -webkit-animation-name:RadarEffect; 
+    */
+    
+    -webkit-transform-origin:right bottom;
+    -webkit-transform:rotate(0deg);
+    -webkit-animation-name:RadarEffect;
+    -webkit-animation-duration:5s;
+    -webkit-animation-delay:5s;
+    -webkit-animation-timing-function:linear;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-direction:normal;
+}
+
+@-webkit-keyframes RadarEffect{
+    0%{
+        opacity:0;
+        background-image: none;
+        -webkit-transform:rotate(0deg);
+    }
+    33%{
+        opacity:1;
+        -webkit-transform:rotate(0deg);
+    }
+    40%{
+        opacity:1;
+        -webkit-transform:rotate(0deg);
+        background-image: none;
+    }
+    41% {
+        -webkit-transform:rotate(12deg);
+        background-image: -webkit-gradient(radial, 0% 100%, 300, 0% 100%, 500, from(transparent), to(lightgreen));
+    }
+    70%{
+        -webkit-transform:rotate(360deg);
+        background-image: -webkit-gradient(radial, 0% 100%, 300, 0% 100%, 500, from(transparent), to(lightgreen));
+    }
+    100%{
+        opacity:0;
+        -webkit-transform:rotate(360deg);
+        background-image: none;
+    }
+}
+
+/* Menu */
+
+
+.FirstMenuArrowUp_Effect
 {
     -webkit-animation-name: FirstMenuArrowUpEffect;
 	-webkit-animation-duration: 1s;
