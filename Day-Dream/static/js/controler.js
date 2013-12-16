@@ -33,15 +33,13 @@ var Controler = {
         this.currentView.show();
     },
     preloadLayerShow: function (target, msg) {
-        $(target).children().addClass("hiddenv");
-        if ($(target).attr("class").indexOf("View") != -1) {
-            $(target).addClass("nobg");
-        }
+        $(target).children().addClass("prehidden");
+        
         if (!$(target).children(".preloadLayer").length) {
             var preloadLayer = null;
             var preloadHtml = new Array();
             preloadHtml.push("<div class='preloadLayer'>");
-            preloadHtml.push("<div id='floatingCirclesG' style='position: absolute;top: 50%;margin-top: -84px;left: 50%;margin-left: -64px;z-index: 1000;'>");
+            preloadHtml.push("<div id='floatingCirclesG' style='position: absolute;top: 50%;margin-top: -105px;left: 50%;margin-left: -105px;z-index: 1000;'>");
             preloadHtml.push("<div class='f_circleG' id='frotateG_01'></div>");
             preloadHtml.push("<div class='f_circleG' id='frotateG_02'></div>");
             preloadHtml.push("<div class='f_circleG' id='frotateG_03'></div>");
@@ -50,29 +48,32 @@ var Controler = {
             preloadHtml.push("<div class='f_circleG' id='frotateG_06'></div>");
             preloadHtml.push("<div class='f_circleG' id='frotateG_07'></div>");
             preloadHtml.push("<div class='f_circleG' id='frotateG_08'></div>");
+            preloadHtml.push("<div class='f_circleG' id='frotateG_09'></div>");
+            preloadHtml.push("<div class='f_circleG' id='frotateG_10'></div>");
+            preloadHtml.push("<div class='f_circleG' id='frotateG_11'></div>");
+            preloadHtml.push("<div class='f_circleG' id='frotateG_12'></div>");
+            preloadHtml.push("<div class='f_circleG' id='frotateG_13'></div>");
+            preloadHtml.push("<div class='f_circleG' id='frotateG_14'></div>");
+            preloadHtml.push("<div class='f_circleG' id='frotateG_15'></div>");
             preloadHtml.push("</div>");
             preloadHtml.push("<div id='loadingMsg'>");
-            //msg?preloadHtml.push(msg):preloadHtml.push("æ•°æ�®åŠ è½½ä¸­ï¼Œè¯·ç¨�å�Ž...");
+            msg?preloadHtml.push(msg):preloadHtml.push("LoadinG...[for test]");
             preloadHtml.push("</div>");
-            //preloadHtml.push("<div id='waitMsg'>è¯·ç¨�å€™...</div>");
-
             preloadHtml.push("</div>");
             preloadLayer = preloadHtml.join("");
             $(target).append(preloadLayer);
         } else {
-            $(target).children(".preloadLayer").css("display", "block").removeClass("hiddenv");
+            $(target).children(".preloadLayer").removeClass("prehidden").css("display","block");
             //$(target).children(".preloadLayer").removeClass("hiddenv");
         }
         Controler.preloadTarget = target;
     },
     preloadLayerHide: function (target) {
-        //if($(target).children(".preloadLayer").length){
-        $(target).removeClass("nobg");
-        $(target).children(".preloadLayer").css("display", "none");
-        $(target).children().removeClass("hiddenv");
-        //}
+        if ($(target).children(".preloadLayer").length) {
+            $(target).children(".preloadLayer").fadeOut().addClass("prehidden");
+            $(target).children().removeClass("prehidden");
+        }
 
-        //$("#dataView").css("display","none");
     },
     preloadTarget: null,
 };

@@ -170,8 +170,12 @@ var SectionMenu = {
                 },
             ]
         },
-        { title: "Section4", type: "one" },
-        
+        {
+            title: "Section4", type: "one",
+            view: Section4View,
+            viewname: "Section4",
+        },
+        { title: "Section5", type: "one" }
     ],
     FM_size: {
         width:0,
@@ -591,7 +595,10 @@ var SectionMenu = {
             if (_this.FIRSTMENU[i].viewname == viewname) {
                 var index = i;
                 var type = _this.FIRSTMENU[i].type;
-                firstMenuHoveredClick(index, type);
+                setTimeout(function() {
+                    firstMenuHoveredClick(index, type);
+                },500);
+
             }
         }
 

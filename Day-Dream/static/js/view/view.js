@@ -37,6 +37,7 @@ View.prototype.show = function(view) {
     console.log("View show");
 
     //callback
+    
     CallbackL(arguments);
 };
 
@@ -156,7 +157,10 @@ var ViewType = {
         //common init function
         init: function(view) {
             //section 栏的初始化方法，定义section
-            Resize.Section.onresize(view.target.children(".section-container"));
+            //Resize.Section.onresize(view.target.children(".section-container"));
+            SectionMenu.FirstMenu_Init(view.name);
+            //section preload
+            Controler.preloadLayerShow(view.target);
         },
         show: function (view) {
             //section 栏的show 方法, save current state

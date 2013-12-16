@@ -75,7 +75,7 @@
     <Content Include="ideal\22496_1366977_479482.jpg" />
     <Content Include="ideal\info.txt" />
     <Content Include="others\Seed.js" />
-    <Content Include="static\css\css3\style.css" />
+    <Content Include="static\css\css3\preload.css" />
     <Content Include="static\css\effect.css" />
     <Content Include="static\css\main.css" />
     <Content Include="static\css\reset\html5-base.css" />
@@ -95,6 +95,7 @@
     <Content Include="static\js\plugin\jquery-1.8.2.min.js" />
     <Content Include="static\js\resize.js" />
     <Content Include="static\js\tools.js" />
+    <Content Include="static\js\view\section4-view.js" />
     <Content Include="static\js\view\section3-view.js" />
     <Content Include="static\js\view\section2-view.js" />
     <Content Include="static\js\view\login-view.js" />

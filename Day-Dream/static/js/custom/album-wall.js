@@ -647,9 +647,9 @@
                                         var next = crossPointArray[0];
                                         var current = targetCrossPoint;
                                         if (extendsCrossPoint&&getExtendsCrossPoint(next, current)) {
-                                            throw "extendsCrossPoint repeat "
+                                            throw "extendsCrossPoint repeat ";
                                         } else if (!extendsCrossPoint) {
-                                            extendsCrossPoint = getExtendsCrossPoint(next, current)
+                                            extendsCrossPoint = getExtendsCrossPoint(next, current);
                                         }
                                     }
 
@@ -658,17 +658,17 @@
                                         var prev = crossPointArray[currentIndex - 1];
                                         var current = targetCrossPoint;
                                         if (extendsCrossPoint && getExtendsCrossPoint(prev, current)) {
-                                            throw "extendsCrossPoint repeat "
+                                            throw "extendsCrossPoint repeat ";
                                         } else if (!extendsCrossPoint) {
-                                            extendsCrossPoint = getExtendsCrossPoint(prev, current)
+                                            extendsCrossPoint = getExtendsCrossPoint(prev, current);
                                         }
                                     } else {
                                         var prev = crossPointArray[crossPointArray.length - 1];
                                         var current = targetCrossPoint;
                                         if (extendsCrossPoint && getExtendsCrossPoint(prev, current)) {
-                                            throw "extendsCrossPoint repeat "
+                                            throw "extendsCrossPoint repeat ";
                                         } else if (!extendsCrossPoint) {
-                                            extendsCrossPoint = getExtendsCrossPoint(prev, current)
+                                            extendsCrossPoint = getExtendsCrossPoint(prev, current);
                                         }
                                     }
 

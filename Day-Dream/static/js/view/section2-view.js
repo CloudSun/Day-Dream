@@ -27,11 +27,11 @@ var Section2ViewParam = {
         //SuperClass init
         //在创建对象时进行初始化 需要传入初始化对象view
         !view && (view = this);
+
         Section1View.superClass.init.call(this, view);
 
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
-        SectionMenu.FirstMenu_Init(view.name);
 
         /*Init Html content*/
         var imageBoard = $('<div id="imageBoard"></div>');
@@ -65,8 +65,6 @@ var Section2ViewParam = {
 
         var SectionContainer = view.target.find(".section-container");
         SectionContainer.html(imageBoard);
-
-        var _arguments = arguments;
 
         dataTarget.load(function () {
             //加载完后
@@ -102,7 +100,6 @@ var Section2ViewParam = {
         //TODO
         console.log(view.name + "View addEvent");
         
-
         //view.show();
 
         CallbackL(arguments);
@@ -118,12 +115,16 @@ var Section2ViewParam = {
         console.log(view.name + "View show");
         //
         //临时方法
-        if (view.param.showtime && view.resize) {
+        /*if (view.param.showtime && view.resize) {
             view.resize(view);
-        }
+        }*/
         //resize and get the currentPosition
         
         
+        view.resize(view);
+        setTimeout(function() {
+            Controler.preloadLayerHide(view.target);
+        }, 3000);
         CallbackL(arguments);
     };
     
@@ -133,6 +134,7 @@ var Section2ViewParam = {
         Section1View.superClass.hide.call(this, view);
         //TODO
         console.log(view.name + "View hide");
+        
         //
         CallbackL(arguments);
     };

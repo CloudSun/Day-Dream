@@ -29,7 +29,8 @@ var Section3ViewParam = {
 
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
-        SectionMenu.FirstMenu_Init(view.name);
+        //clear Content
+        
 
         Section1View.prototype.addEvents.call(this, view);
         CallbackL(arguments);
@@ -53,8 +54,9 @@ var Section3ViewParam = {
         //TODO
         console.log(view.name + "View show");
 
-        AlbumWall.Init();
-        //
+        
+        view.resize(view);
+        Controler.preloadLayerHide(view.target);
         CallbackL(arguments);
     };
     
@@ -65,6 +67,7 @@ var Section3ViewParam = {
         //TODO
         console.log(view.name + "View hide");
         //
+        //view.target.children(".section-container").html("");
         CallbackL(arguments);
     };
     
@@ -73,8 +76,8 @@ var Section3ViewParam = {
         Section3View.superClass.resize.call(this, view);
         //TODO
         console.log(view.name + "View resize");
-
         AlbumWall.Init();
+        
         //
         CallbackL(arguments);
     }

@@ -29,7 +29,6 @@ var Section1ViewParam = {
         
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
-        SectionMenu.FirstMenu_Init(view.name);
 
 
         Section1View.prototype.addEvents.call(this, view);
@@ -54,6 +53,14 @@ var Section1ViewParam = {
         //TODO
         console.log(view.name + "View show");
         //
+        
+
+
+        
+        view.resize(view);
+        setTimeout(function () {
+            Controler.preloadLayerHide(view.target);
+        }, 3000);
         CallbackL(arguments);
     };
     
@@ -72,7 +79,7 @@ var Section1ViewParam = {
         Section1View.superClass.resize.call(this, view);
         //TODO
         console.log(view.name + "View resize");
-        var bgResize = function () {
+        var bgResize = function() {
             //Section1View bg w/h = 1.6
             //h screenH 70%
             //w screenW 50
@@ -87,7 +94,7 @@ var Section1ViewParam = {
                     "background-size": "100% auto",
                 });
             }
-        }
+        };
         bgResize();
         //
         CallbackL(arguments);
