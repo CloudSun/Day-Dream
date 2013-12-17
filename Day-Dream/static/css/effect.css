@@ -10,6 +10,9 @@
     
     -webkit-transform-origin:right bottom;
     -webkit-transform:rotate(0deg);
+    /*
+        background-image: -webkit-gradient(radial, 0% 100%, 300, 0% 100%, 500, from(transparent), to(lightgreen));
+    */
     -webkit-animation-name:RadarEffect;
     -webkit-animation-duration:5s;
     -webkit-animation-delay:5s;
@@ -19,30 +22,34 @@
 }
 
 @-webkit-keyframes RadarEffect{
+    /*
+        durationtime:3s    
+    */
     0%{
-        opacity:0;
-        background-image: none;
-        -webkit-transform:rotate(0deg);
-    }
-    33%{
         opacity:1;
         -webkit-transform:rotate(0deg);
     }
-    40%{
-        opacity:1;
-        -webkit-transform:rotate(0deg);
-        background-image: none;
-    }
-    41% {
-        -webkit-transform:rotate(12deg);
+    1%{
+        
+        -webkit-transform:rotate(6deg);
         background-image: -webkit-gradient(radial, 0% 100%, 300, 0% 100%, 500, from(transparent), to(lightgreen));
     }
-    70%{
+    60%{
+         -webkit-transform:rotate(360deg);
+        background-image: -webkit-gradient(radial, 0% 100%, 300, 0% 100%, 500, from(transparent), to(lightgreen));
+    }
+    75% {
+        opacity:1;
         -webkit-transform:rotate(360deg);
-        background-image: -webkit-gradient(radial, 0% 100%, 300, 0% 100%, 500, from(transparent), to(lightgreen));
+        background-image: none;
+    }
+    85%{
+       opacity:0;
+        background-image: none;
+        -webkit-transform:rotate(360deg);
     }
     100%{
-        opacity:0;
+         opacity:1;
         -webkit-transform:rotate(360deg);
         background-image: none;
     }

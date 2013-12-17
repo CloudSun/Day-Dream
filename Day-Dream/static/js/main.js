@@ -42,7 +42,7 @@ $().ready(function () {
                 "width":"100%",
             });
             setTimeout(function () {
-                Controler.transfer(new Section2View());
+                Controler.transfer(new Section4View());
             }, 500);
             
         }, 200);
