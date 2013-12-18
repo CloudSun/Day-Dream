@@ -12,3 +12,5 @@ add task
 【css3: my shadow】
 
 【localhistory: push history&my action】
+
+【preloading effect: half circle{thingking}】
