@@ -73,9 +73,12 @@
     <Content Include="Day-Dream.html" />
     <Content Include="ideal\1.png" />
     <Content Include="ideal\22496_1366977_479482.jpg" />
+    <Content Include="ideal\ideal_more.jpg" />
     <Content Include="ideal\info.txt" />
+    <Content Include="ideal\log.txt" />
     <Content Include="others\Seed.js" />
     <Content Include="static\css\css3\preload.css" />
+    <Content Include="static\css\css3\radar.css" />
     <Content Include="static\img\bgGuiltyCrome.png" />
     <Content Include="static\js\custom\radar.js" />
     <Content Include="static\css\effect.css" />

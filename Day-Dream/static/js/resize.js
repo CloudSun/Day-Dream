@@ -45,9 +45,9 @@ var Resize = {
             var parent = target.parent();
             var parentWidth;
             var resizeWidth = parent.attr("resize-width");
-            if(resizeWidth){
+            if (resizeWidth) {
                 parentWidth = resizeWidth;
-            }else{
+            } else {
                 parentWidth = parent.width();
             }
             var resizeHeight = parent.attr("resize-height");
@@ -141,12 +141,12 @@ var Resize = {
         _this.globalResize();
 
         Controler.currentView.resize();
-        
-        
+
+
     },
-    globalResize: function () {
+    globalResize: function() {
         //GlobalResizeFunction
-        var sectionBgResize = function () {
+        var sectionBgResize = function() {
             var screenHeight = window.outerHeight;
             var screenWidth = window.outerWidth;
             //resize SectionContainer background
@@ -154,15 +154,26 @@ var Resize = {
             sectionContainer.css({
                 "background-image":
                     "-webkit-gradient(radial, 20% 0%," + screenHeight / 6 + ", 20% 0%, " + screenHeight / 2 + ", from(#fff),to(transparent))," +
-                    "-webkit-gradient(radial, 10% -50%," + screenHeight / 3 + ", 0% 0%, " + screenHeight + ", from(#fff),to(transparent))," +
-                    "-webkit-gradient(radial, 60% 50%," + 0 + ",60% 50%, " + screenHeight / 16 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
-                    "-webkit-gradient(radial, 73% 65%," + 0 + ",73% 65%, " + screenHeight / 8 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
-                    "-webkit-gradient(radial, 100% 100%," + 0 + ", 100% 100%, " + screenHeight / 4 + ", from(#fff), to(transparent))",
+                        "-webkit-gradient(radial, 10% -50%," + screenHeight / 3 + ", 0% 0%, " + screenHeight + ", from(#fff),to(transparent))," +
+                        "-webkit-gradient(radial, 60% 50%," + 0 + ",60% 50%, " + screenHeight / 16 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
+                        "-webkit-gradient(radial, 73% 65%," + 0 + ",73% 65%, " + screenHeight / 8 + ", from(rgba(255, 255, 255,0.4)),to(transparent))," +
+                        "-webkit-gradient(radial, 100% 100%," + 0 + ", 100% 100%, " + screenHeight / 4 + ", from(#fff), to(transparent))",
             });
-        }
+        };
         sectionBgResize();
-
-        
+    },
+    //Common function 
+    getSize: function(target) {
+        if (!target) {
+            throw "no target obj";
+        }
+        var resizeWidth = target.attr("resize-width");
+        var resizeHeight = target.attr("resize-height");
+        if (resizeWidth && resizeHeight) {
+            return { width: parseInt(resizeWidth), height: parseInt(resizeHeight) };
+        } else {
+            return { width: target.width(), height: target.height() };
+        }
     }
 };
 

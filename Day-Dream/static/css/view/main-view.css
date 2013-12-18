@@ -15,6 +15,15 @@
     -webkit-transition-timing-function: ease-in-out;
 }
 
+.section-container {
+    margin:auto;
+    background-color:transparent;
+    position:absolute;
+    z-index:-10;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    overflow: hidden;
+}
 #SectionContainer {
     position:absolute;
     width:100%;
@@ -65,15 +74,6 @@
     */
 }
 
-.section-container {
-    margin:auto;
-    background-color:transparent;
-    position:absolute;
-    z-index:-10;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    overflow: hidden;
-}
 
 #imageBoard
 {

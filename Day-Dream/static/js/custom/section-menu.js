@@ -5,7 +5,7 @@
 var SectionMenu = {
     inited: false,
     baseWidth: function () {
-        return Math.floor(window.outerWidth / BaseSizeNumber) * BaseSizeNumber
+        return Math.floor(window.outerWidth / BaseSizeNumber) * BaseSizeNumber;
     },
     CurrentFM:function(){
         var FMMap = $(".first-class-li.menuSelected");
@@ -881,10 +881,7 @@ var SectionMenu = {
                     t.fadeIn(duringTime, function () {
                         showThirdMenu(++index);
                     });
-                    
-
                 }
-
                 _this.AddTMEvents();
             });
 
