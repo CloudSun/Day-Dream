@@ -83,11 +83,19 @@ var Section1ViewParam = {
             //Section1View bg w/h = 1.6
             //h screenH 70%
             //w screenW 50
+            var imageHeight = 1200;
+            var imageWidth = 990;
             var screenHeight = window.outerHeight;
             var screenWidth = window.outerWidth;
-            if (screenWidth / (screenHeight * 0.8) > 1) {
+            var widthScale = screenWidth / imageWidth;
+            var heightScale =  screenHeight/ imageHeight;
+            console.log("screenHeight=" + screenHeight);
+            console.log("screenWidth=" + screenWidth);
+            console.log("widthScale=" + widthScale);
+            console.log("heightScale=" + heightScale);
+            if (widthScale>heightScale) {
                 $("#Section1 .section-container").css({
-                    "background-size": "auto 70%",
+                    "background-size": "auto 100%",
                 });
             } else {
                 $("#Section1 .section-container").css({

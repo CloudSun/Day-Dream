@@ -51,7 +51,7 @@ var Radar = {
         radarTime.append(filterBar);
 
         var svgns = "http://www.w3.org/2000/svg";
-
+        var marginLength = 10;
         var radarDial = document.createElementNS(svgns, "svg");
         radarDial.setAttribute("id", "RadarDial");
         radarDial.setAttribute("width", sizeR * 2);
@@ -63,7 +63,7 @@ var Radar = {
             var circle = document.createElementNS(svgns, "circle");
             circle.setAttribute("cx", sizeR);
             circle.setAttribute("cy", sizeR);
-            circle.setAttribute("r", (circleMarginR - 1) + i * circleMarginR);
+            circle.setAttribute("r", (circleMarginR - 1) + i * circleMarginR - marginLength);
             radarDial.appendChild(circle);
         }
         //中间分割线，过圆心
@@ -158,18 +158,21 @@ var Radar = {
                 text.setAttribute("y", sizeR-r);
                 text.setAttribute("fill", "lightgreen");
                 if (i) {
-                    var textNode = document.createTextNode(i+".0");
+                    var textNode;
+                    if (i < 10) {
+                        textNode = document.createTextNode("0"+i);
+                    } else {
+                        textNode = document.createTextNode(i);
+                    }
+                    
                     text.appendChild(textNode);
                 } else {
-                    var textNode = document.createTextNode(12 + ".0");
+                    var textNode = document.createTextNode(12);
                     text.appendChild(textNode);
                 }
                 //rotate(deg, cx, cy)!
-                if (i > 10) {
-                    currentAngle = (currentAngle - 3);
-                } else {
-                    currentAngle = (currentAngle - 2);
-                }
+                
+                currentAngle = (currentAngle - 2);
                 text.setAttribute("transform", "rotate(" + currentAngle + "," + sizeR + "," + sizeR + ")");
                 text.setAttribute("class", className);
                 container.appendChild(text);
@@ -177,19 +180,19 @@ var Radar = {
         }
 
         
-        var hourLength = 16;
+        var hourLength = 20;
         //小时刻度
         drawTimeMarkLine(sizeR, sizeR-hourLength, hourLength, 30, "hourmarkline", radarDial);
         //分钟刻度
-        var minuteLength = 8;
+        var minuteLength = 10;
         drawTimeMarkLine(sizeR, sizeR-(hourLength), minuteLength, 6, "minutemarkline", radarDial);
         //内圈刻度1
-        drawTimeMarkLine(sizeR, sizeR / 3 - (hourLength / 2), hourLength, 30, "hourmarkline", radarDial);
+        drawTimeMarkLine(sizeR, sizeR / 3 - (hourLength / 2) - marginLength, hourLength, 30, "hourmarkline", radarDial);
         //内圈刻度2
-        drawTimeMarkLine(sizeR, sizeR / 3 * 2 - (hourLength - minuteLength), hourLength, 30, "hourmarkline", radarDial);
+        drawTimeMarkLine(sizeR, sizeR / 3 * 2 - (hourLength - minuteLength) - marginLength, hourLength, 30, "hourmarkline", radarDial);
 
         var textLength = 20;
-        drawTimeMarkText(sizeR, sizeR - hourLength - textLength, 360 / 12, "normaltext", radarDial);
+        drawTimeMarkText(sizeR, sizeR - hourLength - textLength - marginLength, 360 / 12, "normaltext", radarDial);
 
         Radar.Hour.target = $(radarHourContainer);
         Radar.Minute.target = $(radarMinuteContainer);
