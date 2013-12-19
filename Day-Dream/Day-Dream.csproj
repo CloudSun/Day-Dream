@@ -80,6 +80,7 @@
     <Content Include="static\css\css3\preload.css" />
     <Content Include="static\css\css3\radar.css" />
     <Content Include="static\img\bgGuiltyCrome.png" />
+    <Content Include="static\js\custom\audio.js" />
     <Content Include="static\js\custom\radar.js" />
     <Content Include="static\css\effect.css" />
     <Content Include="static\css\main.css" />

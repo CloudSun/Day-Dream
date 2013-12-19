@@ -102,8 +102,19 @@
 
             <section id="Section1">
                 <!--<h1>Section1</h1>-->
-                <div class="section-container" style="background: url(http://localhost:56498/static/img/bgGuiltyCrome.png) no-repeat bottom right; background-size: auto 100%; background-color: rgba(0,0,0,0.7);"></div>
+                <div class="section-container" style="background: url(http://localhost:56498/static/img/bgGuiltyCrome.png) no-repeat bottom right; background-size: auto 100%; background-color: rgba(0,0,0,0.7);">
+                    <!--autoplay="autoplay"-->
 
+                    <canvas id="cvs" width="500" height="200"></canvas>
+                    <!-- TODO control pane -->
+                    <div id="AudioControl" style="color:#fff;">
+                        <input type="button" id="playBtn1" value="PLAY" disabled="disabled" />
+                        <span style="color:#fff;">ナノ-Silver Sky.mp3</span><br />
+                        <input type="button" id="playBtn2" value="PLAY" disabled="disabled" />
+                        <span style="color:#fff;">MyDearest.mp3</span><br />
+                        <span id="alert"></span>
+                    </div>
+                </div>
             </section>
             <section id="Section2">
                 <!--<h1>Section2</h1>-->
@@ -160,7 +171,7 @@
     <script type="text/javascript" src="static/js/custom/rotate3Dpane.js"></script>
     <script type="text/javascript" src="static/js/custom/album-wall.js"></script>
     <script type="text/javascript" src="static/js/custom/radar.js"></script>
-
+    <script type="text/javascript" src="static/js/custom/audio.js"></script>
 
 </body>
 </html>

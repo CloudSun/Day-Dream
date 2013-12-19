@@ -29,7 +29,7 @@ var Section1ViewParam = {
         
         //SectionMenu初始化及显示方法
         console.log(view.name + "View init");
-
+        bufferLoader.load();
 
         Section1View.prototype.addEvents.call(this, view);
         CallbackL(arguments);
