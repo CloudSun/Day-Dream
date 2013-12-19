@@ -77,6 +77,11 @@
     <Content Include="ideal\info.txt" />
     <Content Include="ideal\log.txt" />
     <Content Include="others\Seed.js" />
+    <Content Include="sound\EGOIST-Departures ~あなたにおくるアイの歌~ %28TV Edit%29 -Instrumental-.mp3" />
+    <Content Include="sound\Supercell-My Dearest%28《罪恶王冠》动漫主题曲%29.mp3" />
+    <Content Include="sound\Supercell-告白 %28Album Mix%29.mp3" />
+    <Content Include="sound\ナノ-Silver Sky.mp3" />
+    <Content Include="sound\境界的彼方ED「Daisy」.mp3" />
     <Content Include="static\css\css3\preload.css" />
     <Content Include="static\css\css3\radar.css" />
     <Content Include="static\img\bgGuiltyCrome.png" />
