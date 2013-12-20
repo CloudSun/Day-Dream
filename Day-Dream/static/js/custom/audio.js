@@ -26,11 +26,12 @@ BufferLoader.prototype.loadBuffer = function (url, index) {
                     return;
                 }
                 loader.bufferList[index] = buffer;
-                if (++loader.loadCount == loader.urlList.length) {
-                    loader.onload(loader.bufferList, null);
-                } else {
+                //if (++loader.loadCount == loader.urlList.length) {
+                //    loader.onload(loader.bufferList, null);
+                //} else {
+                
                     loader.onload(loader.bufferList[index], index);
-                }
+                //}
             },
             function (error) {
                 console.error('decodeAudioData error', error);
@@ -46,84 +47,95 @@ BufferLoader.prototype.loadBuffer = function (url, index) {
 
 BufferLoader.prototype.load = function () {
     for (var i = 0; i < this.urlList.length; ++i)
-        this.loadBuffer(this.urlList[i], i);
+        this.loadBuffer(this.urlList[i].src, i);
 };
 
 
 var filePath = '../sound/';
 var CustomAudioContext = {
-    audioctx: null,
-    loadList: [
-        filePath + '境界的彼方ED「Daisy」.mp3',
+    Audioctx: null,
+    LoadList: [
+        /*filePath + '境界的彼方ED「Daisy」.mp3',
         filePath + 'EGOIST-Departures ~あなたにおくるアイの歌~ (TV Edit) -Instrumental-.mp3',
         filePath + 'Supercell-My Dearest(《罪恶王冠》动漫主题曲).mp3',
-        filePath + 'Supercell-告白 (Album Mix).mp3',
-        filePath + 'ナノ-Silver Sky.mp3',
+        filePath + 'Supercell-告白 (Album Mix).mp3',*/
+        {
+            title: "ナノ-Silver Sky",
+            src:filePath + 'ナノ-Silver Sky.mp3',
+        },{
+            title:"EGOIST-Departures",
+            src: filePath + 'EGOIST-Departures ~あなたにおくるアイの歌~ (TV Edit) -Instrumental-.mp3',
+        }
     ],
-    analyzer: null,
+    Analyzer: null,
     analyze: function () {
-        this.analyzer.smoothingTimeConstant = 0.5;
-        this.analyzer.fftSize = 1024;
-        this.analyzer.getFloatFrequencyData(this.bufdata);
+        this.Analyzer.smoothingTimeConstant = 0.5;
+        this.Analyzer.fftSize = 1024;
+        this.Analyzer.getFloatFrequencyData(this.Bufdata);
     },
-    bufdata: new Float32Array(1024),
-    currentSource: null,
-    drawInterval: null,
+    Bufdata: new Float32Array(1024),
+    CurrentSource: null,
+    DrawInterval: null,
+    Loop: true,
+    loopChange:function(){
+        this.CurrentSource.source.loop = this.Loop;
+    },
     init: function () {
-        if (this.audioctx) {
+        if (this.Audioctx) {
             return;
         }
         //init AudioContext and return the object
         try {
             // Fix up for prefixing
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
-            this.audioctx = new AudioContext();
+            this.Audioctx = new AudioContext();
         }
         catch (e) {
             alert('Web Audio API is not supported in this browser');
         }
         var _this = this;
-        var bufferLoader = new BufferLoader(this.audioctx, this.loadList, finishedLoading);
+        var bufferLoader = new BufferLoader(this.Audioctx, this.LoadList, finishedLoading);
         bufferLoader.load();
         function finishedLoading(bufferList, index) {
-            var audioctx = _this.audioctx;
-            if (index == 1) {
-                $("#playBtn1").removeAttr("disabled");
-                $("#playBtn1").unbind("click").click(function () {
-                    var source1 = audioctx.createBufferSource();
-                    source1.buffer = bufferList;
-                    _this.analyzer = audioctx.createAnalyser();
-                    source1.connect(audioctx.destination);
-                    source1.connect(_this.analyzer);
-                    _this.currentsource = source1;
-                    source1.start(0);
-                    _this.DrawGraph();
+            var Audioctx = _this.Audioctx;
+            var audioContainer = $("#AudioControl");
+            if (index != null) {
+                var btnControl = $("<input type='button' id='play"+index+"' value='PLAY'/>");
+                var spanInfo = $("<span>" + _this.LoadList[index].title + "</span>");
+                audioContainer.append(btnControl).append(spanInfo).append("<br/>");
+                btnControl.unbind("click").click(function () {
+                    if (_this.CurrentSource && _this.CurrentSource.index != index) {
+                        _this.CurrentSource.source.stop(0);
+                    }
+                    if (this.value() == "PLAY") {
+                        var source1 = Audioctx.createBufferSource();
+                        source1.buffer = bufferList;
+                        _this.Analyzer = Audioctx.createAnalyser();
+                        source1.connect(Audioctx.destination);
+                        source1.connect(_this.Analyzer);
+                        _this.CurrentSource = {
+                            source: source1,
+                            index: index,
+                        }
+                        source1.loop = _this.Loop;
+                        source1.start(0);
+                        _this.drawGraph();
+                    } else {
+
+                    }
+                    
                 });
-            } else if (index == null) {
-                //getAll bufferList
-                $("#playBtn2").removeAttr("disabled");
-                $("#playBtn2").unbind("click").click(function () {
-                    var source2 = audioctx.createBufferSource();
-                    source2.buffer = bufferList[bufferList.length - 1];
-                    _this.analyzer = audioctx.createAnalyser();
-                    source2.connect(audioctx.destination);
-                    source2.connect(_this.analyzer);
-                    _this.currentsource = source2;
-                    source2.start(0);
-                    _this.DrawGraph();;
-                });
-                
             }
         }
     },
-    DrawGraph: function () {
-        if (this.drawInterval) {
-            clearInterval(this.drawInterval);
-            this.drawInterval = null;
+    drawGraph: function () {
+        if (this.DrawInterval) {
+            clearInterval(this.DrawInterval);
+            this.DrawInterval = null;
         }
         var time = 100;
         var _this = this;
-        this.drawInterval = setInterval(function () {
+        this.DrawInterval = setInterval(function () {
             _this.analyze();
             var cv = document.getElementById("cvs");
             var ctx = cv.getContext("2d");
@@ -131,8 +143,8 @@ var CustomAudioContext = {
             ctx.fillRect(0, 0, 512, 256);
             ctx.fillStyle = "#009900";
             for (var i = 0; i < 512; ++i) {
-                var f = _this.audioctx.sampleRate * i / 1024;
-                y = 128 + (_this.bufdata[i] + 48.16) * 2.56;
+                var f = _this.Audioctx.sampleRate * i / 1024;
+                y = 128 + (_this.Bufdata[i] + 48.16) * 2.56;
                 ctx.fillRect(i, 256 - y, 1, y);
             }
             ctx.fillStyle = "#ff8844";
@@ -142,8 +154,8 @@ var CustomAudioContext = {
                 ctx.fillText(d + "dB", 5, y);
             }
             ctx.fillRect(20, 128, 512, 1);
-            for (var f = 2000; f < _this.audioctx.sampleRate / 2; f += 2000) {
-                var x = (f * 1024 / _this.audioctx.sampleRate) | 0;
+            for (var f = 2000; f < _this.Audioctx.sampleRate / 2; f += 2000) {
+                var x = (f * 1024 / _this.Audioctx.sampleRate) | 0;
                 ctx.fillRect(x, 0, 1, 245);
                 ctx.fillText(f + "Hz", x - 10, 255);
             };
@@ -165,7 +177,7 @@ canvas = document.getElementById('fft');
 ctx = canvas.getContext('2d');
 ctx.fillStyle = "white";
  
-// Create new Audio Context and an audio analyzer
+// Create new Audio Context and an audio Analyzer
 audioContext = new webkitAudioContext();
 analyser = audioContext.createAnalyser();
  
@@ -176,7 +188,7 @@ CANVAS_WIDTH = canvas.width;
 OFFSET = 100;
 // Spacing between the individual bars
 SPACING = 10;
-// Initialize and start drawing
+// initialize and start drawing
 // when the audio starts playing
 window.onload = init;
 audioElement.addEventListener('play', draw);
@@ -184,9 +196,9 @@ audioElement.addEventListener('play', draw);
 function init() {
   // Take input from audioElement
   source = audioContext.createMediaElementSource(audioElement);
-  // Connect the stream to an analyzer
+  // Connect the stream to an Analyzer
   source.connect(analyser);
-  // Connect the analyzer to the speakers
+  // Connect the Analyzer to the speakers
   analyser.connect(audioContext.destination);
   // Start the animation
   draw();
