@@ -200,7 +200,7 @@ var CustomAudioContext = {
             };
             ctx.fillStyle = "lightblue";
             */
-            var length = _this.FreqData.length/2;
+            var length = _this.FreqData.length/2/2;
             if (w > (length)) {
                 var SPACING = w / length;
                 for (var i = 0; i < length; i++) {
@@ -209,7 +209,9 @@ var CustomAudioContext = {
                     //var magnitude =h/2+ (_this.FreqData[i]+48.16) * h/100;
                     var magnitude = (_this.FreqData[i] * -1) / 148.16 * h/3;
                     // Draw a bar from the bottom up (cause for the "-magnitude")
-                    ctx.fillRect(i * SPACING, 0, SPACING,h/3- magnitude);
+                    ctx.fillRect(i * SPACING + w / 2, (h / 2 - magnitude)/3, SPACING, (h / 2 + magnitude)/3);
+                    
+                    ctx.fillRect((-i * SPACING - SPACING) + w / 2, (h / 2 - magnitude)/3, SPACING, (h / 2 + magnitude)/3);
                 }
             } else {
                 var spaceNumber = length / w;
@@ -218,7 +220,9 @@ var CustomAudioContext = {
                     if (i % spaceNumber == 0) {
                         var magnitude = (_this.FreqData[i] * -1) / 148.16 * h / 3;
                         // Draw a bar from the bottom up (cause for the "-magnitude")
-                        ctx.fillRect(i, 0, 1, h / 3 - magnitude);
+                        ctx.fillRect(i  + w / 2, h / 2 - magnitude, 1, h / 2 + magnitude);
+
+                        ctx.fillRect((-i  - 1) + w / 2, h / 2 - magnitude, 1, h / 2 + magnitude);
                     }
                     
                 }
