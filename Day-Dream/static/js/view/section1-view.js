@@ -93,16 +93,17 @@ var Section1ViewParam = {
             console.log("widthScale=" + widthScale);
             console.log("heightScale=" + heightScale);
             if (widthScale>heightScale) {
-                $("#Section1 .section-container").css({
-                    "background-size": "auto 100%",
-                });
+                $("#Section1 .section-container").addClass("section1bg_width").removeClass("section1bg_height");
             } else {
-                $("#Section1 .section-container").css({
-                    "background-size": "100% auto",
-                });
+                $("#Section1 .section-container").addClass("section1bg_height").removeClass("section1bg_width");
             }
+            $("#Section1 .section-container:before ").css({
+                "background": "",
+            });
         };
         bgResize();
+
+        CustomAudioContext.resizeCanvas();
         //
         CallbackL(arguments);
     }

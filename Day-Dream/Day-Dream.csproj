@@ -78,6 +78,7 @@
     <Content Include="ideal\log.txt" />
     <Content Include="others\Seed.js" />
     <Content Include="sound\EGOIST-Departures ~あなたにおくるアイの歌~ %28TV Edit%29 -Instrumental-.mp3" />
+    <Content Include="sound\MyDearest.mp3" />
     <Content Include="sound\Supercell-My Dearest%28《罪恶王冠》动漫主题曲%29.mp3" />
     <Content Include="sound\Supercell-告白 %28Album Mix%29.mp3" />
     <Content Include="sound\ナノ-Silver Sky.mp3" />
@@ -103,6 +104,7 @@
     <Content Include="static\js\guiddefine-object.js" />
     <Content Include="static\js\local-storage.js" />
     <Content Include="static\js\main.js" />
+    <Content Include="static\js\more.js" />
     <Content Include="static\js\plugin\jquery-1.8.2.min.js" />
     <Content Include="static\js\resize.js" />
     <Content Include="static\js\tools.js" />

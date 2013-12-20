@@ -61,26 +61,42 @@ var CustomAudioContext = {
         filePath + 'Supercell-告白 (Album Mix).mp3',*/
         {
             title: "ナノ-Silver Sky",
-            src:filePath + 'ナノ-Silver Sky.mp3',
-        },{
-            title:"EGOIST-Departures",
+            src: filePath + 'ナノ-Silver Sky.mp3',
+        }, {
+            title: "EGOIST-Departures",
             src: filePath + 'EGOIST-Departures ~あなたにおくるアイの歌~ (TV Edit) -Instrumental-.mp3',
+        }, {
+            title: "MyDearest",
+            src: filePath + 'MyDearest.mp3',
         }
     ],
     Analyzer: null,
     analyze: function () {
+        //this.Analyzer.minDecibels = 0;
+        //this.Analyzer.maxDecibels = 100;
         this.Analyzer.smoothingTimeConstant = 0.5;
         this.Analyzer.fftSize = 1024;
-        this.Analyzer.getFloatFrequencyData(this.Bufdata);
+        this.Analyzer.getFloatFrequencyData(this.FreqData);
+        
     },
-    Bufdata: new Float32Array(1024),
+    Gain: 1,
+    gainChange: function(v) {
+        if (!v) {
+            v = $("#gain").val();
+        }
+        this.Gain.gain.value = v;
+    },
+    FreqData: new Float32Array(1024),
     CurrentSource: null,
     DrawInterval: null,
     Loop: true,
-    loopChange:function(){
+    loopChange: function(v) {
+        if (!v) {
+            this.Loop = v;
+        }
         this.CurrentSource.source.loop = this.Loop;
     },
-    init: function () {
+    init: function() {
         if (this.Audioctx) {
             return;
         }
@@ -89,67 +105,129 @@ var CustomAudioContext = {
             // Fix up for prefixing
             window.AudioContext = window.AudioContext || window.webkitAudioContext;
             this.Audioctx = new AudioContext();
-        }
-        catch (e) {
+        } catch(e) {
             alert('Web Audio API is not supported in this browser');
         }
         var _this = this;
         var bufferLoader = new BufferLoader(this.Audioctx, this.LoadList, finishedLoading);
+        
         bufferLoader.load();
+        
+        this.resizeCanvas();
+        
         function finishedLoading(bufferList, index) {
             var Audioctx = _this.Audioctx;
             var audioContainer = $("#AudioControl");
             if (index != null) {
-                var btnControl = $("<input type='button' id='play"+index+"' value='PLAY'/>");
+                var btnControl = $("<input type='button' class='playBtn' id='play" + index + "' value='PLAY'/>");
                 var spanInfo = $("<span>" + _this.LoadList[index].title + "</span>");
                 audioContainer.append(btnControl).append(spanInfo).append("<br/>");
                 btnControl.unbind("click").click(function () {
+                    _this.resizeCanvas();
+                    
                     if (_this.CurrentSource && _this.CurrentSource.index != index) {
                         _this.CurrentSource.source.stop(0);
                     }
-                    if (this.value() == "PLAY") {
+                    if (this.value == "PLAY") {
+                        $(".playBtn").attr("value", "PLAY");
                         var source1 = Audioctx.createBufferSource();
                         source1.buffer = bufferList;
+                        _this.Gain = Audioctx.createGainNode();
+                        source1.connect(_this.Gain);
                         _this.Analyzer = Audioctx.createAnalyser();
-                        source1.connect(Audioctx.destination);
-                        source1.connect(_this.Analyzer);
+                        _this.Gain.connect(_this.Analyzer);
+                        _this.Analyzer.connect(Audioctx.destination);
+                        _this.FreqData = new Float32Array(_this.Analyzer.frequencyBinCount);
+                        console.log("_this.Analyser.frequencyBinCount:" + _this.Analyzer.frequencyBinCount);
                         _this.CurrentSource = {
                             source: source1,
                             index: index,
-                        }
-                        source1.loop = _this.Loop;
+                        };
+                        _this.gainChange();
+                        _this.loopChange();
                         source1.start(0);
                         _this.drawGraph();
+                        this.value = "STOP";
                     } else {
-
+                        _this.CurrentSource.source.stop(0);
+                        this.value = "PLAY";
                     }
-                    
+
                 });
             }
         }
     },
-    drawGraph: function () {
+    Canvas: {
+        target: $(document.getElementById("cvs")),
+        width: 0,
+        height:0,
+    },
+    resizeCanvas: function() {
+        var container = $(this.Canvas.target).parent();
+        var size = Resize.getSize(container);
+        this.Canvas.target.attr({            
+            "width": size.width + "px",
+            "height":size.height+"px",
+        });
+        this.Canvas.width = size.width;
+        this.Canvas.height = size.height;
+    },
+    Ctx:null,
+    drawGraph: function() {
         if (this.DrawInterval) {
             clearInterval(this.DrawInterval);
             this.DrawInterval = null;
         }
+        !this.Ctx && (this.Ctx = this.Canvas.target[0].getContext("2d"));
         var time = 100;
         var _this = this;
-        this.DrawInterval = setInterval(function () {
+        this.DrawInterval = setInterval(function() {
+            var w = _this.Canvas.width;
+            var h = _this.Canvas.height;
             _this.analyze();
-            var cv = document.getElementById("cvs");
-            var ctx = cv.getContext("2d");
-            ctx.fillStyle = "#000000";
-            ctx.fillRect(0, 0, 512, 256);
-            ctx.fillStyle = "#009900";
-            for (var i = 0; i < 512; ++i) {
-                var f = _this.Audioctx.sampleRate * i / 1024;
-                y = 128 + (_this.Bufdata[i] + 48.16) * 2.56;
-                ctx.fillRect(i, 256 - y, 1, y);
+            var ctx = _this.Ctx;
+            ctx.clearRect(0, 0, w, h);
+            
+            // Spacing between the individual bars
+            /*
+            //var SPACING = 10;
+            for (var i = 0; i < _this.FreqData.length; i++) {
+                // Work out the hight of the current bar
+                // by getting the current frequency
+                var magnitude = _this.FreqData[i];
+                // Draw a bar from the bottom up (cause for the "-magnitude")
+                ctx.fillRect(i, h-(h+magnitude), 2, h);
+            };
+            ctx.fillStyle = "lightblue";
+            */
+            var length = _this.FreqData.length/2;
+            if (w > (length)) {
+                var SPACING = w / length;
+                for (var i = 0; i < length; i++) {
+                    // Work out the hight of the current bar
+                    // by getting the current frequency
+                    //var magnitude =h/2+ (_this.FreqData[i]+48.16) * h/100;
+                    var magnitude = (_this.FreqData[i] * -1) / 148.16 * h/3;
+                    // Draw a bar from the bottom up (cause for the "-magnitude")
+                    ctx.fillRect(i * SPACING, 0, SPACING,h/3- magnitude);
+                }
+            } else {
+                var spaceNumber = length / w;
+                spaceNumber = Math.round(spaceNumber);
+                for (var i = 0; i < length; i++) {
+                    if (i % spaceNumber == 0) {
+                        var magnitude = (_this.FreqData[i] * -1) / 148.16 * h / 3;
+                        // Draw a bar from the bottom up (cause for the "-magnitude")
+                        ctx.fillRect(i, 0, 1, h / 3 - magnitude);
+                    }
+                    
+                }
             }
-            ctx.fillStyle = "#ff8844";
+            ctx.fillStyle = "rgba(255,255,255,0.3)";
+            
+            /*
             for (var d = -50; d < 50; d += 10) {
-                var y = 128 - (d * 256 / 100) | 0;
+                var y = 128 - (d * h / 100) | 0;
                 ctx.fillRect(20, y, 512, 1);
                 ctx.fillText(d + "dB", 5, y);
             }
@@ -158,15 +236,36 @@ var CustomAudioContext = {
                 var x = (f * 1024 / _this.Audioctx.sampleRate) | 0;
                 ctx.fillRect(x, 0, 1, 245);
                 ctx.fillText(f + "Hz", x - 10, 255);
-            };
+            }
+            */
         }, 100);
     },
-}
+};
 
 CustomAudioContext.init();
 
 
 
+window.requestAnimFrame = (function () {
+    return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function (callback) {
+                window.setTimeout(callback, 1000 / 60);//定义每秒执行60次动画
+            };
+})();
+//相当于使用setInterval(render, 16)方法,但是具有更高的性能
+(function animloop() {
+    requestAnimFrame(animloop);
+    //render();
+})();
+
+document.getElementById("gain").addEventListener('change',
+  function (e) {
+      CustomAudioContext.gainChange(this.value);
+  });
 
 /* other main.js
 // The audio element
@@ -214,6 +313,9 @@ function draw() {
   // Clear the canvas
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   // This loop draws all the bars
+  OFFSET = 100;
+// Spacing between the individual bars
+SPACING = 10;
   for (var i = 0; i < freqData.length - OFFSET; i++) {
     // Work out the hight of the current bar
     // by getting the current frequency
