@@ -200,34 +200,51 @@ var CustomAudioContext = {
             };
             ctx.fillStyle = "lightblue";
             */
-            var length = _this.FreqData.length/2/2;
-            if (w > (length)) {
+            var length = _this.FreqData.length/2;
+            var center = {
+                x: w / 2,
+                y: h / 2,
+            }
+            w = w/2;
+            if ( w > (length)) {
                 var SPACING = w / length;
                 for (var i = 0; i < length; i++) {
                     // Work out the hight of the current bar
                     // by getting the current frequency
                     //var magnitude =h/2+ (_this.FreqData[i]+48.16) * h/100;
-                    var magnitude = (_this.FreqData[i] * -1) / 148.16 * h/3;
-                    // Draw a bar from the bottom up (cause for the "-magnitude")
-                    ctx.fillRect(i * SPACING + w / 2, (h / 2 - magnitude)/3, SPACING, (h / 2 + magnitude)/3);
-                    
-                    ctx.fillRect((-i * SPACING - SPACING) + w / 2, (h / 2 - magnitude)/3, SPACING, (h / 2 + magnitude)/3);
+                    var magnitude = (150 + _this.FreqData[i]) / 150 * h / 3;
+                    if (magnitude > 0 && magnitude < h/2) {
+                        // Draw a bar from the bottom up (cause for the "-magnitude")
+                        ctx.fillRect(i * SPACING + center.x, (center.y - magnitude), SPACING, magnitude * 2);
+                        if (i == 0) {
+                            console.log("===>" + magnitude);
+                        }
+                        ctx.fillRect((-i * SPACING - SPACING) + center.x, (center.y - magnitude), SPACING, magnitude * 2);
+                    } else {
+
+                    }
                 }
             } else {
                 var spaceNumber = length / w;
                 spaceNumber = Math.round(spaceNumber);
                 for (var i = 0; i < length; i++) {
                     if (i % spaceNumber == 0) {
-                        var magnitude = (_this.FreqData[i] * -1) / 148.16 * h / 3;
-                        // Draw a bar from the bottom up (cause for the "-magnitude")
-                        ctx.fillRect(i  + w / 2, h / 2 - magnitude, 1, h / 2 + magnitude);
+                        var magnitude = (150 + _this.FreqData[i]) / 150 * h / 3;
+                        if (magnitude > 0 && magnitude < h / 2) {
+                            // Draw a bar from the bottom up (cause for the "-magnitude")
+                            ctx.fillRect(i + center.x, (center.y - magnitude), 1, magnitude * 2);
+                            if (i == 0) {
+                                console.log("===>" + magnitude);
+                            }
+                            ctx.fillRect((-i - 1) + center.x, (center.y - magnitude), 1, magnitude * 2);
+                        } else {
 
-                        ctx.fillRect((-i  - 1) + w / 2, h / 2 - magnitude, 1, h / 2 + magnitude);
+                        }
                     }
                     
                 }
             }
-            ctx.fillStyle = "rgba(255,255,255,0.3)";
+            ctx.fillStyle = "rgba(255,255,255,0.25)";
             
             /*
             for (var d = -50; d < 50; d += 10) {
