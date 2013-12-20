@@ -62,14 +62,23 @@ var CustomAudioContext = {
         {
             title: "ナノ-Silver Sky",
             src: filePath + 'ナノ-Silver Sky.mp3',
-        }, {
-            title: "EGOIST-Departures",
+        },{
+            title: "Daisy",
+            src: filePath + '境界的彼方ED「Daisy」.mp3',
+        },
+        {
+            title: "Departures",
             src: filePath + 'EGOIST-Departures ~あなたにおくるアイの歌~ (TV Edit) -Instrumental-.mp3',
         }, {
             title: "MyDearest",
-            src: filePath + 'MyDearest.mp3',
+            src: filePath + 'Supercell-My Dearest(《罪恶王冠》动漫主题曲).mp3',
+        }, {
+            title: "告白",
+            src: filePath + 'Supercell-告白 (Album Mix).mp3',
         }
     ],
+    Loop: true,
+    Gain: 1,//默认音量
     Analyzer: null,
     analyze: function () {
         //this.Analyzer.minDecibels = 0;
@@ -79,7 +88,6 @@ var CustomAudioContext = {
         this.Analyzer.getFloatFrequencyData(this.FreqData);
         
     },
-    Gain: 1,
     gainChange: function(v) {
         if (!v) {
             v = $("#gain").val();
@@ -89,9 +97,9 @@ var CustomAudioContext = {
     FreqData: new Float32Array(1024),
     CurrentSource: null,
     DrawInterval: null,
-    Loop: true,
+    
     loopChange: function(v) {
-        if (!v) {
+        if (v) {
             this.Loop = v;
         }
         this.CurrentSource.source.loop = this.Loop;
@@ -138,15 +146,14 @@ var CustomAudioContext = {
                         _this.Gain.connect(_this.Analyzer);
                         _this.Analyzer.connect(Audioctx.destination);
                         _this.FreqData = new Float32Array(_this.Analyzer.frequencyBinCount);
-                        console.log("_this.Analyser.frequencyBinCount:" + _this.Analyzer.frequencyBinCount);
                         _this.CurrentSource = {
                             source: source1,
                             index: index,
                         };
                         _this.gainChange();
                         _this.loopChange();
-                        source1.start(0);
                         _this.drawGraph();
+                        source1.start(0);
                         this.value = "STOP";
                     } else {
                         _this.CurrentSource.source.stop(0);
@@ -215,11 +222,12 @@ var CustomAudioContext = {
                     var magnitude = (150 + _this.FreqData[i]) / 150 * h / 3;
                     if (magnitude > 0 && magnitude < h/2) {
                         // Draw a bar from the bottom up (cause for the "-magnitude")
-                        ctx.fillRect(i * SPACING + center.x, (center.y - magnitude), SPACING, magnitude * 2);
-                        if (i == 0) {
-                            console.log("===>" + magnitude);
-                        }
-                        ctx.fillRect((-i * SPACING - SPACING) + center.x, (center.y - magnitude), SPACING, magnitude * 2);
+                        ctx.fillRect(i * SPACING + center.x, (center.y - magnitude), SPACING, magnitude);
+                        ctx.fillRect((-i * SPACING - SPACING) + center.x, (center.y - magnitude), SPACING, magnitude);
+                        ctx.fillStyle = "rgba(255,255,255,0.10)";
+                        ctx.fillRect(i * SPACING + center.x, (center.y), SPACING, magnitude);
+                        ctx.fillRect((-i * SPACING - SPACING) + center.x, (center.y), SPACING, magnitude);
+                        ctx.fillStyle = "rgba(255,255,255,0.25)";
                     } else {
 
                     }
@@ -232,11 +240,12 @@ var CustomAudioContext = {
                         var magnitude = (150 + _this.FreqData[i]) / 150 * h / 3;
                         if (magnitude > 0 && magnitude < h / 2) {
                             // Draw a bar from the bottom up (cause for the "-magnitude")
-                            ctx.fillRect(i + center.x, (center.y - magnitude), 1, magnitude * 2);
-                            if (i == 0) {
-                                console.log("===>" + magnitude);
-                            }
-                            ctx.fillRect((-i - 1) + center.x, (center.y - magnitude), 1, magnitude * 2);
+                            ctx.fillRect(i + center.x, (center.y - magnitude), 1, magnitude);
+                            ctx.fillRect((-i - 1) + center.x, (center.y - magnitude), 1, magnitude);
+                            ctx.fillStyle = "rgba(255,255,255,0.10)";
+                            ctx.fillRect(i + center.x, (center.y ), 1, magnitude);
+                            ctx.fillRect((-i - 1) + center.x, (center.y), 1, magnitude);
+                            ctx.fillStyle = "rgba(255,255,255,0.10)";
                         } else {
 
                         }
@@ -244,7 +253,7 @@ var CustomAudioContext = {
                     
                 }
             }
-            ctx.fillStyle = "rgba(255,255,255,0.25)";
+            
             
             /*
             for (var d = -50; d < 50; d += 10) {
