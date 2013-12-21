@@ -103,7 +103,7 @@ var Section1ViewParam = {
         };
         bgResize();
 
-        CustomAudioContext.resizeCanvas();
+        CustomAudioContext.Canvas.resize();
         //
         CallbackL(arguments);
     }

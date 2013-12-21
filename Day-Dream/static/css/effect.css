@@ -1,4 +1,29 @@
-﻿/*canvas audio*/
+﻿/* 进度条效果 */
+#GainControl{
+    position:relative;
+    width:100px;
+    height:10px;
+    background:#fff;
+    border:1px solid lightgreen;
+}
+#GainControl .control-space{
+    position:relative;
+    top:0px;
+    left:0px;
+    height:100%;
+    width:50%;
+}
+#GainControl .handle{
+    position:absolute;
+    width:10px;
+    height:10px;
+    -webkit-border-radius:5px;
+    background:lightgreen;
+    cursor:pointer;
+}
+
+
+/*canvas audio*/
 #cvs {
     position: absolute;
     bottom: 0px;

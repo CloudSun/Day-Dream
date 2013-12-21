@@ -54,6 +54,8 @@ BufferLoader.prototype.load = function () {
 var filePath = '../sound/';
 var CustomAudioContext = {
     Audioctx: null,
+    //Default playList
+    //TODO more list
     LoadList: [
         /*filePath + '境界的彼方ED「Daisy」.mp3',
         filePath + 'EGOIST-Departures ~あなたにおくるアイの歌~ (TV Edit) -Instrumental-.mp3',
@@ -78,32 +80,34 @@ var CustomAudioContext = {
         }
     ],
     Loop: true,
-    Gain: 1,//默认音量
-    Analyzer: null,
-    analyze: function () {
-        //this.Analyzer.minDecibels = 0;
-        //this.Analyzer.maxDecibels = 100;
-        this.Analyzer.smoothingTimeConstant = 0.5;
-        this.Analyzer.fftSize = 1024;
-        this.Analyzer.getFloatFrequencyData(this.FreqData);
-        
-    },
-    gainChange: function(v) {
-        if (!v) {
-            v = $("#gain").val();
+    Gainer: {
+        t: null,
+        controler:$("#gain"),
+        change: function (v){
+            if (!v) {
+                v = this.controler.val();
+            }
+            if (!this.t) {
+                throw "Gainer.t is null";
+            }
+            this.t.gain.value = v;
         }
-        this.Gain.gain.value = v;
     },
-    FreqData: new Float32Array(1024),
+    Analyzer: {
+        t: null,
+        freq_data:new Float32Array(1024),
+        run: function () {
+            this.t.smoothingTimeConstant = 0.5;
+            this.t.fftSize = 1024;
+            this.t.getFloatFrequencyData(this.freq_data);
+        }
+    },
+    Audio:{
+        t: $("#song"),
+        buffer: {
+        }
+    },
     CurrentSource: null,
-    DrawInterval: null,
-    
-    loopChange: function(v) {
-        if (v) {
-            this.Loop = v;
-        }
-        this.CurrentSource.source.loop = this.Loop;
-    },
     init: function() {
         if (this.Audioctx) {
             return;
@@ -117,12 +121,34 @@ var CustomAudioContext = {
             alert('Web Audio API is not supported in this browser');
         }
         var _this = this;
-        var bufferLoader = new BufferLoader(this.Audioctx, this.LoadList, finishedLoading);
+        this.Gainer.t = this.Audioctx.createGainNode();
+        this.Analyzer.t = this.Audioctx.createAnalyser();
+        this.Gainer.t.connect(this.Analyzer.t);
+        this.Analyzer.t.connect(this.Audioctx.destination);
+        this.Analyzer.freq_data = new Float32Array(this.Analyzer.t.frequencyBinCount);
+
+        //var bufferLoader = new BufferLoader(this.Audioctx, this.LoadList, finishedLoading);
         
-        bufferLoader.load();
+        //bufferLoader.load();
         
-        this.resizeCanvas();
+        this.Canvas.resize();
         
+        var audio = this.Audio.t[0];
+        audio.src = this.LoadList[1].src;
+        audio.Loop = this.loop;
+        var source = this.Audioctx.createMediaElementSource(audio);
+        source.connect(this.Gainer.t);
+        audio.addEventListener('play', this.Canvas.drawGraph);
+
+        /*add Events */
+        
+        document.getElementById("gain").addEventListener('change',
+          function (e) {
+              CustomAudioContext.Gainer.change(this.value);
+          });
+
+        /*
+
         function finishedLoading(bufferList, index) {
             var Audioctx = _this.Audioctx;
             var audioContainer = $("#AudioControl");
@@ -140,12 +166,7 @@ var CustomAudioContext = {
                         $(".playBtn").attr("value", "PLAY");
                         var source1 = Audioctx.createBufferSource();
                         source1.buffer = bufferList;
-                        _this.Gain = Audioctx.createGainNode();
                         source1.connect(_this.Gain);
-                        _this.Analyzer = Audioctx.createAnalyser();
-                        _this.Gain.connect(_this.Analyzer);
-                        _this.Analyzer.connect(Audioctx.destination);
-                        _this.FreqData = new Float32Array(_this.Analyzer.frequencyBinCount);
                         _this.CurrentSource = {
                             source: source1,
                             index: index,
@@ -163,112 +184,97 @@ var CustomAudioContext = {
                 });
             }
         }
+        */
     },
     Canvas: {
         target: $(document.getElementById("cvs")),
         width: 0,
-        height:0,
-    },
-    resizeCanvas: function() {
-        var container = $(this.Canvas.target).parent();
-        var size = Resize.getSize(container);
-        this.Canvas.target.attr({            
-            "width": size.width + "px",
-            "height":size.height+"px",
-        });
-        this.Canvas.width = size.width;
-        this.Canvas.height = size.height;
-    },
-    Ctx:null,
-    drawGraph: function() {
-        if (this.DrawInterval) {
-            clearInterval(this.DrawInterval);
-            this.DrawInterval = null;
-        }
-        !this.Ctx && (this.Ctx = this.Canvas.target[0].getContext("2d"));
-        var time = 100;
-        var _this = this;
-        this.DrawInterval = setInterval(function() {
-            var w = _this.Canvas.width;
-            var h = _this.Canvas.height;
-            _this.analyze();
-            var ctx = _this.Ctx;
-            ctx.clearRect(0, 0, w, h);
-            
-            // Spacing between the individual bars
-            /*
-            //var SPACING = 10;
-            for (var i = 0; i < _this.FreqData.length; i++) {
-                // Work out the hight of the current bar
-                // by getting the current frequency
-                var magnitude = _this.FreqData[i];
-                // Draw a bar from the bottom up (cause for the "-magnitude")
-                ctx.fillRect(i, h-(h+magnitude), 2, h);
-            };
-            ctx.fillStyle = "lightblue";
-            */
-            var length = _this.FreqData.length/2;
-            var center = {
-                x: w / 2,
-                y: h / 2,
+        height: 0,
+        ctx: null,
+        draw_interval: null,
+        drawGraph: function () {
+            var canvas = CustomAudioContext.Canvas;
+            var cac = CustomAudioContext;
+            if (canvas.draw_interval) {
+                clearInterval(canvas.draw_interval);
+                canvas.draw_interval = null;
             }
-            w = w/2;
-            if ( w > (length)) {
-                var SPACING = w / length;
-                for (var i = 0; i < length; i++) {
+            !canvas.ctx && (canvas.ctx = canvas.target[0].getContext("2d"));
+            canvas.draw_interval = setInterval(function () {
+                var audio = CustomAudioContext;
+                var canvas = CustomAudioContext.Canvas;
+                var w = canvas.width;
+                var h = canvas.height;
+                audio.Analyzer.run();
+                var ctx = canvas.ctx;
+                ctx.clearRect(0, 0, w, h);
+
+                // Spacing between the individual bars
+                /*
+                //var SPACING = 10;
+                for (var i = 0; i < _this.FreqData.length; i++) {
                     // Work out the hight of the current bar
                     // by getting the current frequency
-                    //var magnitude =h/2+ (_this.FreqData[i]+48.16) * h/100;
-                    var magnitude = (150 + _this.FreqData[i]) / 150 * h / 3;
-                    if (magnitude > 0 && magnitude < h/2) {
-                        // Draw a bar from the bottom up (cause for the "-magnitude")
-                        ctx.fillRect(i * SPACING + center.x, (center.y - magnitude), SPACING, magnitude);
-                        ctx.fillRect((-i * SPACING - SPACING) + center.x, (center.y - magnitude), SPACING, magnitude);
-                        ctx.fillStyle = "rgba(255,255,255,0.10)";
-                        ctx.fillRect(i * SPACING + center.x, (center.y), SPACING, magnitude);
-                        ctx.fillRect((-i * SPACING - SPACING) + center.x, (center.y), SPACING, magnitude);
-                        ctx.fillStyle = "rgba(255,255,255,0.25)";
-                    } else {
-
-                    }
+                    var magnitude = _this.FreqData[i];
+                    // Draw a bar from the bottom up (cause for the "-magnitude")
+                    ctx.fillRect(i, h-(h+magnitude), 2, h);
+                };
+                ctx.fillStyle = "lightblue";
+                */
+                var length = audio.Analyzer.freq_data.length / 2;
+                var center = {
+                    x: w / 2,
+                    y: h / 2,
                 }
-            } else {
-                var spaceNumber = length / w;
-                spaceNumber = Math.round(spaceNumber);
-                for (var i = 0; i < length; i++) {
-                    if (i % spaceNumber == 0) {
-                        var magnitude = (150 + _this.FreqData[i]) / 150 * h / 3;
+                w = w / 2;
+                if (w > (length)) {
+                    var SPACING = w / length;
+                    for (var i = 0; i < length; i++) {
+                        // Work out the hight of the current bar
+                        // by getting the current frequency
+                        //var magnitude =h/2+ (_this.FreqData[i]+48.16) * h/100;
+                        var magnitude = (150 + audio.Analyzer.freq_data[i]) / 150 * h / 3;
                         if (magnitude > 0 && magnitude < h / 2) {
                             // Draw a bar from the bottom up (cause for the "-magnitude")
-                            ctx.fillRect(i + center.x, (center.y - magnitude), 1, magnitude);
-                            ctx.fillRect((-i - 1) + center.x, (center.y - magnitude), 1, magnitude);
+                            ctx.fillRect(i * SPACING + center.x, (center.y - magnitude), SPACING, magnitude);
+                            ctx.fillRect((-i * SPACING - SPACING) + center.x, (center.y - magnitude), SPACING, magnitude);
                             ctx.fillStyle = "rgba(255,255,255,0.10)";
-                            ctx.fillRect(i + center.x, (center.y ), 1, magnitude);
-                            ctx.fillRect((-i - 1) + center.x, (center.y), 1, magnitude);
-                            ctx.fillStyle = "rgba(255,255,255,0.10)";
-                        } else {
-
+                            ctx.fillRect(i * SPACING + center.x, (center.y), SPACING, magnitude);
+                            ctx.fillRect((-i * SPACING - SPACING) + center.x, (center.y), SPACING, magnitude);
+                            ctx.fillStyle = "rgba(255,255,255,0.25)";
                         }
                     }
-                    
+                } else {
+                    var spaceNumber = length / w;
+                    spaceNumber = Math.round(spaceNumber);
+                    for (var i = 0; i < length; i++) {
+                        if (i % spaceNumber == 0) {
+                            var magnitude = (150 + audio.Analyzer.freq_data[i]) / 150 * h / 3;
+                            if (magnitude > 0 && magnitude < h / 2) {
+                                // Draw a bar from the bottom up (cause for the "-magnitude")
+                                ctx.fillRect(i + center.x, (center.y - magnitude), 1, magnitude);
+                                ctx.fillRect((-i - 1) + center.x, (center.y - magnitude), 1, magnitude);
+                                ctx.fillStyle = "rgba(255,255,255,0.10)";
+                                ctx.fillRect(i + center.x, (center.y), 1, magnitude);
+                                ctx.fillRect((-i - 1) + center.x, (center.y), 1, magnitude);
+                                ctx.fillStyle = "rgba(255,255,255,0.10)";
+                            }
+                        }
+
+                    }
                 }
-            }
-            
-            
-            /*
-            for (var d = -50; d < 50; d += 10) {
-                var y = 128 - (d * h / 100) | 0;
-                ctx.fillRect(20, y, 512, 1);
-                ctx.fillText(d + "dB", 5, y);
-            }
-            ctx.fillRect(20, 128, 512, 1);
-            for (var f = 2000; f < _this.Audioctx.sampleRate / 2; f += 2000) {
-                var x = (f * 1024 / _this.Audioctx.sampleRate) | 0;
-                ctx.fillRect(x, 0, 1, 245);
-                ctx.fillText(f + "Hz", x - 10, 255);
-            }
-            */
-        }, 100);
+            }, 100);
+        },
+        resize: function () {
+            var container = $(this.target).parent();
+            var size = Resize.getSize(container);
+            this.target.attr({
+                "width": size.width + "px",
+                "height": size.height + "px",
+            });
+            this.width = size.width;
+            this.height = size.height;
+        },
     },
 };
 
@@ -292,10 +298,7 @@ window.requestAnimFrame = (function () {
     //render();
 })();
 
-document.getElementById("gain").addEventListener('change',
-  function (e) {
-      CustomAudioContext.gainChange(this.value);
-  });
+
 
 /* other main.js
 // The audio element

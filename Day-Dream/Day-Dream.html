@@ -104,11 +104,16 @@
                 <!--<h1>Section1</h1>-->
                 <div class="section-container" style="background-color: rgba(0,0,0,0.4);">
                     <!--autoplay="autoplay"-->
-
+                    <audio id="song" controls></audio>
+                        <!--<source src="../sound/Supercell-告白 (Album Mix).mp3" /></audio>-->
                     <canvas id="cvs"></canvas>
                     <!-- TODO control pane -->
                     <div id="AudioControl" style="color:#fff;position: absolute;bottom:100px;">
                         <p>Gain: <input id="gain" type="range" value="1" min="0" max="1" step="0.01" /></p>
+                        <div id="GainControl">
+                            <div class="control-space">
+                            <a class="handle"></a>
+                        </div>
                     </div>
                 </div>
             </section>
