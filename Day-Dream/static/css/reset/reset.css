@@ -9,7 +9,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,su
 audio,canvas,video{display:inline-block;}
 summary{margin:0 0 .75em;}
 html{font-size:100%;}
-body{font-family:"georgia",serif;line-height:1.5;margin:0;}
+body{font-family: 'Helvetica Neue',Helvetica,Arial,Sans-serif;line-height:1.5;margin:0;}
 html,body{height:100%;} 
 h1{font-size:3em;line-height:1.1;margin:0 0 .25em;}
 h2{font-size:2em;line-height:1.15;margin:0 0 .375em;}
