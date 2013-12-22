@@ -1,4 +1,75 @@
-﻿//BufferLoader Object
+﻿var mousedown = true, mousedownTarget, mousemove_event, mouseposition = {};
+var gainposition;
+$("#GainControl a").bind("mousedown", function (e) {
+    mousedown = true;
+    mousedownTarget = "gain";
+    gainposition = $(this).position();
+    mouseposition.start = {
+        x: e.pageX,
+        y: e.pageY,
+    }
+    
+})
+
+$(document).bind("mousemove", function (e) {
+    if (mousedownTarget) {
+        mousemove_event = e;
+        mouseposition.end = {
+            x: e.pageX,
+            y: e.pageY,
+        }
+        console.log("pageX=" + e.pageX + "/ pageY=" + e.pageY);
+        console.log("startX=" + mouseposition.start.x + "/ startY=" + mouseposition.start.y);
+        //获得差值，修改位置
+
+        var x = mouseposition.end.x - mouseposition.start.x;
+        var y = mouseposition.end.y - mouseposition.start.y;
+
+        var t = $("#GainControl a");
+        var width = t.parent().width();
+        var height = t.parent().height() - t.width();
+        var left = gainposition.left +x;
+        var top = gainposition.top + y;
+        console.log("left:" + left);
+
+        left < 0 && (left = 0);
+        left > width && (left = width);
+        t.css({
+            "left":left+"px",
+        });
+               
+    }
+});
+
+$(document).bind("mouseup", function (e) {
+    if (mousedownTarget) {
+        mousedownTarget = null;
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//BufferLoader Object
 
 function BufferLoader(context, urlList, callback) {
     this.context = context;
