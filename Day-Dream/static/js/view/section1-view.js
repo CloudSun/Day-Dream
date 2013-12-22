@@ -59,7 +59,7 @@ var Section1ViewParam = {
         view.resize(view);
         setTimeout(function () {
             Controler.preloadLayerHide(view.target);
-        }, 3000);
+        }, 1000);
         CallbackL(arguments);
     };
     
@@ -103,7 +103,11 @@ var Section1ViewParam = {
         };
         bgResize();
 
+        //In progress
         CustomAudioContext.Canvas.resize();
+
+        //In progress
+        SongAlbumInit();
         //
         CallbackL(arguments);
     }

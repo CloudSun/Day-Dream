@@ -1,70 +1,222 @@
-﻿var mousedown = true, mousedownTarget, mousemove_event, mouseposition = {};
-var gainposition;
-$("#GainControl a").bind("mousedown", function (e) {
-    mousedown = true;
-    mousedownTarget = "gain";
-    gainposition = $(this).position();
-    mouseposition.start = {
-        x: e.pageX,
-        y: e.pageY,
-    }
-    
-})
+﻿/* song Album */
+var SongAlbumInit = function () {
+    var resizeContainer = $("#Section1 .section-container");
+    var resize = Resize.getSize(resizeContainer);
+    var albumContainer = $("#SongAlbumContainer");
 
-$(document).bind("mousemove", function (e) {
-    if (mousedownTarget) {
-        mousemove_event = e;
-        mouseposition.end = {
+    var height = toFixed(resize.height / 2 * 1 / 2);
+    var width = resize.width;
+    albumContainer.css({
+        "width": width + "px",
+        "height": height + "px",
+        "margin-top":-height*12/10,
+    });
+
+    var songList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    var unitWidth = height;
+    for (var i=0;i<songList.length;i++) {
+        var songCover = $("<span class='songCover'>" + songList[i] + "</span>");
+        //右半边数量
+        var rightNumber = Math.ceil(songList.length / 2);
+        var leftNumber = songList.length - rightNumber;//
+        if (i < rightNumber) {
+            var uleft = width/2/rightNumber;
+            var uAngle = 90 / rightNumber;
+            var uopacity = 1 / rightNumber;
+            var uZ = 400 / rightNumber;
+            songCover.css({
+                "width": unitWidth + "px",
+                "height": unitWidth + "px",
+                "left": "50%",
+                "margin-left": -unitWidth / 2 + "px",
+                "-webkit-transform": "translate3d(" + (i * uleft) + "px," + 0 + "px," + (200-uZ*i) + "px) rotateY(" + (-i * uAngle) + "deg)",
+                "opacity": 1 - i * uopacity,
+                "z-index":(1-i*uopacity)*10,
+            });
+            albumContainer.append(songCover);
+        } else {
+            var uleft = width / 2 / leftNumber;
+            var uAngle = 90 / leftNumber;
+            var uopacity = 1 / leftNumber;
+            var uZ = 400 / leftNumber;
+            var j = i - rightNumber;
+            j = rightNumber - j;
+            songCover.css({
+                "width": unitWidth + "px",
+                "height": unitWidth + "px",
+                "left": "50%",
+                "margin-left": -unitWidth / 2 + "px",
+                "-webkit-transform": "translate3d(" + -(j * uleft) + "px," + 0 + "px," + (200 - uZ * j) + "px) rotateY(" + (j * uAngle) + "deg)",
+                "opacity": 1 - j * uopacity,
+                "z-index": (1 - j * uopacity) * 10,
+            });
+            albumContainer.append(songCover);
+        }
+    }
+}
+
+
+
+/* Gain Controler */
+/* 音量控制 Slider */
+var gainControl = $("#GainControl");
+bindSlideControler(gainControl, function (value) {
+    //change value
+    value != undefined && ((value = parseInt(toFixed(value, 2) * 100)));
+    
+     CustomAudioContext.Gainer.change(value/100);//0-1
+    console.log("gainControl:getTheVaule=" + value+"%");
+});
+
+function bindSlideControler(target,callback) {
+    var mouseDragControler = null;
+    var mousedown = false;
+    target.bind("mouseenter", function (e) {
+        //只有当鼠标进入绑定的元素时触发 mousenter不区分子元素
+        //只有当鼠标离开绑定的元素时触发 mouseleave不区分子元素
+        $(this).find(".handle").fadeIn();
+    }).bind("mouseleave", function () {
+        if (!(mouseDragControler && mouseDragControler.t[0] == $(this).find(".handle")[0])) {
+            $(this).find(".handle").fadeOut();
+        }
+    }).bind("mousedown", function (e) {
+        var available = "x";
+        var left = e.offsetX;
+        var top = e.offsetY;
+        var controler = $(this).find(".handle");
+        var space = $(this).find(".space");
+        controler.css({
+            "display": "block",
+        })
+
+        left = left - controler.width() / 2;
+        top = top - controler.height() / 2;
+        left < 0 && (left = 0);
+        top < 0 && (top = 0);
+        if (available.indexOf("x") != -1) {
+            controler.css({
+                "left": left + "px",
+            });
+            space.css({
+                "width": left + controler.width(),
+            });
+
+            callback(left / ($(this).width() - controler.width()));
+        }
+        if (available.indexOf("y") != -1) {
+            controler.css({
+                "top": top + "px",
+            });
+            space.css({
+                "height": top + controler.height(),
+            });
+
+            callback(top / ($(this).height() - controler.height()));
+        }
+        mousedown = true;
+        mouseDragControler = new MouseDragControler(controler, e, available, callback)
+    }).find(".handle").bind("mousedown", function (e) {
+        mousedown = true;
+        mouseDragControler = new MouseDragControler($(this), e, "x", callback)
+        stopBubble(e);
+        stopDefault(e);
+    });
+
+
+    $(document).bind("mousemove", function (e) {
+        if (mouseDragControler) {
+            mouseDragControler.move(e);
+        }
+    }).bind("mouseup", function (e) {
+        if (mouseDragControler) {
+            mouseDragControler.end();
+            mouseDragControler = null;
+        }
+    })
+
+}
+
+
+//阻止冒泡事件  
+function stopBubble(e) {  
+    if (e && e.stopPropagation) {//非IE  
+        e.stopPropagation();  
+    }  
+    else {//IE  
+        window.event.cancelBubble = true;  
+    }  
+}  
+function stopDefault(e) {  
+    //阻止默认浏览器动作(W3C)  
+    if (e && e.preventDefault)  
+        e.preventDefault();  
+        //IE中阻止函数器默认动作的方式  
+    else  
+        window.event.returnValue = false;  
+    return false;  
+}  
+
+
+
+//MouseControler t:dom target; moveavailable:x,y,xy,container(parent),callback
+function MouseDragControler(t,e,available,callback){
+    this.t = t;
+    this.position = t.position();
+    this.start = {
+        x:e.pageX,
+        y:e.pageY,
+    }
+    this.available = available;
+    this.margin = {
+        left:e.offsetX,
+        top:e.offsetY,
+    }
+    var _this = this;
+    this.move = function (e) {
+        var endPoint = {
             x: e.pageX,
             y: e.pageY,
         }
-        console.log("pageX=" + e.pageX + "/ pageY=" + e.pageY);
-        console.log("startX=" + mouseposition.start.x + "/ startY=" + mouseposition.start.y);
-        //获得差值，修改位置
+        var x = endPoint.x - _this.start.x;
+        var y = endPoint.y - _this.start.y;
 
-        var x = mouseposition.end.x - mouseposition.start.x;
-        var y = mouseposition.end.y - mouseposition.start.y;
-
-        var t = $("#GainControl a");
-        var width = t.parent().width();
-        var height = t.parent().height() - t.width();
-        var left = gainposition.left +x;
-        var top = gainposition.top + y;
-        console.log("left:" + left);
-
+        var pWidth = _this.t.parent().width()-_this.t.width();
+        var pHeight = _this.t.parent().height() - _this.t.height();
+        var left = _this.position.left + x;
+        var top = _this.position.top + y;
         left < 0 && (left = 0);
-        left > width && (left = width);
-        t.css({
-            "left":left+"px",
-        });
-               
+        left > pWidth && (left = pWidth);
+        top < 0 && (top = 0);
+        top > pHeight && (top = pHeight);
+
+        //space spread
+        var space = _this.t.parent().find(".space");
+        
+        if (_this.available.indexOf("x") != -1) {
+            _this.t.css({
+                "left":left+"px",
+            });
+            space.css({
+                "width": left + _this.t.width() + "px",
+            });
+
+            callback(left / pWidth);
+        }
+        if (_this.available.indexOf("y") != -1) {
+            _this.t.css({
+                "top":top+"px"
+            });
+            space.css({
+                "height": top + _this.t.height() + "px",
+            });
+            callback(top / pHeight);
+        }
+       
     }
-});
-
-$(document).bind("mouseup", function (e) {
-    if (mousedownTarget) {
-        mousedownTarget = null;
+    this.end = function () {
+        _this.t.fadeOut();
     }
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
@@ -101,7 +253,7 @@ BufferLoader.prototype.loadBuffer = function (url, index) {
                 //    loader.onload(loader.bufferList, null);
                 //} else {
                 
-                    loader.onload(loader.bufferList[index], index);
+                loader.onload(loader.bufferList[index], index);
                 //}
             },
             function (error) {
@@ -213,10 +365,7 @@ var CustomAudioContext = {
 
         /*add Events */
         
-        document.getElementById("gain").addEventListener('change',
-          function (e) {
-              CustomAudioContext.Gainer.change(this.value);
-          });
+        
 
         /*
 

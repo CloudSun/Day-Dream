@@ -1,32 +1,52 @@
-﻿/* 进度条效果 */
-#GainControl{
-    position:relative;
-    width:100px;
-    height:10px;
-    background:#fff;
+﻿/* Song Album */
+#SongAlbumContainer{
+    position:absolute;
+    top:50%;
     border:1px solid lightgreen;
 }
-#GainControl .control-space{
-    position:relative;
-    top:0px;
-    left:0px;
-    height:100%;
-    width:50%;
+
+.songCover{
+    display:block;
+    position:absolute;
+    background:dodgerblue;
+    cursor:pointer;
+}
+
+/* 进度条效果 */
+#GainControl{
+    position: relative;
+    width: 200px;
+    height: 6px;
+    background: rgba(0,0,0,0.3);
+    -webkit-border-radius: 3px;
+    -webkit-box-shadow: 0px 0px 3px #000 inset;
+    cursor:pointer;
+}
+#GainControl .space{
+    position: relative;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background: dodgerblue;
+    -webkit-border-radius: inherit;
 }
 #GainControl .handle{
-    position:absolute;
-    width:10px;
-    height:10px;
-    -webkit-border-radius:5px;
-    background:lightgreen;
-    cursor:pointer;
+    position: absolute;
+    width: 6px;
+    height: 100%;
+    -webkit-border-radius: inherit;
+    top: 0px;
+    right:0px;
+    background: #fff;
+    display:none;
 }
 
 
 /*canvas audio*/
 #cvs {
-    position: absolute;
     bottom: 0px;
+    z-index:-10;
 }
 
 
