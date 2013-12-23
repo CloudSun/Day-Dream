@@ -14,45 +14,56 @@ var SongAlbumInit = function () {
 
     var songList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     var unitWidth = height;
-    for (var i=0;i<songList.length;i++) {
-        var songCover = $("<span class='songCover'>" + songList[i] + "</span>");
-        //右半边数量
-        var rightNumber = Math.ceil(songList.length / 2);
-        var leftNumber = songList.length - rightNumber;//
-        if (i < rightNumber) {
-            var uleft = width/2/rightNumber;
-            var uAngle = 90 / rightNumber;
-            var uopacity = 1 / rightNumber;
-            var uZ = 400 / rightNumber;
-            songCover.css({
-                "width": unitWidth + "px",
-                "height": unitWidth + "px",
-                "left": "50%",
-                "margin-left": -unitWidth / 2 + "px",
-                "-webkit-transform": "translate3d(" + (i * uleft) + "px," + 0 + "px," + (200-uZ*i) + "px) rotateY(" + (-i * uAngle) + "deg)",
-                "opacity": 1 - i * uopacity,
-                "z-index":(1-i*uopacity)*10,
-            });
-            albumContainer.append(songCover);
-        } else {
-            var uleft = width / 2 / leftNumber;
-            var uAngle = 90 / leftNumber;
-            var uopacity = 1 / leftNumber;
-            var uZ = 400 / leftNumber;
-            var j = i - rightNumber;
-            j = rightNumber - j;
-            songCover.css({
-                "width": unitWidth + "px",
-                "height": unitWidth + "px",
-                "left": "50%",
-                "margin-left": -unitWidth / 2 + "px",
-                "-webkit-transform": "translate3d(" + -(j * uleft) + "px," + 0 + "px," + (200 - uZ * j) + "px) rotateY(" + (j * uAngle) + "deg)",
-                "opacity": 1 - j * uopacity,
-                "z-index": (1 - j * uopacity) * 10,
-            });
-            albumContainer.append(songCover);
-        }
+    var resize = false;
+    if (albumContainer.children(".songCover").length != 0) {
+        resize = true;
     }
+        for (var i = 0; i < songList.length; i++) {
+            var songCover
+            if (resize) {
+                songCover = $($(".songCover")[i]);
+            } else {
+                songCover = $("<span class='songCover'>" + songList[i] + "</span>");
+            }
+            //右半边数量
+            var center = 3;//i index number;
+            var leftNumber = center - 1;
+            var rightNumber = (songList.length-1) - center;
+            if (i >= center) {//right side;
+                var uleft = width / 2 / rightNumber;
+                var uAngle = 90 / rightNumber;
+                var uopacity = 1 / rightNumber;
+                var uZ = 400 / rightNumber;
+                var index = i - center;
+                songCover.css({
+                    "width": unitWidth + "px",
+                    "height": unitWidth + "px",
+                    "left": "50%",
+                    "margin-left": -unitWidth / 2 + "px",
+                    "-webkit-transform": "translate3d(" + (index * uleft) + "px," + 0 + "px," + (200 - uZ * index) + "px) rotateY(" + (-index * uAngle) + "deg)",
+                    "opacity": 1 - index * uopacity,
+                    "z-index": (1 - index * uopacity) * 10,
+                });
+                
+            } else {
+                var uleft = width / 2 / (leftNumber+1);
+                var uAngle = 90 / (leftNumber+1);
+                var uopacity = 1 / (leftNumber+1);
+                var uZ = 400 / (leftNumber+1);
+                var index = (leftNumber+1) -i;
+                songCover.css({
+                    "width": unitWidth + "px",
+                    "height": unitWidth + "px",
+                    "left": "50%",
+                    "margin-left": -unitWidth / 2 + "px",
+                    "-webkit-transform": "translate3d(" + -(index * uleft) + "px," + 0 + "px," + (200 - uZ * index) + "px) rotateY(" + (index * uAngle) + "deg)",
+                    "opacity":  (i+1) * uopacity,
+                    "z-index": (i+1) * uopacity * 10,
+                });
+            }
+            !resize && albumContainer.append(songCover);
+            
+        }
 }
 
 
